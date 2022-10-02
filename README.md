@@ -8,4 +8,4 @@ The goal of the Waiting Queue project is to provide a shared mechanism for proje
 
 **The short-term objectives of the project are:**
 
-• Implement a proof of concept impelementation.
+• Implement a proof of concept.
