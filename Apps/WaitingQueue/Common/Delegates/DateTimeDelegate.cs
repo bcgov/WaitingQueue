@@ -28,8 +28,5 @@ namespace BCGov.WaitingQueue.Common.Delegates
 
         /// <inheritdoc />
         public long UtcUnixTime => this.UtcNow.ToUnixTimeSeconds();
-
-        /// <inheritdoc />
-        public long UtcUnixTimeMilliseconds => this.UtcNow.ToUnixTimeMilliseconds();
     }
 }

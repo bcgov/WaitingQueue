@@ -36,10 +36,5 @@ namespace BCGov.WaitingQueue.Common.Delegates
         /// Gets the current date/time in UTC represented as seconds from the Unix Epoch.
         /// </summary>
         long UtcUnixTime { get; }
-
-        /// <summary>
-        /// Gets the current date/time in UTC represented as milliseconds from the Unix Epoch.
-        /// </summary>
-        long UtcUnixTimeMilliseconds { get; }
     }
 }
