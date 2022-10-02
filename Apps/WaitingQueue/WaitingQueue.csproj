@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <RootNamespace>BCGov.WaitingQueue</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
+        <UserSecretsId>f23b8f4f-20e2-4ab0-a7ce-af57d1d4ed4b</UserSecretsId>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'WaitingQueue' " />
+    <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.23.1" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.66" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="..\stylecop.json" />
+    </ItemGroup>
+
+</Project>

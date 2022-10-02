@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingQueue", "WaitingQueue\WaitingQueue.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+				GlobalSection(MonoDevelopProperties) = preSolution
+								Policies = $0
+								$0.StandardHeader = $1
+								$1.Text = @-------------------------------------------------------------------------\r\n Copyright © 2019 Province of British Columbia\r\n\r\n Licensed under the Apache License, Version 2.0 (the "License");\r\n you may not use this file except in compliance with the License.\r\n You may obtain a copy of the License at\r\n\r\n http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n Unless required by applicable law or agreed to in writing, software\r\n distributed under the License is distributed on an "AS IS" BASIS,\r\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n See the License for the specific language governing permissions and\r\n limitations under the License.\r\n-------------------------------------------------------------------------
+				EndGlobalSection
+EndGlobal
