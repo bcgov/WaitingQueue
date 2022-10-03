@@ -205,6 +205,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             Stopwatch stopwatch = new();
             stopwatch.Start();
+            this.logger.LogTrace("Room PrivateKey\n{PrivateKey}", roomConfig.PrivateKey);
             byte[] privateKey = Convert.FromBase64String(roomConfig.PrivateKey);
             using RSA rsa = RSA.Create();
             rsa.ImportPkcs8PrivateKey(privateKey, out _);
@@ -305,7 +306,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
         private RoomConfiguration? GetRoomConfiguration(string room)
         {
-            RoomConfiguration? roomConfig = this.configuration.GetSection($"Room.{room}").Get<RoomConfiguration>();
+            RoomConfiguration? roomConfig = this.configuration.GetSection($"Room{room}").Get<RoomConfiguration>();
             return roomConfig;
         }
     }

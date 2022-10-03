@@ -29,11 +29,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the signing certificate.
-        /// </summary>
-        public string Certificate { get; set; } = string.Empty;
-
-        /// <summary>
         /// Gets or sets the signing private key.
         /// </summary>
         public string PrivateKey { get; set; } = string.Empty;
