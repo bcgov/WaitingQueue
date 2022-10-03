@@ -35,7 +35,7 @@ jobs:
           buildid=$(date +"%Y%m%d").$GITHUB_RUN_ID.$GITHUB_RUN_NUMBER.$GITHUB_RUN_ATTEMPT
           echo Starting Docker Build and tagging image as $buildid
           cd $GITHUB_WORKSPACE/Apps
-          docker build . . --tag waitingqueue:$buildid
+          docker build . --tag waitingqueue:$buildid
           
           
       
