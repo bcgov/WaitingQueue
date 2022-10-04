@@ -198,7 +198,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
         private static string GetRoomName(RoomConfiguration config, string roomType)
         {
-            return $"{{{config.Name}:Room:{roomType}}}";
+            return $"{{{config.Name}}}:Room:{roomType}";
         }
 
         private string CreateJwt(RoomConfiguration roomConfig, Guid id)
