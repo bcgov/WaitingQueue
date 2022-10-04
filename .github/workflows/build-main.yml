@@ -40,7 +40,7 @@ jobs:
           echo Starting Docker Build and tagging image as latest
           cd $GITHUB_WORKSPACE/Apps
           docker build . --tag ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
-          docker login -u `oc whoami` -p `oc whoami --show-token` ${{ secrets.IMAGE_REPOSITORY }}
+          docker login -u github -p `oc whoami --show-token` ${{ secrets.IMAGE_REPOSITORY }}
           docker push ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
 
           
