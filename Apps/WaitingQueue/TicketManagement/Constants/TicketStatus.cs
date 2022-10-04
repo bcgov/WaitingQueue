@@ -44,11 +44,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Constants
         TooBusy,
 
         /// <summary>
-        /// The ticket was not valid, create a new ticket.
-        /// </summary>
-        InvalidRequest,
-
-        /// <summary>
         /// The request for a check-in was performed too early, try at the specified time.
         /// </summary>
         TooEarly,

@@ -96,25 +96,34 @@ namespace BCGov.WaitingQueue.Controllers
         /// <response code="200">The ticket returned.</response>
         /// <response code="400">The requested was invalid.</response>
         /// <response code="404">The requested ticket was not found.</response>
+        /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
-        /// <response code="503">The service is unable to complete the request, review the error.</response>
         [HttpPut]
         [Route("check-in")]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status412PreconditionFailed)]
         [ProducesResponseType(typeof(void), StatusCodes.Status429TooManyRequests)]
-        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<Ticket>> CheckIn(CheckInRequest checkInRequest)
         {
             Ticket ticket = await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
             switch (ticket.Status)
             {
+                case TicketStatus.TooEarly:
+                    return new JsonResult(new ErrorResult()
+                    {
+                        Code = string.Empty,
+                        Message = $"The check-in request is too early",
+                    })
+                    {
+                        StatusCode = StatusCodes.Status412PreconditionFailed,
+                    };
                 case TicketStatus.NotFound:
                     return new JsonResult(new ErrorResult()
                     {
                         Code = string.Empty,
-                        Message = $"The supplied ticket response id or nonce was invalid.",
+                        Message = $"The supplied ticket id or nonce was invalid.",
                     })
                     {
                         StatusCode = StatusCodes.Status404NotFound,
@@ -122,7 +131,6 @@ namespace BCGov.WaitingQueue.Controllers
                 case TicketStatus.Processed:
                 case TicketStatus.Queued:
                     return ticket;
-                case TicketStatus.InvalidRequest:
                 default:
                     return new BadRequestResult();
             }

@@ -179,7 +179,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 {
                     ticket = new()
                     {
-                        Status = TicketStatus.InvalidRequest,
+                        Status = TicketStatus.NotFound,
                     };
                 }
             }
