@@ -196,6 +196,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             return ticketResponse;
         }
 
+        private static string GetRoomName(RoomConfiguration config, string roomType)
+        {
+            return $"{{{config.Name}:Room:{roomType}}}";
+        }
+
         private string CreateJwt(RoomConfiguration roomConfig, Guid id)
         {
             Stopwatch stopwatch = new();
@@ -303,11 +308,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             RoomConfiguration? roomConfig = this.configuration.GetSection($"Room{room}").Get<RoomConfiguration>();
             return roomConfig;
-        }
-
-        private static string GetRoomName(RoomConfiguration config, string roomType)
-        {
-            return $"{{{config.Name}:Room:{roomType}}}";
         }
     }
 }
