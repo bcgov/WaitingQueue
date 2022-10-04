@@ -1,0 +1,42 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${NAME}-template
+  labels:
+    app: ${NAME}
+  annotations:
+    description: "Template for the creation of Azure Agents"
+    tags: "cicd,build,deploy"
+objects:
+  - kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    secrets:
+      - fieldPath: metadata.namespace
+
+  - kind: RoleBinding
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    roleRef:
+      apiGroup: v1
+      kind: Role
+      name: edit
+    subjects:
+      - apiVersion: v1
+        fieldPath: metadata.namespace
+        kind: ServiceAccount
+        name: ${NAME}
+
+parameters:
+  - description: The name of the service account
+    displayName: Name
+    name: NAME
+    required: true
+    value: githubbuilder
+

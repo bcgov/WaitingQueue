@@ -1,0 +1,13 @@
+{{- if .Values.autoscaling.enabled }}
+kind: PodDisruptionBudget
+apiVersion: policy/v1
+metadata:
+  name: {{ include "waitingqueue.fullname" . }}
+  labels:
+    {{- include "waitingqueue.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.autoscaling.podDisruptionMin }} 
+  selector:  
+    matchLabels:
+      deploymentconfig: {{ include "waitingqueue.fullname" . }}
+{{- end }}

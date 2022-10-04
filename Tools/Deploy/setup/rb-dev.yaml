@@ -1,0 +1,35 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    description: |
+      The role based settings to allow Azure Agents in Tools to view Dev.
+  name: rbac-image-management
+objects:
+  - apiVersion: authorization.openshift.io/v1
+    kind: RoleBinding
+    metadata:
+      name: ${SA_NAME}-VIEW-${SRC_PROJECT}
+      namespace: ${DST_PROJECT}
+    roleRef:
+      name: view
+    subjects:
+      - kind: ServiceAccount
+        name: ${SA_NAME}
+        namespace: ${SRC_PROJECT}
+    userNames:
+      - system:serviceaccount:${SRC_PROJECT}:${SA_NAME}
+parameters:
+  - name: SRC_PROJECT
+    displayName: The source project
+    description: The project of the source project typiclaly xxx-tools
+    required: true
+  - name: DST_PROJECT
+    displayName: The destination project
+    description: The destination project typically xxx-dev
+    required: true  
+  - name: SA_NAME
+    displayName: The name of the service account
+    description: The namespace of the project
+    required: true
+    value: githubbuilder

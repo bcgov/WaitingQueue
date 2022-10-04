@@ -1,0 +1,92 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: {{ include "waitingqueue.fullname" . }}
+  labels:
+    {{- include "waitingqueue.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    deploymentconfig: {{ include "waitingqueue.fullname" . }}
+    {{- include "waitingqueue.selectorLabels" . | nindent 4 }}
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "waitingqueue.selectorLabels" . | nindent 8 }}
+        deploymentconfig: {{ include "waitingqueue.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.Application.Port }}
+              protocol: TCP
+          env:
+            {{- range $key, $val := .Values.Application.Environment }}
+            - name: {{ $key }}
+              value: {{ $val }}
+            {{- end }}
+            {{- range $key, $configMap := .Values.Application.Configuration }}
+            - name: {{ $key }}
+              valueFrom:
+                configMapKeyRef:
+                  key: {{ $key }}
+                  name: {{ $configMap }}
+            {{- end }}
+            {{- range $key, $secret := .Values.Application.Secrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: {{ $key }}
+            {{- end }}                 
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: {{ .Values.Application.Port }}
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 4
+          terminationMessagePath: /{{ include "waitingqueue.fullname" . }}/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - {{ include "waitingqueue.fullname" . }}
+        from:
+          kind: ImageStreamTag
+          name: {{ .Values.image.repository }}:{{ .Values.OpenShift.Environment }}
+          namespace: {{ .Values.OpenShift.ImageProject }}
+    - type: ConfigChange
+    

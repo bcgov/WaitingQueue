@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "waitingqueue.fullname" . }}
+  labels:
+    {{- include "waitingqueue.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.Application.Port }}
+      protocol: TCP
+  selector:
+    {{- include "waitingqueue.selectorLabels" . | nindent 4 }}
+    deploymentconfig: {{ include "waitingqueue.fullname" . }}

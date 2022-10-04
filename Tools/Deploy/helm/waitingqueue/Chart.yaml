@@ -1,0 +1,6 @@
+apiVersion: v2
+name: waitingqueue
+description: Proof of Concept WWaiting Room API
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,14 @@
+{{ include "waitingqueue.fullname" . }} has been deployed
+
+No routes have been configured and you will need the following to create one:
+    caCertificate.pem
+    HealthGatewayPrivateKey.pem
+
+If you have those please run:
+oc create route edge "waitingqueue-https" --ca-cert="./caCertificate.pem" --cert="./wildcard.healthgateway.gov.bc.ca.pem" --key="./HealthGatewayPrivateKey.pem" --hostname="tickets.healthgateway.gov.bc.ca" --service="waitingqueue" --insecure-policy="Redirect"
+oc annotate route "waitingqueue-https" haproxy.router.openshift.io/hsts_header="max-age=31536000;includeSubDomains;preload"
+oc annotate route "waitingqueue-https" haproxy.router.openshift.io/balance="roundrobin"
+oc annotate route "waitingqueue-https" haproxy.router.openshift.io/disable_cookies="true"
+oc annotate route "waitingqueue-https" haproxy.router.openshift.io/timeout="60s"
+
+
