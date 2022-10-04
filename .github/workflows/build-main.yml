@@ -31,16 +31,16 @@ jobs:
         # uses: redhat-actions/oc-login@11b98b2a0c4b972c9791d58edbf378ce0f060359
         uses: redhat-actions/oc-login@v1.1
         with:
-          openshift_server_url: ${{ OPENSHIFT_URI }}
-          openshift_token: ${{ OPENSHIFT_TOKEN }}
-          namespace: ${{ OPENSHIFT_TOOLS_NAMSPACE }} 
+          openshift_server_url: ${{ secrets.OPENSHIFT_URI }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          namespace: ${{ secrets.OPENSHIFT_TOOLS_NAMSPACE }} 
         
       - name: Build and Push WaitingQueue
         run: |
           echo Starting Docker Build and tagging image as latest
           cd $GITHUB_WORKSPACE/Apps
-          docker build . --tag ${{ IMAGE_REPOSITORY }}/${{ OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
-          docker push ${{ IMAGE_REPOSITORY }}/${{ OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
+          docker build . --tag ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
+          docker push ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/waitingqueue:latest
 
           
           
