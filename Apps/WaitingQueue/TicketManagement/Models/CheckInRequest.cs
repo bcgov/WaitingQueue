@@ -18,12 +18,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
     using System;
 
     /// <summary>
-    /// Simple object to wrap properties required for a Ticket request.
+    /// Simple object to wrap properties required for a Token request.
     /// </summary>
     public class CheckInRequest
     {
         /// <summary>
-        /// Gets or sets the Id used to retrieve the Ticket Response.
+        /// Gets or sets the Id used to retrieve the Token Response.
         /// </summary>
         public Guid Id { get; set; }
 

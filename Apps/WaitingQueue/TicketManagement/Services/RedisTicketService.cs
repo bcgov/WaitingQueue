@@ -68,9 +68,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         }
 
         /// <inheritdoc />
-        public async Task<TicketResponse> RequestTicket(string room)
+        public async Task<Ticket> RequestTicket(string room)
         {
-            TicketResponse ticketResponse = new()
+            Ticket ticket = new()
             {
                 Id = Guid.NewGuid(),
                 Room = room,
@@ -86,24 +86,23 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 (long participantCount, long waitingCount, _) = await this.RoomCounts(roomConfig).ConfigureAwait(true);
                 if (waitingCount >= roomConfig.QueueMaxSize)
                 {
-                    ticketResponse.Status = TicketStatus.TooBusy;
+                    ticket.Status = TicketStatus.TooBusy;
                 }
                 else
                 {
-                    string member = ticketResponse.Id.ToString();
+                    string member = ticket.Id.ToString();
                     ITransaction trans;
                     if (participantCount < roomConfig.QueueThreshold)
                     {
-                        ticketResponse.Status = TicketStatus.Processed;
-                        ticketResponse.Ticket = this.CreateJwt(roomConfig, ticketResponse.Id);
+                        ticket.Status = TicketStatus.Processed;
                         trans = database.CreateTransaction();
                         _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
-                        this.CheckIn(trans, roomConfig, ticketResponse);
+                        this.CheckIn(trans, roomConfig, ticket);
                         await trans.ExecuteAsync().ConfigureAwait(true);
                     }
                     else
                     {
-                        ticketResponse.Status = TicketStatus.Queued;
+                        ticket.Status = TicketStatus.Queued;
                         long? nextCheckIn = null;
                         if (participantCount + waitingCount < roomConfig.ParticipantLimit)
                         {
@@ -119,11 +118,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                             member,
                             waitingScoreEntry.Score + 1).ConfigureAwait(true);
                         Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomName(roomConfig, WaitingKey), member);
-                        this.CheckIn(trans, roomConfig, ticketResponse, nextCheckIn);
+                        this.CheckIn(trans, roomConfig, ticket, nextCheckIn);
                         await trans.ExecuteAsync().ConfigureAwait(true);
 
                         long? position = await positionTask.ConfigureAwait(true);
-                        ticketResponse.QueuePosition = position + 1 ?? 0;
+                        ticket.QueuePosition = position + 1 ?? 0;
                     }
                 }
 
@@ -131,53 +130,54 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 this.logger.LogDebug("RequestTicket Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             }
 
-            return ticketResponse;
+            return ticket;
         }
 
         /// <inheritdoc />
-        public async Task<TicketResponse> CheckIn(CheckInRequest checkInRequest)
+        public async Task<Ticket> CheckIn(CheckInRequest checkInRequest)
         {
             Stopwatch stopwatch = new();
             stopwatch.Start();
-            TicketResponse? ticketResponse;
+            Ticket? ticket;
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             RedisValue redisTicket = await database.StringGetAsync($"{checkInRequest.Room}:{checkInRequest.Id}").ConfigureAwait(true);
             if (redisTicket.HasValue)
             {
-                ticketResponse = JsonSerializer.Deserialize<TicketResponse>(redisTicket.ToString());
-                if (ticketResponse != null && ticketResponse.Nonce == checkInRequest.Nonce)
+                ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
+                if (ticket != null && ticket.Nonce == checkInRequest.Nonce)
                 {
-                    if (ticketResponse.CheckInAfter > this.dateTimeDelegate.UtcUnixTime)
+                    if (ticket.CheckInAfter > this.dateTimeDelegate.UtcUnixTime)
                     {
-                        ticketResponse.Status = TicketStatus.TooEarly;
+                        ticket.Status = TicketStatus.TooEarly;
                     }
                     else
                     {
-                        RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticketResponse.Room);
+                        RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket.Room);
                         bool admit = false;
-                        string member = ticketResponse.Id.ToString();
-                        if (ticketResponse.Status == TicketStatus.Queued)
+                        string member = ticket.Id.ToString();
+                        if (ticket.Status == TicketStatus.Queued)
                         {
                             (long participantCount, _, long position) = await this.RoomCounts(roomConfig, member).ConfigureAwait(true);
+                            ticket.QueuePosition = position + 1;
                             admit = participantCount + position < roomConfig.ParticipantLimit;
                         }
 
                         ITransaction trans = database.CreateTransaction();
                         if (admit)
                         {
-                            ticketResponse.Status = TicketStatus.Processed;
-                            ticketResponse.Ticket = this.CreateJwt(roomConfig, ticketResponse.Id);
+                            ticket.Status = TicketStatus.Processed;
+                            ticket.QueuePosition = 0;
                             _ = trans.SortedSetRemoveAsync(GetRoomName(roomConfig, WaitingKey), member);
                             _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
                         }
 
-                        this.CheckIn(trans, roomConfig, ticketResponse);
+                        this.CheckIn(trans, roomConfig, ticket);
                         await trans.ExecuteAsync().ConfigureAwait(true);
                     }
                 }
                 else
                 {
-                    ticketResponse = new()
+                    ticket = new()
                     {
                         Status = TicketStatus.InvalidRequest,
                     };
@@ -185,7 +185,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             }
             else
             {
-                ticketResponse = new()
+                ticket = new()
                 {
                     Status = TicketStatus.NotFound,
                 };
@@ -193,7 +193,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
             stopwatch.Stop();
             this.logger.LogDebug("CheckIn Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
-            return ticketResponse;
+            return ticket;
         }
 
         private static string GetRoomName(RoomConfiguration config, string roomType)
@@ -201,10 +201,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             return $"{{{config.Name}}}:Room:{roomType}";
         }
 
-        private string CreateJwt(RoomConfiguration roomConfig, Guid id)
+        private (string Token, long Expires) CreateJwt(RoomConfiguration roomConfig, Guid id)
         {
             Stopwatch stopwatch = new();
             stopwatch.Start();
+            DateTimeOffset ticketExpiry = this.dateTimeDelegate.UtcNow.AddMinutes(roomConfig.TicketTtl);
             this.logger.LogTrace("Room PrivateKey\n{PrivateKey}", roomConfig.PrivateKey);
             byte[] privateKey = Convert.FromBase64String(roomConfig.PrivateKey);
             using RSA rsa = RSA.Create();
@@ -231,12 +232,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                     new Claim(JwtRegisteredClaimNames.Azp, roomConfig.Name),
                 },
                 notBefore: this.dateTimeDelegate.UtcNowDateTime,
-                expires: this.dateTimeDelegate.UtcNowDateTime.AddMinutes(roomConfig.TicketTtl),
+                expires: ticketExpiry.DateTime,
                 signingCredentials: signingCredentials);
 
             stopwatch.Stop();
             this.logger.LogDebug("CreateJwt Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            return (new JwtSecurityTokenHandler().WriteToken(jwt), ticketExpiry.ToUnixTimeSeconds());
         }
 
         private async Task<(long ParticipantCount, long WaitingCount, long Position)> RoomCounts(
@@ -281,22 +282,27 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             return (participantCount, waitingCount, position);
         }
 
-        private void CheckIn(ITransaction transaction, RoomConfiguration roomConfig, TicketResponse ticketResponse, long? nextCheckIn = null)
+        private void CheckIn(ITransaction transaction, RoomConfiguration roomConfig, Ticket ticket, long? nextCheckIn = null)
         {
-            ticketResponse.CheckInAfter = nextCheckIn ?? this.dateTimeDelegate.UtcUnixTime + roomConfig.CheckInFrequency;
-            long checkInScore = ticketResponse.CheckInAfter + roomConfig.CheckInGrace;
+            ticket.CheckInAfter = nextCheckIn ?? this.dateTimeDelegate.UtcUnixTime + roomConfig.CheckInFrequency;
+            long checkInScore = ticket.CheckInAfter + roomConfig.CheckInGrace;
             TimeSpan expiry = TimeSpan.FromSeconds(roomConfig.CheckInFrequency + roomConfig.CheckInGrace);
             TimeSpan roomIdleTtl = TimeSpan.FromSeconds(roomConfig.RoomIdleTtl);
-            ticketResponse.Nonce = this.nonceGenerator.GenerateNonce();
-            string ticketJson = JsonSerializer.Serialize(ticketResponse);
+            ticket.Nonce = this.nonceGenerator.GenerateNonce();
+            if (ticket.Status == TicketStatus.Processed && ticket.CheckInAfter >= ticket.TokenExpires)
+            {
+                (ticket.Token, ticket.TokenExpires) = this.CreateJwt(roomConfig, ticket.Id);
+            }
+
+            string ticketJson = JsonSerializer.Serialize(ticket);
             _ = transaction.StringSetAsync(
-                $"{ticketResponse.Room}:{ticketResponse.Id}",
+                $"{ticket.Room}:{ticket.Id}",
                 ticketJson,
                 expiry,
                 flags: CommandFlags.FireAndForget);
             _ = transaction.SortedSetAddAsync(
                 GetRoomName(roomConfig, CheckInKey),
-                ticketResponse.Id.ToString(),
+                ticket.Id.ToString(),
                 checkInScore,
                 CommandFlags.FireAndForget);
             _ = transaction.KeyExpireAsync(GetRoomName(roomConfig, CheckInKey), roomIdleTtl);

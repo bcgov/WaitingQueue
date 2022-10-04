@@ -46,21 +46,21 @@ namespace BCGov.WaitingQueue.Controllers
         /// </summary>
         /// <returns>A ticket response when successful.</returns>
         /// <param name="room">The room for which the client is requesting a ticket.</param>
-        /// <response code="200">Ticket Response returned.</response>
+        /// <response code="200">Token Response returned.</response>
         /// <response code="400">The requested was invalid.</response>
         /// <response code="404">The requested room was not found.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(TicketResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<TicketResponse>> CreateTicket([FromQuery]string room)
+        public async Task<ActionResult<Ticket>> CreateTicket([FromQuery]string room)
         {
-            TicketResponse ticketResponse = await this.ticketService.RequestTicket(room).ConfigureAwait(true);
-            switch (ticketResponse.Status)
+            Ticket ticket = await this.ticketService.RequestTicket(room).ConfigureAwait(true);
+            switch (ticket.Status)
             {
                 case TicketStatus.NotFound:
                     return new JsonResult(new ErrorResult()
@@ -82,33 +82,33 @@ namespace BCGov.WaitingQueue.Controllers
                     };
                 case TicketStatus.Processed:
                 case TicketStatus.Queued:
-                    return ticketResponse;
+                    return ticket;
                 default:
                     return new BadRequestResult();
             }
         }
 
         /// <summary>
-        /// Performs a check-in on the Ticket to get an updated status or let the server know it is still in use.
+        /// Performs a check-in on the Ticket which will update the state and/or ticket associated.
         /// </summary>
-        /// <returns>A ticket response when successful.</returns>
+        /// <returns>The updated Ticket.</returns>
         /// <param name="checkInRequest">The ticket request to check-in.</param>
-        /// <response code="200">Ticket Response returned.</response>
+        /// <response code="200">The ticket returned.</response>
         /// <response code="400">The requested was invalid.</response>
-        /// <response code="404">The requested Ticket Response was not found.</response>
+        /// <response code="404">The requested ticket was not found.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is unable to complete the request, review the error.</response>
         [HttpPut]
         [Route("check-in")]
-        [ProducesResponseType(typeof(TicketResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<TicketResponse>> CheckIn(CheckInRequest checkInRequest)
+        public async Task<ActionResult<Ticket>> CheckIn(CheckInRequest checkInRequest)
         {
-            TicketResponse ticketResponse = await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
-            switch (ticketResponse.Status)
+            Ticket ticket = await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
+            switch (ticket.Status)
             {
                 case TicketStatus.NotFound:
                     return new JsonResult(new ErrorResult()
@@ -121,7 +121,7 @@ namespace BCGov.WaitingQueue.Controllers
                     };
                 case TicketStatus.Processed:
                 case TicketStatus.Queued:
-                    return ticketResponse;
+                    return ticket;
                 case TicketStatus.InvalidRequest:
                 default:
                     return new BadRequestResult();
@@ -132,9 +132,9 @@ namespace BCGov.WaitingQueue.Controllers
         /// Releases the ticket and associated resources from the server.
         /// A good client will call this as they are disconnecting the session.
         /// </summary>
-        /// <returns>TBD>The ticket response that was removed.</returns>
+        /// <returns>TBD>The ticket that was removed.</returns>
         [HttpDelete]
-        public ActionResult<TicketResponse> Release()
+        public ActionResult<Ticket> Release()
         {
             // TODO: Implement remove.
             return new BadRequestResult();

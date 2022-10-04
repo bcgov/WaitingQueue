@@ -22,7 +22,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
     /// <summary>
     /// Represents the response from a ticket request or check-in.
     /// </summary>
-    public class TicketResponse
+    public class Ticket
     {
         /// <summary>
         /// Gets or sets a unique guid id for this response.
@@ -52,6 +52,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         public long CheckInAfter { get; set; }
 
         /// <summary>
+        /// Gets or sets the time after which the issued token will expire.
+        /// </summary>
+        public long TokenExpires { get; set; }
+
+        /// <summary>
         /// Gets or sets the clients queue position (if queued).
         /// </summary>
         public long QueuePosition { get; set; }
@@ -62,8 +67,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         public TicketStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the ticket to be used for service calls.
+        /// Gets or sets the token to be used for service calls.
         /// </summary>
-        public string? Ticket { get; set; }
+        public string? Token { get; set; }
     }
 }

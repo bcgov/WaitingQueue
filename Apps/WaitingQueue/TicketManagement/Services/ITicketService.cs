@@ -19,22 +19,22 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using BCGov.WaitingQueue.TicketManagement.Models;
 
     /// <summary>
-    /// Definition for the Ticket Service.
+    /// Definition for the Token Service.
     /// </summary>
     public interface ITicketService
     {
         /// <summary>
-        /// Requests the creation of a Ticket.
+        /// Requests the creation of a ticket.
         /// </summary>
         /// <param name="room">The room to use.</param>
-        /// <returns>A ticket response containing a ticket if completed.</returns>
-        Task<TicketResponse> RequestTicket(string room);
+        /// <returns>A ticket containing a token if processed.</returns>
+        Task<Ticket> RequestTicket(string room);
 
         /// <summary>
-        /// Updates the Ticket Response to reflect a CheckIn.
+        /// Updates the ticket to reflect a CheckIn.
         /// </summary>
         /// <param name="checkInRequest">The ticket request.</param>
-        /// <returns>The updated Ticket Response.</returns>
-        Task<TicketResponse> CheckIn(CheckInRequest checkInRequest);
+        /// <returns>The updated Ticket.</returns>
+        Task<Ticket> CheckIn(CheckInRequest checkInRequest);
     }
 }

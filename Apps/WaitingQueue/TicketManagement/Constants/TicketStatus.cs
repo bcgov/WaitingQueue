@@ -24,17 +24,17 @@ namespace BCGov.WaitingQueue.TicketManagement.Constants
     public enum TicketStatus
     {
         /// <summary>
-        /// The Ticket request was reviewed and queued.
+        /// The Token request was reviewed and queued.
         /// </summary>
         Queued,
 
         /// <summary>
-        /// Get Ticket request was reviewed and processed.
+        /// Get Token request was reviewed and processed.
         /// </summary>
         Processed,
 
         /// <summary>
-        /// The Ticket request cannot be processed as the room was not found.
+        /// The Token request cannot be processed as the room was not found.
         /// </summary>
         NotFound,
 
