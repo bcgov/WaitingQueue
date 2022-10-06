@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingQueue", "WaitingQueue\WaitingQueue.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement", "TicketManagement\TicketManagement.csproj", "{29574CB9-23B7-48EA-B95B-178B63130379}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,6 +14,10 @@ Global
 		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA2D53B-D779-4E2C-BF8A-557413442A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29574CB9-23B7-48EA-B95B-178B63130379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29574CB9-23B7-48EA-B95B-178B63130379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29574CB9-23B7-48EA-B95B-178B63130379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29574CB9-23B7-48EA-B95B-178B63130379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 				GlobalSection(MonoDevelopProperties) = preSolution
 								Policies = $0
