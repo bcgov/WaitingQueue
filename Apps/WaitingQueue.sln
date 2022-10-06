@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingQueue", "WaitingQueue\WaitingQueue.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingQueue", "WaitingQueue\WaitingQueue.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement", "TicketManagement\TicketManagement.csproj", "{29574CB9-23B7-48EA-B95B-178B63130379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagement", "TicketManagement\TicketManagement.csproj", "{29574CB9-23B7-48EA-B95B-178B63130379}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom", "WaitingRoom\WaitingRoom.csproj", "{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +23,20 @@ Global
 		{29574CB9-23B7-48EA-B95B-178B63130379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29574CB9-23B7-48EA-B95B-178B63130379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29574CB9-23B7-48EA-B95B-178B63130379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-				GlobalSection(MonoDevelopProperties) = preSolution
-								Policies = $0
-								$0.StandardHeader = $1
-								$1.Text = @-------------------------------------------------------------------------\r\n Copyright © 2019 Province of British Columbia\r\n\r\n Licensed under the Apache License, Version 2.0 (the "License");\r\n you may not use this file except in compliance with the License.\r\n You may obtain a copy of the License at\r\n\r\n http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n Unless required by applicable law or agreed to in writing, software\r\n distributed under the License is distributed on an "AS IS" BASIS,\r\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n See the License for the specific language governing permissions and\r\n limitations under the License.\r\n-------------------------------------------------------------------------
-				EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90FF946F-0761-43A1-B2DE-812337C6B3BC}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
+		$1.Text = @-------------------------------------------------------------------------\r\n Copyright © 2019 Province of British Columbia\r\n\r\n Licensed under the Apache License, Version 2.0 (the "License");\r\n you may not use this file except in compliance with the License.\r\n You may obtain a copy of the License at\r\n\r\n http://www.apache.org/licenses/LICENSE-2.0\r\n\r\n Unless required by applicable law or agreed to in writing, software\r\n distributed under the License is distributed on an "AS IS" BASIS,\r\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n See the License for the specific language governing permissions and\r\n limitations under the License.\r\n-------------------------------------------------------------------------
+	EndGlobalSection
 EndGlobal
