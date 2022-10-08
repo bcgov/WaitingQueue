@@ -16,6 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TicketManagement\TicketManagement.csproj" />
+      <ProjectReference Include="..\WebCommon\WebCommon.csproj" />
     </ItemGroup>
 </Project>

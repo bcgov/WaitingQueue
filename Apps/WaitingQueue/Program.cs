@@ -20,6 +20,7 @@ namespace BCGov.WaitingQueue
     using System.Reflection;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Services;
+    using BCGov.WebCommon.Delegates;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -47,11 +48,11 @@ namespace BCGov.WaitingQueue
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            builder.Services.AddSingleton<IConnectionMultiplexer>(x =>
-                ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
+            builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
 
             builder.Services.AddTransient<ITicketService, RedisTicketService>();
             builder.Services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
+            builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
 
             WebApplication app = builder.Build();
 
@@ -61,10 +62,6 @@ namespace BCGov.WaitingQueue
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
 
             app.MapControllers();
 

@@ -15,11 +15,11 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Controllers
 {
+    using System.Net.Mime;
     using System.Threading.Tasks;
-    using BCGov.WaitingQueue.Models;
-    using BCGov.WaitingQueue.TicketManagement.Constants;
     using BCGov.WaitingQueue.TicketManagement.Models;
-    using BCGov.WaitingQueue.TicketManagement.Services;
+    using BCGov.WebCommon.Delegates;
+    using BCGov.WebCommon.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -30,15 +30,15 @@ namespace BCGov.WaitingQueue.Controllers
     [Route("[controller]")]
     public class TicketController : Controller
     {
-        private readonly ITicketService ticketService;
+        private readonly IWebTicketDelegate ticketDelegate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TicketController"/> class.
         /// </summary>
-        /// <param name="ticketService">The injected ticket service.</param>
-        public TicketController(ITicketService ticketService)
+        /// <param name="ticketDelegate">The injected web ticket delegate.</param>
+        public TicketController(IWebTicketDelegate ticketDelegate)
         {
-            this.ticketService = ticketService;
+            this.ticketDelegate = ticketDelegate;
         }
 
         /// <summary>
@@ -46,46 +46,20 @@ namespace BCGov.WaitingQueue.Controllers
         /// </summary>
         /// <returns>A ticket response when successful.</returns>
         /// <param name="room">The room for which the client is requesting a ticket.</param>
-        /// <response code="200">Token Response returned.</response>
-        /// <response code="400">The requested was invalid.</response>
+        /// <response code="200">Ticket returned.</response>
+        /// <response code="400">The request was invalid.</response>
         /// <response code="404">The requested room was not found.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
         [HttpPost]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status429TooManyRequests)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<Ticket>> CreateTicket([FromQuery]string room)
+        public async Task<IActionResult> CreateTicket([FromQuery]string room)
         {
-            Ticket ticket = await this.ticketService.RequestTicket(room).ConfigureAwait(true);
-            switch (ticket.Status)
-            {
-                case TicketStatus.NotFound:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The requested room: {room} was not found.",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                    };
-                case TicketStatus.TooBusy:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = "The waiting queue has exceeded maximum capacity, try again later",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status503ServiceUnavailable,
-                    };
-                case TicketStatus.Processed:
-                case TicketStatus.Queued:
-                    return ticket;
-                default:
-                    return new BadRequestResult();
-            }
+            return await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true);
         }
 
         /// <summary>
@@ -94,58 +68,36 @@ namespace BCGov.WaitingQueue.Controllers
         /// <returns>The updated Ticket.</returns>
         /// <param name="checkInRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
-        /// <response code="400">The requested was invalid.</response>
+        /// <response code="400">The request was invalid.</response>
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         [HttpPut]
         [Route("check-in")]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status412PreconditionFailed)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status429TooManyRequests)]
-        public async Task<ActionResult<Ticket>> CheckIn(CheckInRequest checkInRequest)
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<IActionResult> CheckIn(CheckInRequest checkInRequest)
         {
-            Ticket ticket = await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
-            switch (ticket.Status)
-            {
-                case TicketStatus.TooEarly:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The check-in request is too early",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status412PreconditionFailed,
-                    };
-                case TicketStatus.NotFound:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The supplied ticket id or nonce was invalid.",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                    };
-                case TicketStatus.Processed:
-                case TicketStatus.Queued:
-                    return ticket;
-                default:
-                    return new BadRequestResult();
-            }
+            return await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true);
         }
 
         /// <summary>
         /// Releases the ticket and associated resources from the server.
         /// A good client will call this as they are disconnecting the session.
         /// </summary>
-        /// <returns>TBD>The ticket that was removed.</returns>
+        /// <returns>The ticket that was removed.</returns>
+        /// <param name="checkInRequest">The ticket request to remove.</param>
+        /// <response code="200">The ticket was removed.</response>
+        /// <response code="404">The requested was not found.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete]
-        public ActionResult<Ticket> Release()
+        public async Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
         {
-            // TODO: Implement remove.
-            return new BadRequestResult();
+            return await this.ticketDelegate.RemoveTicket(checkInRequest).ConfigureAwait(true);
         }
     }
 }
