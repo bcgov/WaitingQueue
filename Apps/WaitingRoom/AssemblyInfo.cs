@@ -13,21 +13,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.Models
-{
-    /// <summary>
-    /// A simple error model to communicate errors to the client.
-    /// </summary>
-    public class ErrorResult
-    {
-        /// <summary>
-        /// Gets or sets the unique error code.
-        /// </summary>
-        public string? Code { get; set; }
+using System;
 
-        /// <summary>
-        /// Gets or sets the error message.
-        /// </summary>
-        public string? Message { get; set; }
-    }
-}
+[assembly: CLSCompliant(false)]
