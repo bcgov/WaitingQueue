@@ -21,7 +21,6 @@ namespace WaitingRoom
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WebCommon.Delegates;
-    using BCGov.WebCommon.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Azure.WebJobs;
@@ -63,10 +62,8 @@ namespace WaitingRoom
         [OpenApiOperation(operationId: "RequestTicket", tags: new[] { "Ticket" })]
         [OpenApiParameter(name: "room", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The room for which the client is requesting a ticket.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(Ticket), Description = "The ticket returned")]
-        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Description = "The request was invalid.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: MediaTypeNames.Application.Json, bodyType: typeof(ErrorResult), Description = "The requested room was not found.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.TooManyRequests, contentType: MediaTypeNames.Application.Json, bodyType: typeof(void), Description = "The user has made too many requests in the given timeframe.")]
-        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.ServiceUnavailable, Description = "The service is too busy, retry after the amount of time specified in retry-after.")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The requested room was not found.")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.ServiceUnavailable, Description = "The waiting queue has exceeded maximum capacity")]
         public async Task<IActionResult> RequestTicket(
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Post), Route = "Ticket")] HttpRequest request)
         {
@@ -90,10 +87,8 @@ namespace WaitingRoom
         [OpenApiOperation(operationId: "CheckIn", tags: new[] { "Ticket" })]
         [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(Ticket), Description = "The ticket returned")]
-        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Description = "The request was invalid.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: MediaTypeNames.Application.Json, bodyType: typeof(ErrorResult), Description = "The requested ticket was not found.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.PreconditionFailed, contentType: MediaTypeNames.Application.Json, bodyType: typeof(ErrorResult), Description = "The service is unable to complete the request, review the error.")]
-        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.TooManyRequests, Description = "The user has made too many requests in the given timeframe.")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The requested ticket was not found")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.PreconditionFailed, Description = "The user has made too many requests in the given timeframe.")]
         public async Task<IActionResult> CheckIn(
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Put), Route = "Ticket/check-in")] HttpRequestMessage request)
         {

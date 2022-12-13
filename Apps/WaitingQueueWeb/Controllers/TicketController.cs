@@ -15,12 +15,9 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Controllers
 {
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
-    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WebCommon.Delegates;
-    using BCGov.WebCommon.Models;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
