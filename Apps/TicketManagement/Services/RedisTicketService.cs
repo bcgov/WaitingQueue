@@ -76,7 +76,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             {
                 Id = Guid.NewGuid(),
                 Room = room,
-                Status = TicketStatus.NotFound,
+                Status = TicketStatus.Processed,
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
             RoomConfiguration? roomConfig = this.GetRoomConfiguration(room);
