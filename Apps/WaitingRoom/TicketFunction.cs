@@ -71,9 +71,9 @@ namespace WaitingRoom
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Post), Route = "Ticket")] HttpRequest request)
         {
             this.logger.LogDebug("Starting Create Ticket function");
-            string room = request.Query["room"];
+            string room = request.Query["room"].ToString();
 
-            return await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true);
+            return new OkObjectResult(await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace WaitingRoom
         {
             this.logger.LogInformation("Starting check-in function");
             CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            return await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true);
+            return new OkObjectResult(await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true));
         }
 
         /// <summary>

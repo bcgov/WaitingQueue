@@ -20,12 +20,14 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using System.Globalization;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
+    using System.Net;
     using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Text.Json;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Constants;
+    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -86,7 +88,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 (long participantCount, long waitingCount, _) = await this.RoomCounts(roomConfig).ConfigureAwait(true);
                 if (waitingCount >= roomConfig.QueueMaxSize)
                 {
-                    ticket.Status = TicketStatus.TooBusy;
+                    // Too busy
+                    throw new WaitingQueueException("The waiting queue has exceeded maximum capacity, try again later", HttpStatusCode.ServiceUnavailable, nameof(RedisTicketService));
                 }
                 else
                 {
@@ -129,6 +132,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 stopwatch.Stop();
                 this.logger.LogDebug("RequestTicket Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             }
+            else
+            {
+                // Not found
+                throw new WaitingQueueException($"The requested room: {room} was not found.", HttpStatusCode.NotFound, nameof(RedisTicketService));
+            }
 
             return ticket;
         }
@@ -148,7 +156,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 {
                     if (ticket.CheckInAfter > this.dateTimeDelegate.UtcUnixTime)
                     {
-                        ticket.Status = TicketStatus.TooEarly;
+                        // Too early
+                        throw new WaitingQueueException("The check-in request was too early", HttpStatusCode.PreconditionFailed, nameof(RedisTicketService));
                     }
                     else
                     {
@@ -177,18 +186,14 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 }
                 else
                 {
-                    ticket = new()
-                    {
-                        Status = TicketStatus.NotFound,
-                    };
+                    // Not found
+                    throw new WaitingQueueException($"The supplied ticket nonce was invalid.", HttpStatusCode.NotFound, nameof(RedisTicketService));
                 }
             }
             else
             {
-                ticket = new()
-                {
-                    Status = TicketStatus.NotFound,
-                };
+                // Not found
+                throw new WaitingQueueException($"The supplied ticket id was invalid.", HttpStatusCode.NotFound, nameof(RedisTicketService));
             }
 
             stopwatch.Stop();

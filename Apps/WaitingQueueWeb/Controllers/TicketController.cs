@@ -15,8 +15,9 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Controllers
 {
-    using System.Net.Mime;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WebCommon.Delegates;
     using BCGov.WebCommon.Models;
@@ -47,19 +48,16 @@ namespace BCGov.WaitingQueue.Controllers
         /// <returns>A ticket response when successful.</returns>
         /// <param name="room">The room for which the client is requesting a ticket.</param>
         /// <response code="200">Ticket returned.</response>
-        /// <response code="400">The request was invalid.</response>
         /// <response code="404">The requested room was not found.</response>
-        /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
         [HttpPost]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status503ServiceUnavailable)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+
         public async Task<IActionResult> CreateTicket([FromQuery]string room)
         {
-            return await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true);
+            return this.Ok(await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true));
         }
 
         /// <summary>
@@ -68,20 +66,16 @@ namespace BCGov.WaitingQueue.Controllers
         /// <returns>The updated Ticket.</returns>
         /// <param name="checkInRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
-        /// <response code="400">The request was invalid.</response>
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
-        /// <response code="429">The user has made too many requests in the given timeframe.</response>
         [HttpPut]
         [Route("check-in")]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status412PreconditionFailed)]
-        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         public async Task<IActionResult> CheckIn(CheckInRequest checkInRequest)
         {
-            return await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true);
+            return this.Ok(await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true));
         }
 
         /// <summary>
