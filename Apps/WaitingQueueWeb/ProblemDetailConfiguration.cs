@@ -47,7 +47,7 @@ namespace BCGov.WaitingQueue
                         {
                             Title = exception.Title,
                             Detail = exception.Detail,
-                            Status = exception.StatusCode,
+                            Status = (int)exception.StatusCode,
                             Type = exception.ProblemType,
                             Instance = exception.Instance,
                             AdditionalInfo = exception.AdditionalInfo,

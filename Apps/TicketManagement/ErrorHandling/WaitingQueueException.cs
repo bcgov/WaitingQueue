@@ -16,6 +16,7 @@
 namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
@@ -24,6 +25,7 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     /// Represents a custom api patient exception.
     /// </summary>
     [Serializable]
+    [ExcludeFromCodeCoverage]
     public class WaitingQueueException : Exception
     {
         /// <summary>
@@ -40,7 +42,7 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
             this.Title = "Custom Exception Handling";
             this.AdditionalInfo = "Please try again at a later time.";
             this.Instance = $"{typeName}.{memberName}";
-            this.StatusCode = (int)statusCode;
+            this.StatusCode = statusCode;
         }
 
         /// <summary>
@@ -84,31 +86,31 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         /// <summary>
         /// Gets or sets additional info.
         /// </summary>
-        public string? AdditionalInfo { get; set; }
+        public string AdditionalInfo { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets problem type.
         /// </summary>
-        public string? ProblemType { get; set; }
+        public string ProblemType { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets detail.
         /// </summary>
-        public string? Detail { get; set; }
+        public string Detail { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets title.
         /// </summary>
-        public string? Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets instance.
         /// </summary>
-        public string? Instance { get; set; }
+        public string Instance { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets status code.
         /// </summary>
-        public int StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.InternalServerError;
     }
 }
