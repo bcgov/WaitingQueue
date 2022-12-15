@@ -18,7 +18,6 @@ namespace BCGov.WaitingQueue
     using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using BCGov.WaitingQueue.ErrorHandling;
-    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -27,10 +26,10 @@ namespace BCGov.WaitingQueue
     using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
 
     /// <summary>
-    /// Provides ASP.Net Services for exception handling.
+    /// Provides ASP.Net Services related to Problem Details.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public static class ProblemDetailConfiguration
+    public static class ProblemDetailsConfiguration
     {
         /// <summary>
         /// Adds and configures the services required to use problem details.

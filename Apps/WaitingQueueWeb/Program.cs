@@ -40,7 +40,7 @@ namespace BCGov.WaitingQueue
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Configure problem details
-            ProblemDetailConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
+            ProblemDetailsConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -63,7 +63,7 @@ namespace BCGov.WaitingQueue
             WebApplication app = builder.Build();
 
             // Use problem details
-            ProblemDetailConfiguration.UseProblemDetails(app);
+            ProblemDetailsConfiguration.UseProblemDetails(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
