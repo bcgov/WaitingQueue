@@ -139,8 +139,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
             TicketCheckin.ValidateTicket(ticket, checkInRequest.Nonce, this.dateTimeDelegate.UtcUnixTime);
 
-            // Using null forgiving operator on ticket as TicketCheckin.ValidateTicket will validate if ticket is not null.
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket!.Room);
+            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket.Room);
             bool admit = false;
             string member = ticket.Id.ToString();
 
