@@ -47,9 +47,9 @@ namespace BCGov.WebCommon.Delegates
         }
 
         /// <inheritdoc />
-        public async Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
+        public Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
         {
-            return new OkResult();
+            return Task.FromResult<IActionResult>(new OkResult());
         }
     }
 }

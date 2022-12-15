@@ -18,7 +18,6 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Net;
-    using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -28,23 +27,6 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     [ExcludeFromCodeCoverage]
     public class WaitingQueueException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
-        /// </summary>
-        /// <param name="detail">The detail associated with the exception.</param>
-        /// <param name="statusCode">The HTTP status code associated with the exception.</param>
-        /// <param name="typeName">The name of the type where the exception was generated.</param>
-        /// <param name="memberName">The type of the method or property where the exception was generated.</param>
-        public WaitingQueueException(string detail, HttpStatusCode statusCode, string typeName, [CallerMemberName] string memberName = "")
-        {
-            this.ProblemType = "waiting-queue-exception";
-            this.Detail = detail;
-            this.Title = "Custom Exception Handling";
-            this.AdditionalInfo = "Please try again at a later time.";
-            this.Instance = $"{typeName}.{memberName}";
-            this.StatusCode = statusCode;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
         /// </summary>
@@ -86,31 +68,31 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         /// <summary>
         /// Gets or sets additional info.
         /// </summary>
-        public string AdditionalInfo { get; set; } = string.Empty;
+        required public string? AdditionalInfo { get; set; }
 
         /// <summary>
         /// Gets or sets problem type.
         /// </summary>
-        public string ProblemType { get; set; } = string.Empty;
+        required public string ProblemType { get; set; }
 
         /// <summary>
         /// Gets or sets detail.
         /// </summary>
-        public string Detail { get; set; } = string.Empty;
+        required public string Detail { get; set; }
 
         /// <summary>
         /// Gets or sets title.
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        required public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets instance.
         /// </summary>
-        public string Instance { get; set; } = string.Empty;
+        required public string Instance { get; set; }
 
         /// <summary>
         /// Gets or sets status code.
         /// </summary>
-        public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.InternalServerError;
+        required public HttpStatusCode StatusCode { get; set; }
     }
 }

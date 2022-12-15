@@ -21,6 +21,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net;
+    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Text.Json;
@@ -89,7 +90,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 if (waitingCount >= roomConfig.QueueMaxSize)
                 {
                     // Too busy
-                    throw new WaitingQueueException("The waiting queue has exceeded maximum capacity, try again later", HttpStatusCode.ServiceUnavailable, nameof(RedisTicketService));
+                    ThrowException(
+                        "The waiting queue has exceeded maximum capacity, try again later",
+                        HttpStatusCode.ServiceUnavailable);
                 }
                 else
                 {
@@ -135,7 +138,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             else
             {
                 // Not found
-                throw new WaitingQueueException($"The requested room: {room} was not found.", HttpStatusCode.NotFound, nameof(RedisTicketService));
+                ThrowException(
+                    "The requested room: {room} was not found.",
+                    HttpStatusCode.NotFound);
             }
 
             return ticket;
@@ -157,7 +162,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                     if (ticket.CheckInAfter > this.dateTimeDelegate.UtcUnixTime)
                     {
                         // Too early
-                        throw new WaitingQueueException("The check-in request was too early", HttpStatusCode.PreconditionFailed, nameof(RedisTicketService));
+                        ThrowException(
+                            "The check-in request was too early",
+                            HttpStatusCode.PreconditionFailed);
                     }
                     else
                     {
@@ -187,18 +194,35 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 else
                 {
                     // Not found
-                    throw new WaitingQueueException($"The supplied ticket nonce was invalid.", HttpStatusCode.NotFound, nameof(RedisTicketService));
+                    ThrowException(
+                        "The supplied ticket nonce was invalid.",
+                        HttpStatusCode.NotFound);
                 }
             }
             else
             {
                 // Not found
-                throw new WaitingQueueException($"The supplied ticket id was invalid.", HttpStatusCode.NotFound, nameof(RedisTicketService));
+                ThrowException(
+                    "The supplied ticket id was invalid.",
+                    HttpStatusCode.NotFound);
             }
 
             stopwatch.Stop();
             this.logger.LogDebug("CheckIn Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return ticket;
+        }
+
+        private static void ThrowException(string detail, HttpStatusCode statusCode, string? additionalInfo = null, [CallerMemberName] string memberName = "")
+        {
+            throw new WaitingQueueException(detail)
+            {
+                ProblemType = "Waiting Queue Exception",
+                Title = "Error during processing",
+                Detail = detail,
+                StatusCode = statusCode,
+                Instance = $"{nameof(RedisTicketService)}.{memberName}",
+                AdditionalInfo = additionalInfo,
+            };
         }
 
         private static string GetRoomName(RoomConfiguration config, string roomType)
