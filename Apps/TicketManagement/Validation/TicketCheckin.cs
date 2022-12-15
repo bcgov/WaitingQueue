@@ -34,10 +34,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
             if (!redisTicket.HasValue)
             {
                 // Not found
-                ExceptionUtility.ThrowException(
+                throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The supplied ticket id was invalid.",
                     HttpStatusCode.NotFound,
-                    nameof(TicketCheckin));
+                    nameof(TicketCheckin)));
             }
         }
 
@@ -52,10 +52,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
             if (ticket is null)
             {
                 // Internal Server Error
-                ExceptionUtility.ThrowException(
+                throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "Unable to deserialize ticket.",
                     HttpStatusCode.InternalServerError,
-                    nameof(TicketCheckin));
+                    nameof(TicketCheckin)));
             }
             else
             {
@@ -64,19 +64,19 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                     if (ticket.CheckInAfter > utcUnixTime)
                     {
                         // Too early
-                        ExceptionUtility.ThrowException(
+                        throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                             "The check-in request was too early",
                             HttpStatusCode.PreconditionFailed,
-                            nameof(TicketCheckin));
+                            nameof(TicketCheckin)));
                     }
                 }
                 else
                 {
                     // Not found
-                    ExceptionUtility.ThrowException(
+                    throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                         "The supplied ticket nonce was invalid.",
                         HttpStatusCode.NotFound,
-                        nameof(TicketCheckin));
+                        nameof(TicketCheckin)));
                 }
             }
         }

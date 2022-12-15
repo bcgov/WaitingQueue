@@ -24,17 +24,17 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     public static class ExceptionUtility
     {
         /// <summary>
-        /// Instantiates and throws a cref="ProblemDetailException".
+        /// Instantiates and throws a cref="ProblemDetailsException".
         /// </summary>
         /// <param name="detail">The detail of the exception.</param>
         /// <param name="statusCode">The http status code of the exception.</param>
         /// <param name="typeName">The name of the type where the exception was generated.</param>
         /// <param name="additionalInfo">Additional information of the exception.</param>
         /// <param name="memberName">The member name where the exception occurred.</param>
-        /// <exception cref="ProblemDetailException">Exception to be thrown.</exception>
-        public static void ThrowException(string detail, HttpStatusCode statusCode, string typeName, string? additionalInfo = null, [CallerMemberName] string memberName = "")
+        /// <exception cref="ProblemDetailsException">Exception to be thrown.</exception>
+        public static ProblemDetails CreateProblemDetails(string detail, HttpStatusCode statusCode, string typeName, string? additionalInfo = null, [CallerMemberName] string memberName = "")
         {
-            throw new ProblemDetailException(detail)
+            return new ProblemDetails()
             {
                 ProblemType = "Waiting Queue Exception",
                 Title = "Error during processing",

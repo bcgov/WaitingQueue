@@ -25,40 +25,42 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     /// </summary>
     [Serializable]
     [ExcludeFromCodeCoverage]
-    public class ProblemDetailException : Exception
+    public class ProblemDetailsException : Exception
     {
+        private ProblemDetails? problemDetails;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
         /// </summary>
         /// <param name="message">The message associated with the exception.</param>
         /// <param name="innerException">The inner exception associated with the exception.</param>
-        public ProblemDetailException(string message, Exception innerException)
+        public ProblemDetailsException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
         /// </summary>
         /// <param name="message">The message associated with exception.</param>
-        public ProblemDetailException(string message)
+        public ProblemDetailsException(string message)
             : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
         /// </summary>
-        public ProblemDetailException()
+        public ProblemDetailsException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
         /// </summary>
         /// <param name="serializationInfo">The serialization info associated with the exception.</param>
         /// <param name="streamingContext">The streaming context associated with the exception.</param>
-        protected ProblemDetailException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+        protected ProblemDetailsException(SerializationInfo serializationInfo, StreamingContext streamingContext)
             : base(
                 serializationInfo,
                 streamingContext)
@@ -66,33 +68,11 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         }
 
         /// <summary>
-        /// Gets or sets additional info.
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
         /// </summary>
-        required public string? AdditionalInfo { get; set; }
-
-        /// <summary>
-        /// Gets or sets problem type.
-        /// </summary>
-        required public string ProblemType { get; set; }
-
-        /// <summary>
-        /// Gets or sets detail.
-        /// </summary>
-        required public string Detail { get; set; }
-
-        /// <summary>
-        /// Gets or sets title.
-        /// </summary>
-        required public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets instance.
-        /// </summary>
-        required public string Instance { get; set; }
-
-        /// <summary>
-        /// Gets or sets status code.
-        /// </summary>
-        required public HttpStatusCode StatusCode { get; set; }
+        public ProblemDetailsException(ProblemDetails problemDetails) : base(problemDetails.Detail)
+        {
+            this.problemDetails = problemDetails;
+        }
     }
 }

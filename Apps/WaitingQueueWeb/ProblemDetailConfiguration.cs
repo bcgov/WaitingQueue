@@ -23,6 +23,7 @@ namespace BCGov.WaitingQueue
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
 
     /// <summary>
     /// Provides ASP.Net Services for exception handling.
@@ -42,7 +43,7 @@ namespace BCGov.WaitingQueue
                 {
                     setup.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
 
-                    setup.Map<ProblemDetailException>(
+                    setup.Map<ProblemDetailsException>(
                         exception => new WaitingQueueProblemDetails
                         {
                             Title = exception.Title,
