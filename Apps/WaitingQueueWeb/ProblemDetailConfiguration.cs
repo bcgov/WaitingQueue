@@ -42,7 +42,7 @@ namespace BCGov.WaitingQueue
                 {
                     setup.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
 
-                    setup.Map<WaitingQueueException>(
+                    setup.Map<ProblemDetailException>(
                         exception => new WaitingQueueProblemDetails
                         {
                             Title = exception.Title,

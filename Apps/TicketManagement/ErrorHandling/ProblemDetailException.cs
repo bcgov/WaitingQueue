@@ -21,44 +21,44 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Represents a custom api patient exception.
+    /// Represents a custom problem detail exception.
     /// </summary>
     [Serializable]
     [ExcludeFromCodeCoverage]
-    public class WaitingQueueException : Exception
+    public class ProblemDetailException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
         /// </summary>
         /// <param name="message">The message associated with the exception.</param>
         /// <param name="innerException">The inner exception associated with the exception.</param>
-        public WaitingQueueException(string message, Exception innerException)
+        public ProblemDetailException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
         /// </summary>
         /// <param name="message">The message associated with exception.</param>
-        public WaitingQueueException(string message)
+        public ProblemDetailException(string message)
             : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
         /// </summary>
-        public WaitingQueueException()
+        public ProblemDetailException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaitingQueueException"/> class.
+        /// Initializes a new instance of the <see cref="ProblemDetailException"/> class.
         /// </summary>
         /// <param name="serializationInfo">The serialization info associated with the exception.</param>
         /// <param name="streamingContext">The streaming context associated with the exception.</param>
-        protected WaitingQueueException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+        protected ProblemDetailException(SerializationInfo serializationInfo, StreamingContext streamingContext)
             : base(
                 serializationInfo,
                 streamingContext)

@@ -20,16 +20,14 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using System.Globalization;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
-    using System.Net;
-    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Text.Json;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Constants;
-    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Rules;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -81,68 +79,51 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
             RoomConfiguration? roomConfig = this.GetRoomConfiguration(room);
-            if (roomConfig is not null)
+            TicketRequest.ValidateRoomConfig(roomConfig);
+
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
+            IDatabase database = this.connectionMultiplexer.GetDatabase();
+            (long participantCount, long waitingCount, _) = await this.RoomCounts(roomConfig).ConfigureAwait(true);
+            TicketRequest.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
+
+            string member = ticket.Id.ToString();
+            ITransaction trans;
+            if (participantCount < roomConfig.QueueThreshold)
             {
-                Stopwatch stopwatch = new();
-                stopwatch.Start();
-                IDatabase database = this.connectionMultiplexer.GetDatabase();
-                (long participantCount, long waitingCount, _) = await this.RoomCounts(roomConfig).ConfigureAwait(true);
-                if (waitingCount >= roomConfig.QueueMaxSize)
-                {
-                    // Too busy
-                    ThrowException(
-                        "The waiting queue has exceeded maximum capacity, try again later",
-                        HttpStatusCode.ServiceUnavailable);
-                }
-                else
-                {
-                    string member = ticket.Id.ToString();
-                    ITransaction trans;
-                    if (participantCount < roomConfig.QueueThreshold)
-                    {
-                        ticket.Status = TicketStatus.Processed;
-                        trans = database.CreateTransaction();
-                        _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
-                        this.CheckIn(trans, roomConfig, ticket);
-                        await trans.ExecuteAsync().ConfigureAwait(true);
-                    }
-                    else
-                    {
-                        ticket.Status = TicketStatus.Queued;
-                        long? nextCheckIn = null;
-                        if (participantCount + waitingCount < roomConfig.ParticipantLimit)
-                        {
-                            nextCheckIn = this.dateTimeDelegate.UtcUnixTime;
-                        }
-
-                        SortedSetEntry waitingScoreEntry = (await database.SortedSetRangeByRankWithScoresAsync(
-                            GetRoomName(roomConfig, WaitingKey),
-                            -1).ConfigureAwait(true)).FirstOrDefault();
-                        trans = database.CreateTransaction();
-                        _ = trans.SortedSetAddAsync(
-                            GetRoomName(roomConfig, WaitingKey),
-                            member,
-                            waitingScoreEntry.Score + 1).ConfigureAwait(true);
-                        Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomName(roomConfig, WaitingKey), member);
-                        this.CheckIn(trans, roomConfig, ticket, nextCheckIn);
-                        await trans.ExecuteAsync().ConfigureAwait(true);
-
-                        long? position = await positionTask.ConfigureAwait(true);
-                        ticket.QueuePosition = position + 1 ?? 0;
-                    }
-                }
-
-                stopwatch.Stop();
-                this.logger.LogDebug("RequestTicket Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
+                ticket.Status = TicketStatus.Processed;
+                trans = database.CreateTransaction();
+                _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
+                this.CheckIn(trans, roomConfig, ticket);
+                await trans.ExecuteAsync().ConfigureAwait(true);
             }
             else
             {
-                // Not found
-                ThrowException(
-                    "The requested room: {room} was not found.",
-                    HttpStatusCode.NotFound);
+                ticket.Status = TicketStatus.Queued;
+                long? nextCheckIn = null;
+                if (participantCount + waitingCount < roomConfig.ParticipantLimit)
+                {
+                    nextCheckIn = this.dateTimeDelegate.UtcUnixTime;
+                }
+
+                SortedSetEntry waitingScoreEntry = (await database.SortedSetRangeByRankWithScoresAsync(
+                    GetRoomName(roomConfig, WaitingKey),
+                    -1).ConfigureAwait(true)).FirstOrDefault();
+                trans = database.CreateTransaction();
+                _ = trans.SortedSetAddAsync(
+                    GetRoomName(roomConfig, WaitingKey),
+                    member,
+                    waitingScoreEntry.Score + 1).ConfigureAwait(true);
+                Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomName(roomConfig, WaitingKey), member);
+                this.CheckIn(trans, roomConfig, ticket, nextCheckIn);
+                await trans.ExecuteAsync().ConfigureAwait(true);
+
+                long? position = await positionTask.ConfigureAwait(true);
+                ticket.QueuePosition = position + 1 ?? 0;
             }
 
+            stopwatch.Stop();
+            this.logger.LogDebug("RequestTicket Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return ticket;
         }
 
@@ -151,78 +132,39 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             Stopwatch stopwatch = new();
             stopwatch.Start();
-            Ticket? ticket;
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             RedisValue redisTicket = await database.StringGetAsync($"{checkInRequest.Room}:{checkInRequest.Id}").ConfigureAwait(true);
-            if (redisTicket.HasValue)
-            {
-                ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
-                if (ticket != null && ticket.Nonce == checkInRequest.Nonce)
-                {
-                    if (ticket.CheckInAfter > this.dateTimeDelegate.UtcUnixTime)
-                    {
-                        // Too early
-                        ThrowException(
-                            "The check-in request was too early",
-                            HttpStatusCode.PreconditionFailed);
-                    }
-                    else
-                    {
-                        RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket.Room);
-                        bool admit = false;
-                        string member = ticket.Id.ToString();
-                        if (ticket.Status == TicketStatus.Queued)
-                        {
-                            (long participantCount, _, long position) = await this.RoomCounts(roomConfig, member).ConfigureAwait(true);
-                            ticket.QueuePosition = position + 1;
-                            admit = participantCount + position < roomConfig.ParticipantLimit;
-                        }
+            TicketCheckin.ValidateRedisTicket(redisTicket);
 
-                        ITransaction trans = database.CreateTransaction();
-                        if (admit)
-                        {
-                            ticket.Status = TicketStatus.Processed;
-                            ticket.QueuePosition = 0;
-                            _ = trans.SortedSetRemoveAsync(GetRoomName(roomConfig, WaitingKey), member);
-                            _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
-                        }
+            Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
+            TicketCheckin.ValidateTicket(ticket, checkInRequest.Nonce, this.dateTimeDelegate.UtcUnixTime);
 
-                        this.CheckIn(trans, roomConfig, ticket);
-                        await trans.ExecuteAsync().ConfigureAwait(true);
-                    }
-                }
-                else
-                {
-                    // Not found
-                    ThrowException(
-                        "The supplied ticket nonce was invalid.",
-                        HttpStatusCode.NotFound);
-                }
-            }
-            else
+            // Using null forgiving operator on ticket as TicketCheckin.ValidateTicket will validate if ticket is not null.
+            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket!.Room);
+            bool admit = false;
+            string member = ticket.Id.ToString();
+
+            if (ticket.Status == TicketStatus.Queued)
             {
-                // Not found
-                ThrowException(
-                    "The supplied ticket id was invalid.",
-                    HttpStatusCode.NotFound);
+                (long participantCount, _, long position) = await this.RoomCounts(roomConfig, member).ConfigureAwait(true);
+                ticket.QueuePosition = position + 1;
+                admit = participantCount + position < roomConfig.ParticipantLimit;
             }
 
+            ITransaction trans = database.CreateTransaction();
+            if (admit)
+            {
+                ticket.Status = TicketStatus.Processed;
+                ticket.QueuePosition = 0;
+                _ = trans.SortedSetRemoveAsync(GetRoomName(roomConfig, WaitingKey), member);
+                _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
+            }
+
+            this.CheckIn(trans, roomConfig, ticket);
+            await trans.ExecuteAsync().ConfigureAwait(true);
             stopwatch.Stop();
             this.logger.LogDebug("CheckIn Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return ticket;
-        }
-
-        private static void ThrowException(string detail, HttpStatusCode statusCode, string? additionalInfo = null, [CallerMemberName] string memberName = "")
-        {
-            throw new WaitingQueueException(detail)
-            {
-                ProblemType = "Waiting Queue Exception",
-                Title = "Error during processing",
-                Detail = detail,
-                StatusCode = statusCode,
-                Instance = $"{nameof(RedisTicketService)}.{memberName}",
-                AdditionalInfo = additionalInfo,
-            };
         }
 
         private static string GetRoomName(RoomConfiguration config, string roomType)

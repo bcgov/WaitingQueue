@@ -65,11 +65,13 @@ namespace BCGov.WaitingQueue.Controllers
         /// <response code="200">The ticket returned.</response>
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
+        /// <response code="500">The service is unable to complete the request due to an unexpected exception.</response>
         [HttpPut]
         [Route("check-in")]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CheckIn(CheckInRequest checkInRequest)
         {
             return this.Ok(await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true));
