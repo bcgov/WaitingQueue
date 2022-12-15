@@ -17,7 +17,6 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
 {
     using System.Net;
     using System.Runtime.CompilerServices;
-    using BCGov.WaitingQueue.TicketManagement.Services;
 
     /// <summary>
     /// Utilities for throwing exceptions.
@@ -29,10 +28,11 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         /// </summary>
         /// <param name="detail">The detail of the exception.</param>
         /// <param name="statusCode">The http status code of the exception.</param>
+        /// <param name="typeName">The name of the type where the exception was generated.</param>
         /// <param name="additionalInfo">Additional information of the exception.</param>
         /// <param name="memberName">The member name where the exception occurred.</param>
         /// <exception cref="ProblemDetailException">Exception to be thrown.</exception>
-        public static void ThrowException(string detail, HttpStatusCode statusCode, string? additionalInfo = null, [CallerMemberName] string memberName = "")
+        public static void ThrowException(string detail, HttpStatusCode statusCode, string typeName, string? additionalInfo = null, [CallerMemberName] string memberName = "")
         {
             throw new ProblemDetailException(detail)
             {
@@ -40,7 +40,7 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
                 Title = "Error during processing",
                 Detail = detail,
                 StatusCode = statusCode,
-                Instance = $"{nameof(RedisTicketService)}.{memberName}",
+                Instance = $"{typeName}.{memberName}",
                 AdditionalInfo = additionalInfo,
             };
         }

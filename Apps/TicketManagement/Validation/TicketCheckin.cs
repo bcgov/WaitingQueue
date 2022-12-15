@@ -36,7 +36,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 // Not found
                 ExceptionUtility.ThrowException(
                     "The supplied ticket id was invalid.",
-                    HttpStatusCode.NotFound);
+                    HttpStatusCode.NotFound,
+                    nameof(TicketCheckin));
             }
         }
 
@@ -53,7 +54,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 // Internal Server Error
                 ExceptionUtility.ThrowException(
                     "Unable to deserialize ticket.",
-                    HttpStatusCode.InternalServerError);
+                    HttpStatusCode.InternalServerError,
+                    nameof(TicketCheckin));
             }
             else
             {
@@ -64,7 +66,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                         // Too early
                         ExceptionUtility.ThrowException(
                             "The check-in request was too early",
-                            HttpStatusCode.PreconditionFailed);
+                            HttpStatusCode.PreconditionFailed,
+                            nameof(TicketCheckin));
                     }
                 }
                 else
@@ -72,7 +75,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                     // Not found
                     ExceptionUtility.ThrowException(
                         "The supplied ticket nonce was invalid.",
-                        HttpStatusCode.NotFound);
+                        HttpStatusCode.NotFound,
+                        nameof(TicketCheckin));
                 }
             }
         }

@@ -35,7 +35,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 // Not found
                 ExceptionUtility.ThrowException(
                     "The requested room: {room} was not found.",
-                    HttpStatusCode.NotFound);
+                    HttpStatusCode.NotFound,
+                    nameof(TicketRequest));
             }
         }
 
@@ -51,7 +52,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 // Too busy
                 ExceptionUtility.ThrowException(
                     "The waiting queue has exceeded maximum capacity, try again later",
-                    HttpStatusCode.ServiceUnavailable);
+                    HttpStatusCode.ServiceUnavailable,
+                    nameof(TicketRequest));
             }
         }
     }
