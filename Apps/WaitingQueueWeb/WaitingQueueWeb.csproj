@@ -8,7 +8,9 @@
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'WaitingQueue' " />
     <ItemGroup>
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Update="Microsoft.CodeAnalysis" Version="4.4.0" />
     </ItemGroup>
 
     <ItemGroup>

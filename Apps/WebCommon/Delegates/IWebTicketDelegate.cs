@@ -34,7 +34,7 @@ namespace BCGov.WebCommon.Delegates
         /// <response code="404">The requested room was not found.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
-        Task<IActionResult> CreateTicket(string room);
+        Task<Ticket> CreateTicket(string room);
 
         /// <summary>
         /// Performs a check-in on the Ticket which will update the state and/or ticket associated.
@@ -46,7 +46,7 @@ namespace BCGov.WebCommon.Delegates
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
-        Task<IActionResult> CheckIn(CheckInRequest checkInRequest);
+        Task<Ticket> CheckIn(CheckInRequest checkInRequest);
 
         /// <summary>
         /// Removes a ticket from the system.

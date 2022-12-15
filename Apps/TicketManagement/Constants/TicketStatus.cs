@@ -32,20 +32,5 @@ namespace BCGov.WaitingQueue.TicketManagement.Constants
         /// Get Token request was reviewed and processed.
         /// </summary>
         Processed,
-
-        /// <summary>
-        /// The Token request cannot be processed as the room was not found.
-        /// </summary>
-        NotFound,
-
-        /// <summary>
-        /// The service is too busy, retry.
-        /// </summary>
-        TooBusy,
-
-        /// <summary>
-        /// The request for a check-in was performed too early, try at the specified time.
-        /// </summary>
-        TooEarly,
     }
 }

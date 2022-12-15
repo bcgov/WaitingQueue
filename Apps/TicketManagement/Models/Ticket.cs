@@ -17,6 +17,7 @@
 namespace BCGov.WaitingQueue.TicketManagement.Models
 {
     using System;
+    using System.Text.Json.Serialization;
     using BCGov.WaitingQueue.TicketManagement.Constants;
 
     /// <summary>
@@ -27,48 +28,58 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// <summary>
         /// Gets or sets a unique guid id for this response.
         /// </summary>
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the room that ticket was requested for.
         /// </summary>
+        [JsonPropertyName("room")]
         public string Room { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the nonce to be used in future requests.
         /// </summary>
-        public string? Nonce { get; set; }
+        [JsonPropertyName("nonce")]
+        public string Nonce { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the CreatedTime.
         /// The time is represented as Unix epoch in seconds.
         /// </summary>
+        [JsonPropertyName("createdTime")]
         public long CreatedTime { get; set; }
 
         /// <summary>
         /// Gets or sets the time after which the client must check-in.
         /// The time is represented as Unix epoch in seconds.
         /// </summary>
+        [JsonPropertyName("checkInAfter")]
         public long CheckInAfter { get; set; }
 
         /// <summary>
         /// Gets or sets the time after which the issued token will expire.
         /// </summary>
+        [JsonPropertyName("tokenExpires")]
         public long TokenExpires { get; set; }
 
         /// <summary>
         /// Gets or sets the clients queue position (if queued).
         /// </summary>
+        [JsonPropertyName("queuePosition")]
         public long QueuePosition { get; set; }
 
         /// <summary>
         /// Gets or sets the Status of the request.
         /// </summary>
+        [JsonPropertyName("status")]
         public TicketStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets the token to be used for service calls.
         /// </summary>
+        [JsonPropertyName("token")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Token { get; set; }
     }
 }

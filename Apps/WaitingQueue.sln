@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingQueue", "WaitingQueue\WaitingQueue.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingQueueWeb", "WaitingQueueWeb\WaitingQueueWeb.csproj", "{2FA2D53B-D779-4E2C-BF8A-557413442A02}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagement", "TicketManagement\TicketManagement.csproj", "{29574CB9-23B7-48EA-B95B-178B63130379}"
 EndProject

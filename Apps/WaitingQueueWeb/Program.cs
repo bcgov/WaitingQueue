@@ -19,8 +19,11 @@ namespace BCGov.WaitingQueue
     using System.IO;
     using System.Reflection;
     using BCGov.WaitingQueue.Common.Delegates;
+    using BCGov.WaitingQueue.ErrorHandling;
+    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using BCGov.WebCommon.Delegates;
+    using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +38,9 @@ namespace BCGov.WaitingQueue
         private static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+            // Configure problem details
+            ProblemDetailsConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -55,6 +61,9 @@ namespace BCGov.WaitingQueue
             builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
 
             WebApplication app = builder.Build();
+
+            // Use problem details
+            ProblemDetailsConfiguration.UseProblemDetails(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

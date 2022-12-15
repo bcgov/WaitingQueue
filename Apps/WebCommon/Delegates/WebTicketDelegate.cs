@@ -16,11 +16,8 @@
 namespace BCGov.WebCommon.Delegates
 {
     using System.Threading.Tasks;
-    using BCGov.WaitingQueue.TicketManagement.Constants;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WaitingQueue.TicketManagement.Services;
-    using BCGov.WebCommon.Models;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     /// <inheritdoc />
@@ -38,73 +35,21 @@ namespace BCGov.WebCommon.Delegates
         }
 
         /// <inheritdoc />
-        public async Task<IActionResult> CreateTicket(string room)
+        public async Task<Ticket> CreateTicket(string room)
         {
-            Ticket ticket = await this.ticketService.RequestTicket(room).ConfigureAwait(true);
-            switch (ticket.Status)
-            {
-                case TicketStatus.NotFound:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The requested room: {room} was not found.",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                    };
-                case TicketStatus.TooBusy:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = "The waiting queue has exceeded maximum capacity, try again later",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status503ServiceUnavailable,
-                    };
-                case TicketStatus.Processed:
-                case TicketStatus.Queued:
-                    return new JsonResult(ticket);
-                default:
-                    return new BadRequestResult();
-            }
+            return await this.ticketService.RequestTicket(room).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public async Task<IActionResult> CheckIn(CheckInRequest checkInRequest)
+        public async Task<Ticket> CheckIn(CheckInRequest checkInRequest)
         {
-            Ticket ticket = await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
-            switch (ticket.Status)
-            {
-                case TicketStatus.TooEarly:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The check-in request is too early",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status412PreconditionFailed,
-                    };
-                case TicketStatus.NotFound:
-                    return new JsonResult(new ErrorResult()
-                    {
-                        Code = string.Empty,
-                        Message = $"The supplied ticket id or nonce was invalid.",
-                    })
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                    };
-                case TicketStatus.Processed:
-                case TicketStatus.Queued:
-                    return new JsonResult(ticket);
-                default:
-                    return new BadRequestResult();
-            }
+            return await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public async Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
+        public Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
         {
-            return new OkResult();
+            return Task.FromResult<IActionResult>(new OkResult());
         }
     }
 }

@@ -13,21 +13,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WebCommon.Models
+namespace BCGov.WaitingQueue.ErrorHandling
 {
+    using System.Text.Json;
+    using Microsoft.AspNetCore.Mvc;
+
     /// <summary>
-    /// A simple error model to communicate errors to the client.
+    /// Represents a waiting queue problem details model.
     /// </summary>
-    public class ErrorResult
+    public class WaitingQueueProblemDetails : ProblemDetails
     {
         /// <summary>
-        /// Gets or sets the unique error code.
+        /// Gets or sets additional info.
         /// </summary>
-        public string? Code { get; set; }
+        public string? AdditionalInfo { get; set; }
 
-        /// <summary>
-        /// Gets or sets the error message.
-        /// </summary>
-        public string? Message { get; set; }
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
     }
 }
