@@ -27,7 +27,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Constants;
     using BCGov.WaitingQueue.TicketManagement.Models;
-    using BCGov.WaitingQueue.TicketManagement.Rules;
+    using BCGov.WaitingQueue.TicketManagement.Validation;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Protocols.OpenIdConnect;

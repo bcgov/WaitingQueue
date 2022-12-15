@@ -13,7 +13,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.TicketManagement.Rules
+namespace BCGov.WaitingQueue.TicketManagement.Validation
 {
     using System.Net;
     using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
