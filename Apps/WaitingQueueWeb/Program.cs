@@ -56,6 +56,8 @@ namespace BCGov.WaitingQueue
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
 
+            builder.Services.AddCors(options => options.AddPolicy("allowAny", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
             builder.Services.AddTransient<ITicketService, RedisTicketService>();
             builder.Services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
@@ -73,6 +75,20 @@ namespace BCGov.WaitingQueue
             }
 
             app.MapControllers();
+
+            // Enable CORS
+            string? enableCors = builder.Configuration.GetValue<string>("AllowOrigins");
+            if (!string.IsNullOrEmpty(enableCors))
+            {
+                app.UseCors(
+                    build =>
+                    {
+                        build
+                            .WithOrigins(enableCors)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            }
 
             app.Run();
         }
