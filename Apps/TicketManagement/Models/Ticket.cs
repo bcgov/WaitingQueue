@@ -79,6 +79,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// Gets or sets the token to be used for service calls.
         /// </summary>
         [JsonPropertyName("token")]
-        public string Token { get; set; } = string.Empty;
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Token { get; set; }
     }
 }
