@@ -17,7 +17,6 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Net;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -27,7 +26,15 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     [ExcludeFromCodeCoverage]
     public class ProblemDetailsException : Exception
     {
-        private ProblemDetails? problemDetails;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
+        /// </summary>
+        /// <param name="problemDetails">The problem details for the exception..</param>
+        public ProblemDetailsException(ProblemDetails problemDetails)
+            : base(problemDetails.Detail)
+        {
+            this.ProblemDetails = problemDetails;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
@@ -68,11 +75,8 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetailsException"/> class.
+        /// Gets or sets problems details for the exception.
         /// </summary>
-        public ProblemDetailsException(ProblemDetails problemDetails) : base(problemDetails.Detail)
-        {
-            this.problemDetails = problemDetails;
-        }
+        public ProblemDetails? ProblemDetails { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         /// <param name="typeName">The name of the type where the exception was generated.</param>
         /// <param name="additionalInfo">Additional information of the exception.</param>
         /// <param name="memberName">The member name where the exception occurred.</param>
-        /// <exception cref="ProblemDetailsException">Exception to be thrown.</exception>
+        /// <returns>An instance of cref="ProblemDetails".</returns>
         public static ProblemDetails CreateProblemDetails(string detail, HttpStatusCode statusCode, string typeName, string? additionalInfo = null, [CallerMemberName] string memberName = "")
         {
             return new ProblemDetails()

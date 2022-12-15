@@ -16,6 +16,7 @@
 namespace BCGov.WaitingQueue
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Net;
     using BCGov.WaitingQueue.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using Hellang.Middleware.ProblemDetails;
@@ -46,12 +47,12 @@ namespace BCGov.WaitingQueue
                     setup.Map<ProblemDetailsException>(
                         exception => new WaitingQueueProblemDetails
                         {
-                            Title = exception.Title,
-                            Detail = exception.Detail,
-                            Status = (int)exception.StatusCode,
-                            Type = exception.ProblemType,
-                            Instance = exception.Instance,
-                            AdditionalInfo = exception.AdditionalInfo,
+                            Title = exception.ProblemDetails?.Title,
+                            Detail = exception.ProblemDetails?.Detail,
+                            Status = (int)(exception.ProblemDetails?.StatusCode ?? HttpStatusCode.InternalServerError),
+                            Type = exception.ProblemDetails?.ProblemType,
+                            Instance = exception.ProblemDetails?.Instance,
+                            AdditionalInfo = exception.ProblemDetails?.AdditionalInfo,
                         });
                 });
         }

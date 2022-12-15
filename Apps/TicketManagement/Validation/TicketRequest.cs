@@ -33,10 +33,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
             if (roomConfig is null)
             {
                 // Not found
-                ExceptionUtility.CreateProblemDetails(
+                throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The requested room: {room} was not found.",
                     HttpStatusCode.NotFound,
-                    nameof(TicketRequest));
+                    nameof(TicketRequest)));
             }
         }
 
@@ -50,10 +50,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
             if (waitingCount >= queueMaxSize)
             {
                 // Too busy
-                ExceptionUtility.CreateProblemDetails(
+                throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The waiting queue has exceeded maximum capacity, try again later",
                     HttpStatusCode.ServiceUnavailable,
-                    nameof(TicketRequest));
+                    nameof(TicketRequest)));
             }
         }
     }
