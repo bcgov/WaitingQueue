@@ -19,7 +19,7 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// Utilities for throwing exceptions.
+    /// Utility for throwing exception.
     /// </summary>
     public static class ExceptionUtility
     {
