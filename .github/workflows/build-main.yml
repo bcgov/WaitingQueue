@@ -24,6 +24,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Install .NET 7 SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.x.x
+          
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: "Checkout source"
         uses: actions/checkout@v3
