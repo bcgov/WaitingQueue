@@ -34,7 +34,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
             {
                 // Not found
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
-                    "The requested room: {room} was not found.",
+                    "The requested room was not found.",
                     HttpStatusCode.NotFound,
                     nameof(TicketRequest)));
             }
