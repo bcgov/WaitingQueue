@@ -23,11 +23,6 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
     public class ProblemDetails
     {
         /// <summary>
-        /// Gets or sets additional info.
-        /// </summary>
-        required public string? AdditionalInfo { get; set; }
-
-        /// <summary>
         /// Gets or sets problem type.
         /// </summary>
         required public string ProblemType { get; set; }

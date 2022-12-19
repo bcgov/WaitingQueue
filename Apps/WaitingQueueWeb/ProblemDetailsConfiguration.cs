@@ -17,10 +17,10 @@ namespace BCGov.WaitingQueue
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Net;
-    using BCGov.WaitingQueue.ErrorHandling;
     using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
@@ -44,14 +44,13 @@ namespace BCGov.WaitingQueue
                     setup.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
 
                     setup.Map<ProblemDetailsException>(
-                        exception => new WaitingQueueProblemDetails
+                        exception => new ProblemDetails
                         {
                             Title = exception.ProblemDetails?.Title,
                             Detail = exception.ProblemDetails?.Detail,
                             Status = (int)(exception.ProblemDetails?.StatusCode ?? HttpStatusCode.InternalServerError),
                             Type = exception.ProblemDetails?.ProblemType,
                             Instance = exception.ProblemDetails?.Instance,
-                            AdditionalInfo = exception.ProblemDetails?.AdditionalInfo,
                         });
                 });
         }
