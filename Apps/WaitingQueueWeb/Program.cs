@@ -19,11 +19,8 @@ namespace BCGov.WaitingQueue
     using System.IO;
     using System.Reflection;
     using BCGov.WaitingQueue.Common.Delegates;
-    using BCGov.WaitingQueue.ErrorHandling;
-    using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using BCGov.WebCommon.Delegates;
-    using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
