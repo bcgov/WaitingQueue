@@ -15,17 +15,8 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using BCGov.WaitingQueue.Common.Delegates;
-    using BCGov.WaitingQueue.TicketManagement.Services;
-    using BCGov.WebCommon.Delegates;
+    using BCGov.WaitingQueue.Configuration;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using StackExchange.Redis;
 
     /// <summary>
     /// Main entry.
@@ -37,55 +28,35 @@ namespace BCGov.WaitingQueue
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Configure problem details
-            ProblemDetailsConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
+            ExceptionHandlingConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
 
-            // Add services to the container.
-            builder.Services.AddControllers();
+            // Add controllers
+            ControllerConfiguration.ConfigureControllers(builder);
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+            // Add swagger
+            SwaggerConfiguration.ConfigureSwagger(builder);
 
-            builder.Services.AddSwaggerGen(options =>
-            {
-                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            });
+            // Add redis
+            RedisConfiguration.ConfigureRedis(builder);
 
-            builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
+            // Add cors
+            CorsConfiguration.ConfigureCors(builder.Services);
 
-            builder.Services.AddCors(options => options.AddPolicy("allowAny", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-
-            builder.Services.AddTransient<ITicketService, RedisTicketService>();
-            builder.Services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
-            builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
+            // Add services
+            ServiceConfiguration.ConfigureServices(builder);
 
             WebApplication app = builder.Build();
 
             // Use problem details
-            ProblemDetailsConfiguration.UseProblemDetails(app);
+            ExceptionHandlingConfiguration.UseProblemDetails(app, builder.Environment);
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            // Use Swagger
+            SwaggerConfiguration.UseSwagger(app);
 
             app.MapControllers();
 
             // Enable CORS
-            string? enableCors = builder.Configuration.GetValue<string>("AllowOrigins");
-            if (!string.IsNullOrEmpty(enableCors))
-            {
-                app.UseCors(
-                    build =>
-                    {
-                        build
-                            .WithOrigins(enableCors)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            }
+            CorsConfiguration.UseCors(builder, app);
 
             app.Run();
         }
