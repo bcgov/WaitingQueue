@@ -13,23 +13,21 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue
+namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Net;
-    using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
 
     /// <summary>
-    /// Provides ASP.Net Services related to Problem Details.
+    /// Provides ASP.Net Services related to exception handling.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public static class ProblemDetailsConfiguration
+    public static class ExceptionHandlingConfiguration
     {
         /// <summary>
         /// Adds and configures the services required to use problem details.
@@ -38,30 +36,23 @@ namespace BCGov.WaitingQueue
         /// <param name="environment">The environment the services are associated with.</param>
         public static void ConfigureProblemDetails(IServiceCollection services, IWebHostEnvironment environment)
         {
-            services.AddProblemDetails(
-                setup =>
-                {
-                    setup.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
-
-                    setup.Map<ProblemDetailsException>(
-                        exception => new ProblemDetails
-                        {
-                            Title = exception.ProblemDetails?.Title,
-                            Detail = exception.ProblemDetails?.Detail,
-                            Status = (int)(exception.ProblemDetails?.StatusCode ?? HttpStatusCode.InternalServerError),
-                            Type = exception.ProblemDetails?.ProblemType,
-                            Instance = exception.ProblemDetails?.Instance,
-                        });
-                });
+            services.AddProblemDetails();
         }
 
         /// <summary>
         /// Configures the app to use problem details middleware.
         /// </summary>
-        /// <param name="app">The application builder where modules are specified to be used.</param>
-        public static void UseProblemDetails(IApplicationBuilder app)
+        /// <param name="app">The application builder to use.</param>
+        /// <param name="environment">The environment to use.</param>
+        public static void UseProblemDetails(IApplicationBuilder app, IWebHostEnvironment environment)
         {
-            app.UseProblemDetails();
+            app.UseExceptionHandler();
+            app.UseStatusCodePages();
+
+            if (environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
         }
     }
 }
