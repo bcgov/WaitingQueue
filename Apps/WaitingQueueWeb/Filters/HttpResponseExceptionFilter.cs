@@ -13,8 +13,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.Configuration
+namespace BCGov.WaitingQueue.Filters
 {
+    using System.Diagnostics.CodeAnalysis;
     using BCGov.WaitingQueue.TicketManagement.ErrorHandling;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
@@ -23,6 +24,7 @@ namespace BCGov.WaitingQueue.Configuration
     /// Action filter to modify the contents of a response outside of the controller
     /// using a custom exception.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
     {
         /// <summary>

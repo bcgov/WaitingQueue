@@ -17,11 +17,9 @@ namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
 
     /// <summary>
     /// Provides ASP.Net Services related to exception handling.

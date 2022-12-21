@@ -16,6 +16,7 @@
 namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
+    using BCGov.WaitingQueue.Filters;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
