@@ -74,7 +74,7 @@ namespace BCGov.WaitingQueue.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CheckIn(CheckInRequest checkInRequest)
         {
-            return this.Ok(await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true));
+            return this.Ok(await this.ticketDelegate.CheckInAsync(checkInRequest).ConfigureAwait(true));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace BCGov.WaitingQueue.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
         {
-            return await this.ticketDelegate.RemoveTicket(checkInRequest).ConfigureAwait(true);
+            return await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
         }
     }
 }

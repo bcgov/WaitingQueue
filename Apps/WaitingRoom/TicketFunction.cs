@@ -59,7 +59,7 @@ namespace WaitingRoom
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
         [FunctionName("CreateTicket")]
-        [OpenApiOperation(operationId: "RequestTicket", tags: new[] { "Ticket" })]
+        [OpenApiOperation(operationId: "RequestTicketAsync", tags: new[] { "Ticket" })]
         [OpenApiParameter(name: "room", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The room for which the client is requesting a ticket.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(Ticket), Description = "The ticket returned")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The requested room was not found.")]
@@ -83,8 +83,8 @@ namespace WaitingRoom
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
-        [FunctionName("CheckIn")]
-        [OpenApiOperation(operationId: "CheckIn", tags: new[] { "Ticket" })]
+        [FunctionName("CheckInAsync")]
+        [OpenApiOperation(operationId: "CheckInAsync", tags: new[] { "Ticket" })]
         [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(Ticket), Description = "The ticket returned")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The requested ticket was not found")]
@@ -94,7 +94,7 @@ namespace WaitingRoom
         {
             this.logger.LogInformation("Starting check-in function");
             CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            return new OkObjectResult(await this.ticketDelegate.CheckIn(checkInRequest).ConfigureAwait(true));
+            return new OkObjectResult(await this.ticketDelegate.CheckInAsync(checkInRequest).ConfigureAwait(true));
         }
 
         /// <summary>
@@ -105,8 +105,8 @@ namespace WaitingRoom
         /// <param name="request">The http request message.</param>
         /// <response code="200">The ticket was removed.</response>
         /// <response code="404">The requested was not found.</response>
-        [FunctionName("RemoveTicket")]
-        [OpenApiOperation(operationId: "RemoveTicket", tags: new[] { "Ticket" })]
+        [FunctionName("RemoveTicketAsync")]
+        [OpenApiOperation(operationId: "RemoveTicketAsync", tags: new[] { "Ticket" })]
         [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, Description = "The ticket was removed.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The ticket was not found.")]
@@ -115,7 +115,7 @@ namespace WaitingRoom
         {
             this.logger.LogInformation("Starting remove ticket function");
             CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            return await this.ticketDelegate.RemoveTicket(checkInRequest).ConfigureAwait(true);
+            return await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
         }
     }
 }

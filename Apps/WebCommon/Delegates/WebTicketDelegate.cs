@@ -37,17 +37,17 @@ namespace BCGov.WebCommon.Delegates
         /// <inheritdoc />
         public async Task<Ticket> CreateTicket(string room)
         {
-            return await this.ticketService.RequestTicket(room).ConfigureAwait(true);
+            return await this.ticketService.RequestTicketAsync(room).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public async Task<Ticket> CheckIn(CheckInRequest checkInRequest)
+        public async Task<Ticket> CheckInAsync(CheckInRequest checkInRequest)
         {
-            return await this.ticketService.CheckIn(checkInRequest).ConfigureAwait(true);
+            return await this.ticketService.CheckInAsync(checkInRequest).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
+        public Task<IActionResult> RemoveTicketAsync(CheckInRequest checkInRequest)
         {
             return Task.FromResult<IActionResult>(new OkResult());
         }

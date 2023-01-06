@@ -28,13 +28,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// </summary>
         /// <param name="room">The room to use.</param>
         /// <returns>A ticket containing a token if processed.</returns>
-        Task<Ticket> RequestTicket(string room);
+        Task<Ticket> RequestTicketAsync(string room);
 
         /// <summary>
-        /// Updates the ticket to reflect a CheckIn.
+        /// Updates the ticket to reflect a CheckInAsync.
         /// </summary>
         /// <param name="checkInRequest">The ticket request.</param>
         /// <returns>The updated Ticket.</returns>
-        Task<Ticket> CheckIn(CheckInRequest checkInRequest);
+        Task<Ticket> CheckInAsync(CheckInRequest checkInRequest);
     }
 }

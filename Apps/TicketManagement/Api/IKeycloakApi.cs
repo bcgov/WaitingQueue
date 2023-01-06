@@ -30,6 +30,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Api
         /// <param name="tokenRequest">The parameters to post to Keycloak to obtain the token.</param>
         /// <returns>The token response containing meta-data and the token.</returns>
         [Post("/protocol/openid-connect/token")]
-        Task<TokenResponse> Authenticate([Body(BodySerializationMethod.UrlEncoded)] TokenRequest tokenRequest);
+        Task<TokenResponse> AuthenticateAsync([Body(BodySerializationMethod.UrlEncoded)] TokenRequest tokenRequest);
     }
 }
