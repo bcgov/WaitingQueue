@@ -46,7 +46,7 @@ namespace BCGov.WebCommon.Delegates
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
-        Task<Ticket> CheckIn(CheckInRequest checkInRequest);
+        Task<Ticket> CheckInAsync(CheckInRequest checkInRequest);
 
         /// <summary>
         /// Removes a ticket from the system.
@@ -55,6 +55,6 @@ namespace BCGov.WebCommon.Delegates
         /// <param name="checkInRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
         /// <response code="404">The requested ticket was not found.</response>
-        Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest);
+        Task<IActionResult> RemoveTicketAsync(CheckInRequest checkInRequest);
     }
 }

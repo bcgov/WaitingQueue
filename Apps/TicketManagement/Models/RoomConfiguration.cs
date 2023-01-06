@@ -17,6 +17,7 @@
 namespace BCGov.WaitingQueue.TicketManagement.Models
 {
     using System;
+    using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
 
     /// <summary>
     /// Configuration for a Room.
@@ -77,5 +78,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// Gets or sets the maximum expired entries to remove at a time.
         /// </summary>
         public int RemoveExpiredMax { get; set; }
+
+        /// <summary>
+        /// Gets or sets the properties to use to create the Token.
+        /// </summary>
+        public TokenRequest? TokenRequest { get; set; }
     }
 }

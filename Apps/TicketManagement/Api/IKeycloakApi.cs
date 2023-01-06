@@ -13,28 +13,23 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.TicketManagement.Services
+namespace BCGov.WaitingQueue.TicketManagement.Api
 {
     using System.Threading.Tasks;
-    using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
+    using Refit;
 
     /// <summary>
-    /// Definition for the Token Service.
+    /// Provides access to the Keycloak API for authentication.
     /// </summary>
-    public interface ITicketService
+    public interface IKeycloakApi
     {
         /// <summary>
-        /// Requests the creation of a ticket.
+        /// Authenticates to the token endpoint.
         /// </summary>
-        /// <param name="room">The room to use.</param>
-        /// <returns>A ticket containing a token if processed.</returns>
-        Task<Ticket> RequestTicketAsync(string room);
-
-        /// <summary>
-        /// Updates the ticket to reflect a CheckInAsync.
-        /// </summary>
-        /// <param name="checkInRequest">The ticket request.</param>
-        /// <returns>The updated Ticket.</returns>
-        Task<Ticket> CheckInAsync(CheckInRequest checkInRequest);
+        /// <param name="tokenRequest">The parameters to post to Keycloak to obtain the token.</param>
+        /// <returns>The token response containing meta-data and the token.</returns>
+        [Post("/protocol/openid-connect/token")]
+        Task<TokenResponse> AuthenticateAsync([Body(BodySerializationMethod.UrlEncoded)] TokenRequest tokenRequest);
     }
 }
