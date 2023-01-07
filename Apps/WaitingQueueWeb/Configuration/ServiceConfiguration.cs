@@ -19,7 +19,6 @@ namespace BCGov.WaitingQueue.Configuration
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using BCGov.WebCommon.Delegates;
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -31,12 +30,12 @@ namespace BCGov.WaitingQueue.Configuration
         /// <summary>
         /// Adds and configures services.
         /// </summary>
-        /// <param name="builder">The web application builder to use.</param>
-        public static void ConfigureServices(WebApplicationBuilder builder)
+        /// <param name="services">The service collection to add forward proxies into.</param>
+        public static void ConfigureServices(IServiceCollection services)
         {
-            builder.Services.AddTransient<ITicketService, RedisTicketService>();
-            builder.Services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
-            builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
+            services.AddTransient<ITicketService, RedisTicketService>();
+            services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
+            services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
         }
     }
 }

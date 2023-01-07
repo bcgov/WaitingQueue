@@ -32,13 +32,13 @@ namespace BCGov.WaitingQueue.Configuration
         /// <summary>
         /// Adds and configures swagger.
         /// </summary>
-        /// <param name="builder">The web application builder to use.</param>
-        public static void ConfigureSwagger(WebApplicationBuilder builder)
+        /// <param name="services">The service collection to add forward proxies into.</param>
+        public static void ConfigureSwagger(IServiceCollection services)
         {
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+            services.AddEndpointsApiExplorer();
 
-            builder.Services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));

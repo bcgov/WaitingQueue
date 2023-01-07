@@ -16,8 +16,6 @@
 namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
-    using BCGov.WaitingQueue.Filters;
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -29,13 +27,10 @@ namespace BCGov.WaitingQueue.Configuration
         /// <summary>
         /// Adds and configures the controllers.
         /// </summary>
-        /// <param name="builder">The web application builder to use.</param>
-        public static void ConfigureControllers(WebApplicationBuilder builder)
+        /// <param name="services">The service collection to add forward proxies into.</param>
+        public static void ConfigureControllers(IServiceCollection services)
         {
-            builder.Services.AddControllers(options =>
-            {
-                options.Filters.Add<HttpResponseExceptionFilter>();
-            });
+            services.AddControllers();
         }
     }
 }

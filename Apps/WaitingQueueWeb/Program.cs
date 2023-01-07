@@ -19,6 +19,7 @@ namespace BCGov.WaitingQueue
     using BCGov.WaitingQueue.Configuration;
     using BCGov.WaitingQueue.TicketManagement.Api;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Refit;
@@ -31,24 +32,27 @@ namespace BCGov.WaitingQueue
         private static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-            // Configure problem details
-            ExceptionHandlingConfiguration.ConfigureProblemDetails(builder.Services, builder.Environment);
+            IServiceCollection services = builder.Services;
+            IWebHostEnvironment environment = builder.Environment;
+            ConfigurationManager configuration = builder.Configuration;
 
             // Add controllers
-            ControllerConfiguration.ConfigureControllers(builder);
+            ControllerConfiguration.ConfigureControllers(services);
+
+            // Add problem details
+            ExceptionHandlingConfiguration.ConfigureProblemDetails(services, environment);
 
             // Add swagger
-            SwaggerConfiguration.ConfigureSwagger(builder);
+            SwaggerConfiguration.ConfigureSwagger(services);
 
             // Add redis
-            RedisConfiguration.ConfigureRedis(builder);
+            RedisConfiguration.ConfigureRedis(services, configuration);
 
             // Add cors
-            CorsConfiguration.ConfigureCors(builder.Services);
+            CorsConfiguration.ConfigureCors(services);
 
             // Add services
-            ServiceConfiguration.ConfigureServices(builder);
+            ServiceConfiguration.ConfigureServices(services);
 
             // Add Refit APIs
             Uri? baseUri = builder.Configuration.GetValue<Uri>("Keycloak:BaseUri");
@@ -58,7 +62,7 @@ namespace BCGov.WaitingQueue
             WebApplication app = builder.Build();
 
             // Use problem details
-            ExceptionHandlingConfiguration.UseProblemDetails(app, builder.Environment);
+            ExceptionHandlingConfiguration.UseProblemDetails(app);
 
             // Use Swagger
             SwaggerConfiguration.UseSwagger(app);

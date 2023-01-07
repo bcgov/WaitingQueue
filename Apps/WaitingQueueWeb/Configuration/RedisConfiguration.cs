@@ -16,7 +16,6 @@
 namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using StackExchange.Redis;
@@ -30,10 +29,11 @@ namespace BCGov.WaitingQueue.Configuration
         /// <summary>
         /// Adds and configures redis.
         /// </summary>
-        /// <param name="builder">The web application builder to use.</param>
-        public static void ConfigureRedis(WebApplicationBuilder builder)
+        /// <param name="services">The service collection to add forward proxies into.</param>
+        /// <param name="configuration">The configuration manager to get configuration values from.</param>
+        public static void ConfigureRedis(IServiceCollection services, ConfigurationManager configuration)
         {
-            builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
+            services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(configuration.GetValue<string>("RedisConnection")));
         }
     }
 }
