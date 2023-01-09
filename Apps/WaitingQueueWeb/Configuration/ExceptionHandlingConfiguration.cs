@@ -16,10 +16,14 @@
 namespace BCGov.WaitingQueue.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Net;
+    using Hellang.Middleware.ProblemDetails;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ProblemDetailsException = BCGov.WaitingQueue.TicketManagement.ErrorHandling.ProblemDetailsException;
 
     /// <summary>
     /// Provides ASP.Net Services related to exception handling.
@@ -34,23 +38,30 @@ namespace BCGov.WaitingQueue.Configuration
         /// <param name="environment">The environment the services are associated with.</param>
         public static void ConfigureProblemDetails(IServiceCollection services, IWebHostEnvironment environment)
         {
-            services.AddProblemDetails();
+            services.AddProblemDetails(
+                setup =>
+                {
+                    setup.IncludeExceptionDetails = (_, _) => environment.IsDevelopment();
+
+                    setup.Map<ProblemDetailsException>(
+                        exception => new ProblemDetails
+                        {
+                            Title = exception.ProblemDetails?.Title,
+                            Detail = exception.ProblemDetails?.Detail,
+                            Status = (int)(exception.ProblemDetails?.StatusCode ?? HttpStatusCode.InternalServerError),
+                            Type = exception.ProblemDetails?.ProblemType,
+                            Instance = exception.ProblemDetails?.Instance,
+                        });
+                });
         }
 
         /// <summary>
         /// Configures the app to use problem details middleware.
         /// </summary>
         /// <param name="app">The application builder to use.</param>
-        /// <param name="environment">The environment to use.</param>
-        public static void UseProblemDetails(IApplicationBuilder app, IWebHostEnvironment environment)
+        public static void UseProblemDetails(IApplicationBuilder app)
         {
-            app.UseExceptionHandler();
-            app.UseStatusCodePages();
-
-            if (environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseProblemDetails();
         }
     }
 }
