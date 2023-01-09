@@ -39,9 +39,6 @@ namespace BCGov.WaitingQueue
             // Add controllers
             ControllerConfiguration.ConfigureControllers(services);
 
-            // Add problem details
-            ExceptionHandlingConfiguration.ConfigureProblemDetails(services, environment);
-
             // Add swagger
             SwaggerConfiguration.ConfigureSwagger(services);
 
@@ -58,6 +55,9 @@ namespace BCGov.WaitingQueue
             Uri? baseUri = builder.Configuration.GetValue<Uri>("Keycloak:BaseUri");
             builder.Services.AddRefitClient<IKeycloakApi>()
                 .ConfigureHttpClient(c => c.BaseAddress = baseUri);
+
+            // Add problem details
+            ExceptionHandlingConfiguration.ConfigureProblemDetails(services, environment);
 
             WebApplication app = builder.Build();
 
