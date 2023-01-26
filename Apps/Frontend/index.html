@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WaitingQueue</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/main.css" rel="stylesheet">
+  <script type="module" src="scripts/queue-poller.js"></script>
+</head>
+<body>
+  <header class="bc-header">
+    <hgroup class="bc-header__inner">
+      <img src="/images/bc_logo_header.svg" width="154" height="43" title="BC Government" alt="BC Government Logo">
+      <h2 class="bc-header__title">Demo Ministry Service</h2>
+    </hgroup>
+    <hgroup>
+      Help
+    </hgroup>
+  </header>
+  <main class="main">
+    <div class="content">
+      <queue-poller frequency="5000" redirect-url="REDIRECT_URL" poll-url="POLL_URL"></queue-poller>
+    </div>
+  </main>
+  <template id="poller-template">
+    <div>
+      <h3>Demo Ministry Service is busier than normal at this moment. We have placed you in a queue.</h3>
+      <p>Your position in the queue: <mark>-</mark></p>
+      <p data-loading-text="">idle</p>
+    </div>
+  </template>
+  <template id="redirect-template">
+    <h4>You're all set, redirecting...</h4>
+  </template>
+  <template id="error-template">
+    <div role="alert" class="error">
+      <h3>Can't access Demo Ministry Service.</h3>
+      <p>Please try again later.</p>
+    </div>
+  </template>
+</body>
+</html>
