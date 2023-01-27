@@ -11,7 +11,7 @@
         <PackageReference Include="Refit" Version="6.3.2" />
         <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
         <PackageReference Include="StackExchange.Redis" Version="2.6.80" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
         <PackageReference Update="Microsoft.CodeAnalysis" Version="4.4.0" />
     </ItemGroup>
 
