@@ -1,0 +1,18 @@
+name: waiting-queue-cd
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - Apps/**
+      - .github/workflows/waiting-queue-cd.yml
+      - .github/workflows/cd-template.yml
+
+jobs:
+  CD:
+    uses: ./.github/workflows/cd-template.yml
+    with:
+      DOCKER_CONTEXT: Apps
+      DOCKER_FILE: Apps/Dockerfile
+      DOCKER_IMAGE_NAME: waitingqueue
