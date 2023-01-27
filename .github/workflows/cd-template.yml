@@ -35,7 +35,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
         with:
           install: false
-          use: false
+          use: true
           platforms: "linux/amd64"
 
       - name: Login
