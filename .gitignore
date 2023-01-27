@@ -43,4 +43,6 @@ Testing/functional/e2e/debug.log
 # CSV files and Logs
 *.log
 
+# Helm cached charts
+*.tgz
 

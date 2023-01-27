@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI Frontend
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push for the "main" branch
+  push:
+    branches:
+      - feature/frontend
+    paths:
+      - "Apps/Frontend/**"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: "Checkout source"
+        uses: actions/checkout@v3
+
+      - name: OpenShift Login
+        # You may pin to the exact commit or the version.
+        # uses: redhat-actions/oc-login@11b98b2a0c4b972c9791d58edbf378ce0f060359
+        uses: redhat-actions/oc-login@v1.1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_URI }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          namespace: ${{ secrets.OPENSHIFT_TOOLS_NAMSPACE }}
+
+      - name: Build and Push Frontend
+        run: |
+          echo Starting Docker Build and tagging image as latest
+          cd $GITHUB_WORKSPACE/Apps/Frontend
+          docker build . --tag ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/frontend:latest
+          docker login -u github -p `oc whoami --show-token` ${{ secrets.IMAGE_REPOSITORY }}
+          docker push ${{ secrets.IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/frontend:latest
