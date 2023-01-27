@@ -1,0 +1,6 @@
+dependencies:
+- name: generic-api
+  repository: https://bcgov.github.io/helm-charts
+  version: 0.2.6
+digest: sha256:f4989c1e1fa0e070936e1ee824f6091969f11cc8ab75796156630b0dfe590878
+generated: "2023-01-26T23:28:53.407342-08:00"

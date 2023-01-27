@@ -1,0 +1,25 @@
+frontend:
+  enabled: true
+
+  replicaCount: 2
+
+  rollingUpdate:
+    maxUnavailable: 50%
+    maxSurge: 50%
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  image:
+    repository: image-registry.apps.silver.devops.gov.bc.ca/d0bc21-tools/frontend
+    pullPolicy: Always
+    tag: latest
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 50Mi
+    limits:
+      cpu: 50m
+      memory: 50Mi
