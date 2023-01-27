@@ -3,7 +3,7 @@ name: waiting-queue-cd
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - Apps/**
       - .github/workflows/waiting-queue-cd.yml
