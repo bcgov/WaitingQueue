@@ -1,8 +1,9 @@
 name: waiting-queue-cd
 
 on:
-  pull_request:
-    types: [opened, reopened, edited, synchronize]
+  push:
+    branches:
+      - master
     paths:
       - Apps/**
       - .github/workflows/waiting-queue-cd.yml
