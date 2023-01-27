@@ -1,11 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: "NuGet"
+  - package-ecosystem: "nuget"
     directory: "/Apps"
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "Npm"
+  - package-ecosystem: "npm"
     directory: "/Apps"
     schedule:
       interval: "weekly"
