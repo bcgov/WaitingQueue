@@ -1,0 +1,17 @@
+name: waiting-queue-cd
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    paths:
+      - Apps/**
+      - .github/workflows/waiting-queue-cd.yml
+      - .github/workflows/cd-template.yml
+
+jobs:
+  CI:
+    uses: ./.github/workflows/cd-template.yml
+    with:
+      DOCKER_CONTEXT: Apps
+      DOCKER_FILE: Dockerfile
+      DOCKER_IMAGE_NAME: waitingqueue
