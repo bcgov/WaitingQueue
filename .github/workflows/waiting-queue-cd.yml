@@ -14,5 +14,5 @@ jobs:
     uses: ./.github/workflows/cd-template.yml
     with:
       DOCKER_CONTEXT: Apps
-      DOCKER_FILE: Dockerfile
+      DOCKER_FILE: Apps/Dockerfile
       DOCKER_IMAGE_NAME: waitingqueue

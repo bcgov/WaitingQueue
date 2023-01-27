@@ -13,4 +13,4 @@ jobs:
     uses: ./.github/workflows/ci-template.yml
     with:
       DOCKER_CONTEXT: Apps
-      DOCKER_FILE: Dockerfile
+      DOCKER_FILE: Apps/Dockerfile
