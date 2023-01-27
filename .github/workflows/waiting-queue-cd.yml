@@ -10,7 +10,7 @@ on:
       - .github/workflows/cd-template.yml
 
 jobs:
-  CI:
+  CD:
     uses: ./.github/workflows/cd-template.yml
     with:
       DOCKER_CONTEXT: Apps
