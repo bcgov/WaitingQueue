@@ -20,9 +20,9 @@ COPY . .
 RUN dotnet publish "WaitingQueueWeb/WaitingQueueWeb.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Debian image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+#FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 # RH image
-#FROM registry.access.redhat.com/ubi8/dotnet-70-runtime AS final
+FROM registry.access.redhat.com/ubi8/dotnet-70-runtime AS final
 
 WORKDIR /app
 EXPOSE 8080
