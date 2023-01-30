@@ -39,7 +39,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     {
         private const string ParticipantsKey = "Participants";
         private const string WaitingKey = "Waiting";
-        private const string CheckInKey = "CheckInAsync";
+        private const string CheckInKey = "CheckIn";
 
         private readonly ILogger<RedisTicketService> logger;
         private readonly IConfiguration configuration;
