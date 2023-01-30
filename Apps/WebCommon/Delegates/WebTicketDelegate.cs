@@ -18,7 +18,6 @@ namespace BCGov.WebCommon.Delegates
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WaitingQueue.TicketManagement.Services;
-    using Microsoft.AspNetCore.Mvc;
 
     /// <inheritdoc />
     public class WebTicketDelegate : IWebTicketDelegate
@@ -47,9 +46,9 @@ namespace BCGov.WebCommon.Delegates
         }
 
         /// <inheritdoc />
-        public Task<IActionResult> RemoveTicketAsync(CheckInRequest checkInRequest)
+        public async Task RemoveTicketAsync(CheckInRequest checkInRequest)
         {
-            return Task.FromResult<IActionResult>(new OkResult());
+            await Task.CompletedTask.ConfigureAwait(true);
         }
     }
 }
