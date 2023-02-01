@@ -3,7 +3,7 @@ name: frontend-cd
 on:
   push:
     branches:
-      - main
+      - feature/frontend
     paths:
       - Apps/Frontend/**
       - .github/workflows/frontend-cd.yml
