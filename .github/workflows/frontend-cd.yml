@@ -1,0 +1,19 @@
+name: frontend-cd
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Apps/Frontend/**
+      - .github/workflows/frontend-cd.yml
+      - .github/workflows/cd-template.yml
+
+jobs:
+  CD:
+    uses: ./.github/workflows/cd-template.yml
+    secrets: inherit
+    with:
+      DOCKER_CONTEXT: Apps/Frontend
+      DOCKER_FILE: Apps/Frontend/Dockerfile
+      DOCKER_IMAGE_NAME: frontend
