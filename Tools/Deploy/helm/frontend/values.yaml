@@ -1,6 +1,9 @@
 frontend:
   enabled: true
 
+  extraLabels:
+    "app.kubernetes.io/part-of": waitingqueue-dev
+
   replicaCount: 2
 
   rollingUpdate:

@@ -31,6 +31,33 @@ helm dependency update frontend
 helm upgrade --install dev-frontend ./frontend
 ```
 
+**Temporary Routing**
+
+1. Create a route for: `https://waitingqueue-fe-dev.apps.silver.devops.gov.bc.ca`
+
+2. Add a network policy:
+
+```
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dev-frontend-np
+  namespace: d0bc21-dev
+  labels:
+    app.kubernetes.io/part-of: waitingqueue-dev
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: waitingqueue-dev
+      app.kubernetes.io/instance: dev-frontend
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+  policyTypes:
+    - Ingress
+```
+
 ### TODO
 
 -   [ ] Wire up a proper `poll-url` endpoint and handle the response in `#fetchTicket`.
