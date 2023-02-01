@@ -28,7 +28,7 @@ docker run -ti --rm --name waitroom-frontend -p 8800:8080 frontend
 ```
 cd Tools/Deploy/helm
 helm dependency update frontend
-helm upgrade --install frontend ./frontend
+helm upgrade --install dev-frontend ./frontend
 ```
 
 ### TODO
