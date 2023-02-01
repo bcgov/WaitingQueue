@@ -7,15 +7,74 @@ frontend:
     maxUnavailable: 50%
     maxSurge: 50%
 
+  livenessProbe:
+    httpGet:
+      path: /health.html
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 5
+
+  readinessProbe:
+    httpGet:
+      path: /health.html
+      port: http
+    initialDelaySeconds: 2
+    periodSeconds: 5
+
   image:
-    repository: image-registry.apps.silver.devops.gov.bc.ca/d0bc21-tools/frontend
+    repository: image-registry.openshift-image-registry.svc:5000/d0bc21-tools/frontend
     pullPolicy: Always
     tag: latest
 
+  imagePullSecrets:
+    - name: default-dockercfg-rpb6k
+
   resources:
     limits:
-      cpu: 150m
-      memory: 150Mi
+      cpu: 75m
+      memory: 75Mi
     requests:
-      cpu: 50m
-      memory: 50Mi
+      cpu: 25m
+      memory: 25Mi
+
+  containerPort: 8080
+
+  config:
+    - filename: nginx.conf
+      mountPath: /etc/nginx/nginx.conf
+      # Adjust the worker_processes rather than relying on auto setting
+      contents: |
+        worker_processes  1;
+
+        error_log  /var/log/nginx/error.log notice;
+        pid        /tmp/nginx.pid;
+
+        events {
+            worker_connections  1024;
+        }
+
+        http {
+            proxy_temp_path /tmp/proxy_temp;
+            client_body_temp_path /tmp/client_temp;
+            fastcgi_temp_path /tmp/fastcgi_temp;
+            uwsgi_temp_path /tmp/uwsgi_temp;
+            scgi_temp_path /tmp/scgi_temp;
+
+            include       /etc/nginx/mime.types;
+            default_type  application/octet-stream;
+
+            log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                              '$status $body_bytes_sent "$http_referer" '
+                              '"$http_user_agent" "$http_x_forwarded_for"';
+
+            access_log  /var/log/nginx/access.log  main;
+
+            sendfile        on;
+            #tcp_nopush     on;
+
+            keepalive_timeout  65;
+
+            #gzip  on;
+
+            include /etc/nginx/conf.d/*.conf;
+        }
