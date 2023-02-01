@@ -48,13 +48,13 @@ namespace BCGov.WaitingQueue.Controllers
         /// <response code="404">The requested room was not found.</response>
         /// <response code="503">The service is too busy, retry after the amount of time specified in retry-after.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
 
-        public async Task<IActionResult> CreateTicket([FromQuery]string room)
+        public async Task<ActionResult<Ticket>> CreateTicket([FromQuery]string room)
         {
-            return this.Ok(await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true));
+            return await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true);
         }
 
         /// <summary>
@@ -88,9 +88,9 @@ namespace BCGov.WaitingQueue.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete]
-        public async Task<IActionResult> RemoveTicket(CheckInRequest checkInRequest)
+        public async Task RemoveTicket(CheckInRequest checkInRequest)
         {
-            return await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
+            await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
         }
     }
 }

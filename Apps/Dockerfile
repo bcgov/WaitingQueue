@@ -1,21 +1,40 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS net-builder
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:8080
-ENV ASPNETCORE_ENVIRONMENT=Production
-EXPOSE 8080
+# install diagnostics tools
+RUN mkdir /tools
+RUN dotnet tool install --tool-path /tools dotnet-trace
+RUN dotnet tool install --tool-path /tools dotnet-counters
+RUN dotnet tool install --tool-path /tools dotnet-dump
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
+
+COPY ["stylecop.json", "global.json", ".editorconfig", "./"]
+COPY ["WaitingQueueWeb/WaitingQueueWeb.csproj", "./WaitingQueueWeb/"]
+COPY ["WebCommon/WebCommon.csproj", "./WebCommon/"]
+COPY ["TicketManagement/TicketManagement.csproj", "./TicketManagement/"]
+
+RUN dotnet restore "WaitingQueueWeb/WaitingQueueWeb.csproj"
 COPY . .
-WORKDIR /src/WaitingQueueWeb
-RUN dotnet build "WaitingQueueWeb.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "WaitingQueueWeb.csproj" -c Release -o /app/publish
+# Publish the main project
+RUN dotnet publish "WaitingQueueWeb/WaitingQueueWeb.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+# Debian image
+#FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+# RH image
+FROM registry.access.redhat.com/ubi8/dotnet-70-runtime AS final
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+# copy diagnostics tools
+WORKDIR /tools
+COPY --from=net-builder /tools .
+
+# copy app
+WORKDIR /app
+COPY --from=net-builder /app/publish .
 ENTRYPOINT ["dotnet", "WaitingQueueWeb.dll"]
+

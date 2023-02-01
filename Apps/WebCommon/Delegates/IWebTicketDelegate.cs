@@ -17,7 +17,6 @@ namespace BCGov.WebCommon.Delegates
 {
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
-    using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// Wraps Ticket Management responses into reusable web responses.
@@ -55,6 +54,6 @@ namespace BCGov.WebCommon.Delegates
         /// <param name="checkInRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
         /// <response code="404">The requested ticket was not found.</response>
-        Task<IActionResult> RemoveTicketAsync(CheckInRequest checkInRequest);
+        Task RemoveTicketAsync(CheckInRequest checkInRequest);
     }
 }

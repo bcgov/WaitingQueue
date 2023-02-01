@@ -1,0 +1,16 @@
+name: waiting-queue-ci
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    paths:
+      - Apps/**
+      - .github/workflows/waiting-queue-ci.yml
+      - .github/workflows/ci-template.yml
+
+jobs:
+  CI:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      DOCKER_CONTEXT: Apps
+      DOCKER_FILE: Apps/Dockerfile

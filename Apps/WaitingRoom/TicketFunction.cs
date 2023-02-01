@@ -110,12 +110,12 @@ namespace WaitingRoom
         [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, Description = "The ticket was removed.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The ticket was not found.")]
-        public async Task<IActionResult> RemoveTicket(
+        public async Task RemoveTicket(
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Delete), Route = "Ticket")] HttpRequestMessage request)
         {
             this.logger.LogInformation("Starting remove ticket function");
             CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            return await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
+            await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
         }
     }
 }

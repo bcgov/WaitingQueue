@@ -39,7 +39,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     {
         private const string ParticipantsKey = "Participants";
         private const string WaitingKey = "Waiting";
-        private const string CheckInKey = "CheckInAsync";
+        private const string CheckInKey = "CheckIn";
 
         private readonly ILogger<RedisTicketService> logger;
         private readonly IConfiguration configuration;
@@ -96,7 +96,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             {
                 ticket.Status = TicketStatus.Processed;
                 trans = database.CreateTransaction();
-                _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
+                _ = trans.HashSetAsync(GetRoomKey(roomConfig, ParticipantsKey), member, string.Empty);
                 await this.CheckInAsync(trans, roomConfig, ticket).ConfigureAwait(true);
                 await trans.ExecuteAsync().ConfigureAwait(true);
             }
@@ -110,14 +110,16 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 }
 
                 SortedSetEntry waitingScoreEntry = (await database.SortedSetRangeByRankWithScoresAsync(
-                    GetRoomName(roomConfig, WaitingKey),
-                    -1).ConfigureAwait(true)).FirstOrDefault();
+                        GetRoomKey(roomConfig, WaitingKey),
+                        -1)
+                    .ConfigureAwait(true)).FirstOrDefault();
                 trans = database.CreateTransaction();
                 _ = trans.SortedSetAddAsync(
-                    GetRoomName(roomConfig, WaitingKey),
-                    member,
-                    waitingScoreEntry.Score + 1).ConfigureAwait(true);
-                Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomName(roomConfig, WaitingKey), member);
+                        GetRoomKey(roomConfig, WaitingKey),
+                        member,
+                        waitingScoreEntry.Score + 1)
+                    .ConfigureAwait(true);
+                Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomKey(roomConfig, WaitingKey), member);
                 await this.CheckInAsync(trans, roomConfig, ticket, nextCheckIn).ConfigureAwait(true);
                 await trans.ExecuteAsync().ConfigureAwait(true);
 
@@ -133,16 +135,16 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <inheritdoc />
         public async Task<Ticket> CheckInAsync(CheckInRequest checkInRequest)
         {
+            RoomConfiguration? roomConfig = this.GetRoomConfiguration(checkInRequest.Room);
             Stopwatch stopwatch = new();
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
-            RedisValue redisTicket = await database.StringGetAsync($"{checkInRequest.Room}:{checkInRequest.Id}").ConfigureAwait(true);
+            RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, checkInRequest.Id)).ConfigureAwait(true);
             TicketCheckin.ValidateRedisTicket(redisTicket);
 
             Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
             TicketCheckin.ValidateTicket(ticket, checkInRequest.Nonce, this.dateTimeDelegate.UtcUnixTime);
 
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticket.Room);
             bool admit = false;
             string member = ticket.Id.ToString();
 
@@ -158,8 +160,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             {
                 ticket.Status = TicketStatus.Processed;
                 ticket.QueuePosition = 0;
-                _ = trans.SortedSetRemoveAsync(GetRoomName(roomConfig, WaitingKey), member);
-                _ = trans.HashSetAsync(GetRoomName(roomConfig, ParticipantsKey), member, string.Empty);
+                _ = trans.SortedSetRemoveAsync(GetRoomKey(roomConfig, WaitingKey), member);
+                _ = trans.HashSetAsync(GetRoomKey(roomConfig, ParticipantsKey), member, string.Empty);
             }
 
             await this.CheckInAsync(trans, roomConfig, ticket).ConfigureAwait(true);
@@ -169,9 +171,14 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             return ticket;
         }
 
-        private static string GetRoomName(RoomConfiguration config, string roomType)
+        private static string GetRoomKey(RoomConfiguration config, string roomType)
         {
             return $"{{{config.Name}}}:Room:{roomType}";
+        }
+
+        private static string GetTicketKey(RoomConfiguration config, Guid ticketId)
+        {
+            return $"{{{config.Name}}}:Ticket:{ticketId}";
         }
 
         private async Task<(string Token, long Expires)> CreateJwtAsync(RoomConfiguration roomConfig)
@@ -195,24 +202,25 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             RedisValue[] expired = await database.SortedSetRangeByScoreAsync(
-                GetRoomName(roomConfig, CheckInKey),
-                0,
-                this.dateTimeDelegate.UtcUnixTime,
-                take: roomConfig.RemoveExpiredMax).ConfigureAwait(true);
+                    GetRoomKey(roomConfig, CheckInKey),
+                    0,
+                    this.dateTimeDelegate.UtcUnixTime,
+                    take: roomConfig.RemoveExpiredMax)
+                .ConfigureAwait(true);
             ITransaction transaction = database.CreateTransaction();
             if (expired.Length > 0)
             {
-                _ = transaction.SortedSetRemoveAsync(GetRoomName(roomConfig, CheckInKey), expired, CommandFlags.FireAndForget);
-                _ = transaction.SortedSetRemoveAsync(GetRoomName(roomConfig, WaitingKey), expired, CommandFlags.FireAndForget);
-                _ = transaction.HashDeleteAsync(GetRoomName(roomConfig, ParticipantsKey), expired, CommandFlags.FireAndForget);
+                _ = transaction.SortedSetRemoveAsync(GetRoomKey(roomConfig, CheckInKey), expired, CommandFlags.FireAndForget);
+                _ = transaction.SortedSetRemoveAsync(GetRoomKey(roomConfig, WaitingKey), expired, CommandFlags.FireAndForget);
+                _ = transaction.HashDeleteAsync(GetRoomKey(roomConfig, ParticipantsKey), expired, CommandFlags.FireAndForget);
             }
 
-            Task<long> participantCountTask = transaction.HashLengthAsync(GetRoomName(roomConfig, ParticipantsKey));
-            Task<long> waitingCountTask = transaction.SortedSetLengthAsync(GetRoomName(roomConfig, WaitingKey));
+            Task<long> participantCountTask = transaction.HashLengthAsync(GetRoomKey(roomConfig, ParticipantsKey));
+            Task<long> waitingCountTask = transaction.SortedSetLengthAsync(GetRoomKey(roomConfig, WaitingKey));
             Task<long?>? positionTask = null;
             if (member != null)
             {
-                positionTask = transaction.SortedSetRankAsync(GetRoomName(roomConfig, WaitingKey), member);
+                positionTask = transaction.SortedSetRankAsync(GetRoomKey(roomConfig, WaitingKey), member);
             }
 
             await transaction.ExecuteAsync().ConfigureAwait(true);
@@ -243,18 +251,18 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
             string ticketJson = JsonSerializer.Serialize(ticket);
             _ = transaction.StringSetAsync(
-                $"{ticket.Room}:{ticket.Id}",
+                GetTicketKey(roomConfig, ticket.Id),
                 ticketJson,
                 expiry,
                 flags: CommandFlags.FireAndForget);
             _ = transaction.SortedSetAddAsync(
-                GetRoomName(roomConfig, CheckInKey),
+                GetRoomKey(roomConfig, CheckInKey),
                 ticket.Id.ToString(),
                 checkInScore,
                 CommandFlags.FireAndForget);
-            _ = transaction.KeyExpireAsync(GetRoomName(roomConfig, CheckInKey), roomIdleTtl);
-            _ = transaction.KeyExpireAsync(GetRoomName(roomConfig, ParticipantsKey), roomIdleTtl);
-            _ = transaction.KeyExpireAsync(GetRoomName(roomConfig, WaitingKey), roomIdleTtl);
+            _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, CheckInKey), roomIdleTtl);
+            _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, ParticipantsKey), roomIdleTtl);
+            _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, WaitingKey), roomIdleTtl);
         }
 
         private RoomConfiguration? GetRoomConfiguration(string room)
