@@ -47,7 +47,7 @@ jobs:
       - name: Tag
         uses: wendbv/calver-tag-action@v1
         with:
-          prefix: ${{ env.DOCKER_IMAGE_NAME }}=v
+          prefix: ${{ inputs.DOCKER_IMAGE_NAME }}=v
 
       - name: Build
         uses: docker/build-push-action@v3
