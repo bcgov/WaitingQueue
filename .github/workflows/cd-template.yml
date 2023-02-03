@@ -51,15 +51,12 @@ jobs:
 
       - name: Generate Version
         id: gen-ver
-#        run: echo "::set-output name=version::$(date +'%Y.%m.%d.%H.%M')"
-        run: echo "version=$(date +'%Y%m%d%H%M').${{ env.GITHUB_RUN_ATTEMPT }}" >> $GITHUB_OUTPUT      
+        run: echo "version=$(date +'%Y-%m-%d-%H%M').${{ github.run_attempt }}" >> $GITHUB_OUTPUT      
 
       - name: Tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: false
-          default_prerelease_bump: false
           custom_tag: ${{ steps.gen-ver.outputs.version }}
           tag_prefix : ${{ inputs.DOCKER_IMAGE_NAME }}=v
 
