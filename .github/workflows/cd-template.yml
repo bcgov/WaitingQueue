@@ -44,6 +44,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Tag
+        uses: wendbv/calver-tag-action@v1
+        with:
+          prefix: ${{ env.IMAGE_NAME }}=v
+
       - name: Build
         uses: docker/build-push-action@v3
         with:
