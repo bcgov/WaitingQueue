@@ -23,11 +23,11 @@ RUN dotnet publish "WaitingQueueWeb/WaitingQueueWeb.csproj" -c Release -o /app/p
 #FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 # RH image
 FROM registry.access.redhat.com/ubi8/dotnet-70-runtime AS final
-
-WORKDIR /app
-EXPOSE 8080
+ARG VERSION
+ENV VERSION=$VERSION
 ENV ASPNETCORE_URLS=http://*:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
+EXPOSE 8080
 
 # copy diagnostics tools
 WORKDIR /tools
@@ -36,5 +36,6 @@ COPY --from=net-builder /tools .
 # copy app
 WORKDIR /app
 COPY --from=net-builder /app/publish .
+
 ENTRYPOINT ["dotnet", "WaitingQueueWeb.dll"]
 
