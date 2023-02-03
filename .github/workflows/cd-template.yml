@@ -44,10 +44,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+#      - name: Tag
+#        uses: wendbv/calver-tag-action@v1
+#        with:
+#          prefix: ${{ inputs.DOCKER_IMAGE_NAME }}=v
+
+      - name: Generate Version
+        id: gen-ver
+#        run: echo "::set-output name=version::$(date +'%Y.%m.%d.%H.%M')"
+        run: echo "version=$(date +'%Y%m%d%H%M').${{ env.GITHUB_RUN_ATTEMPT }}" >> $GITHUB_OUTPUT      
+
       - name: Tag
-        uses: wendbv/calver-tag-action@v1
+        uses: mathieudutour/github-tag-action@v6.1
         with:
-          prefix: ${{ inputs.DOCKER_IMAGE_NAME }}=v
+          default_bump: false
+          default_prerelease_bump: false
+          custom_tag: ${{ steps.gen-ver.outputs.vresion }}
+          tag_prefix : ${{ inputs.DOCKER_IMAGE_NAME }}=v
 
       - name: Build
         uses: docker/build-push-action@v3
