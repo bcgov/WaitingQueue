@@ -51,9 +51,10 @@ jobs:
 
       - name: Generate Version
         id: gen-ver
-        run: echo "version=$(date +'%Y-%m-%d-%H%M').${{ github.run_attempt }}" >> $GITHUB_OUTPUT      
+        run: echo "version=$(date +'%Y%m%d.%H%M%S').${{ github.run_attempt }}" >> $GITHUB_OUTPUT      
 
       - name: Tag
+        id: tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,5 +67,10 @@ jobs:
           context: ${{ inputs.DOCKER_CONTEXT }}
           file: ${{ inputs.DOCKER_FILE }}
           platforms: linux/amd64
-          push: true          
-          tags: ${{ secrets.DOCKER_REGISTRY }}/${{ inputs.DOCKER_IMAGE_NAME }}:${{ inputs.DOCKER_IMAGE_TAG }}
+          push: true       
+          build-args: |
+            VERSION=${{ steps.tag.outputs.new_version }}
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/${{ inputs.DOCKER_IMAGE_NAME }}:${{ inputs.DOCKER_IMAGE_TAG }}
+            ${{ secrets.DOCKER_REGISTRY }}/${{ inputs.DOCKER_IMAGE_NAME }}:${{ steps.tag.outputs.new_version }}
+            
