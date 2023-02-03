@@ -60,7 +60,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: false
           default_prerelease_bump: false
-          custom_tag: ${{ steps.gen-ver.outputs.vresion }}
+          custom_tag: ${{ steps.gen-ver.outputs.version }}
           tag_prefix : ${{ inputs.DOCKER_IMAGE_NAME }}=v
 
       - name: Build
