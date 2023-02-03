@@ -44,11 +44,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-#      - name: Tag
-#        uses: wendbv/calver-tag-action@v1
-#        with:
-#          prefix: ${{ inputs.DOCKER_IMAGE_NAME }}=v
-
       - name: Generate Version
         id: gen-ver
         run: echo "version=$(date +'%Y%m%d.%H%M%S').${{ github.run_attempt }}" >> $GITHUB_OUTPUT      
