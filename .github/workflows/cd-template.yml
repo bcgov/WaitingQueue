@@ -57,7 +57,7 @@ jobs:
           tag_prefix : ${{ inputs.DOCKER_IMAGE_NAME }}=v
 
       - name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ${{ inputs.DOCKER_CONTEXT }}
           file: ${{ inputs.DOCKER_FILE }}
