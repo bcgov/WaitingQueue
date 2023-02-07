@@ -2,11 +2,9 @@
 
 > NOTE: This is a simple proof of concept, starting with the simplest stack possible and expanding as needed.
 
-To view use any simple server like so:
+The quickest way to preview for development is starting a Python server like so in `Apps/Frontend`:
 
 ```shell
-$ npx servor
-// or
 $ python3 -m http.server
 ```
 
