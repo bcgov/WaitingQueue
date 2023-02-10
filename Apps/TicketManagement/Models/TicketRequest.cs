@@ -18,9 +18,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
     using System;
 
     /// <summary>
-    /// Simple object to wrap properties required for a Token request.
+    /// Simple object to wrap properties required for a Ticket request.
     /// </summary>
-    public class CheckInRequest
+    public class TicketRequest
     {
         /// <summary>
         /// Gets or sets the Id used to retrieve the Token Response.

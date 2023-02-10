@@ -48,7 +48,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
         /// <param name="ticket">The ticket to validate.</param>
         /// <param name="nonce">The nonce to validate against.</param>
         /// <param name="utcUnixTime">The utc unix time to validate against.</param>
-        public static void ValidateTicket([NotNull]Ticket? ticket, string nonce, long utcUnixTime)
+        public static void ValidateTicket([NotNull]Ticket? ticket, string nonce, long? utcUnixTime = null)
         {
             if (ticket is null)
             {
@@ -68,7 +68,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                     nameof(TicketCheckin)));
             }
 
-            if (ticket.CheckInAfter > utcUnixTime)
+            if (utcUnixTime != null && ticket.CheckInAfter > utcUnixTime)
             {
                 // Too early
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(

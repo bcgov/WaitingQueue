@@ -15,6 +15,7 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WebCommon.Delegates
 {
+    using System;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
 
@@ -23,6 +24,19 @@ namespace BCGov.WebCommon.Delegates
     /// </summary>
     public interface IWebTicketDelegate
     {
+        /// <summary>
+        /// Gets the ticket for the given Ticket request.
+        /// </summary>
+        /// <returns>The updated Ticket.</returns>
+        /// <param name="room">The room to query.</param>
+        /// <param name="ticketId">The ticket id to query.</param>
+        /// <param name="nonce">The nonce for the given ticket.</param>
+        /// <response code="200">The ticket returned.</response>
+        /// <response code="400">The request was invalid.</response>
+        /// <response code="404">The requested ticket was not found.</response>
+        /// <response code="429">The user has made too many requests in the given timeframe.</response>
+        Task<Ticket> GetTicket(string room, Guid ticketId, string nonce);
+
         /// <summary>
         /// Request a ticket which either creates a ticket or puts the user in a waiting room.
         /// </summary>
@@ -39,21 +53,21 @@ namespace BCGov.WebCommon.Delegates
         /// Performs a check-in on the Ticket which will update the state and/or ticket associated.
         /// </summary>
         /// <returns>The updated Ticket.</returns>
-        /// <param name="checkInRequest">The ticket request to check-in.</param>
+        /// <param name="ticketRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
         /// <response code="400">The request was invalid.</response>
         /// <response code="404">The requested ticket was not found.</response>
         /// <response code="412">The service is unable to complete the request, review the error.</response>
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
-        Task<Ticket> CheckInAsync(CheckInRequest checkInRequest);
+        Task<Ticket> CheckInAsync(TicketRequest ticketRequest);
 
         /// <summary>
         /// Removes a ticket from the system.
         /// </summary>
         /// <returns>Ok or NotFound Result.</returns>
-        /// <param name="checkInRequest">The ticket request to check-in.</param>
+        /// <param name="ticketRequest">The ticket request to check-in.</param>
         /// <response code="200">The ticket returned.</response>
         /// <response code="404">The requested ticket was not found.</response>
-        Task RemoveTicketAsync(CheckInRequest checkInRequest);
+        Task RemoveTicketAsync(TicketRequest ticketRequest);
     }
 }

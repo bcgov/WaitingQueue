@@ -15,6 +15,8 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WebCommon.Delegates
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WaitingQueue.TicketManagement.Services;
@@ -34,19 +36,31 @@ namespace BCGov.WebCommon.Delegates
         }
 
         /// <inheritdoc />
+        public async Task<Ticket> GetTicket(string room, Guid ticketId, string nonce)
+        {
+            TicketRequest ticketRequest = new()
+            {
+                Room = room,
+                Id = ticketId,
+                Nonce = nonce,
+            };
+            return await this.ticketService.GetTicketAsync(ticketRequest).ConfigureAwait(true);
+        }
+
+        /// <inheritdoc />
         public async Task<Ticket> CreateTicket(string room)
         {
             return await this.ticketService.RequestTicketAsync(room).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public async Task<Ticket> CheckInAsync(CheckInRequest checkInRequest)
+        public async Task<Ticket> CheckInAsync(TicketRequest ticketRequest)
         {
-            return await this.ticketService.CheckInAsync(checkInRequest).ConfigureAwait(true);
+            return await this.ticketService.CheckInAsync(ticketRequest).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
-        public async Task RemoveTicketAsync(CheckInRequest checkInRequest)
+        public async Task RemoveTicketAsync(TicketRequest ticketRequest)
         {
             await Task.CompletedTask.ConfigureAwait(true);
         }

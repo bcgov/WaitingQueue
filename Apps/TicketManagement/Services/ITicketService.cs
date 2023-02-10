@@ -24,6 +24,14 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     public interface ITicketService
     {
         /// <summary>
+        /// Gets the ticket for the supplied room if found and the nonce matches.
+        /// </summary>
+        /// <param name="ticketRequest">The ticket request.</param>
+        /// <param name="utcUnixTime">If supplied performs validation on the CheckInAfter.</param>
+        /// <returns>A ticket if found.</returns>
+        Task<Ticket> GetTicketAsync(TicketRequest ticketRequest, long? utcUnixTime = null);
+
+        /// <summary>
         /// Requests the creation of a ticket.
         /// </summary>
         /// <param name="room">The room to use.</param>
@@ -33,8 +41,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <summary>
         /// Updates the ticket to reflect a CheckInAsync.
         /// </summary>
-        /// <param name="checkInRequest">The ticket request.</param>
+        /// <param name="ticketRequest">The ticket request.</param>
         /// <returns>The updated Ticket.</returns>
-        Task<Ticket> CheckInAsync(CheckInRequest checkInRequest);
+        Task<Ticket> CheckInAsync(TicketRequest ticketRequest);
     }
 }

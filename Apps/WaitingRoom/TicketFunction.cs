@@ -85,7 +85,7 @@ namespace WaitingRoom
         /// <response code="429">The user has made too many requests in the given timeframe.</response>
         [FunctionName("CheckInAsync")]
         [OpenApiOperation(operationId: "CheckInAsync", tags: new[] { "Ticket" })]
-        [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
+        [OpenApiRequestBody(bodyType: typeof(TicketRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(Ticket), Description = "The ticket returned")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The requested ticket was not found")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.PreconditionFailed, Description = "The user has made too many requests in the given timeframe.")]
@@ -93,8 +93,8 @@ namespace WaitingRoom
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Put), Route = "Ticket/check-in")] HttpRequestMessage request)
         {
             this.logger.LogInformation("Starting check-in function");
-            CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            return new OkObjectResult(await this.ticketDelegate.CheckInAsync(checkInRequest).ConfigureAwait(true));
+            TicketRequest ticketRequest = await request.Content.ReadAsAsync<TicketRequest>().ConfigureAwait(true);
+            return new OkObjectResult(await this.ticketDelegate.CheckInAsync(ticketRequest).ConfigureAwait(true));
         }
 
         /// <summary>
@@ -107,15 +107,15 @@ namespace WaitingRoom
         /// <response code="404">The requested was not found.</response>
         [FunctionName("RemoveTicketAsync")]
         [OpenApiOperation(operationId: "RemoveTicketAsync", tags: new[] { "Ticket" })]
-        [OpenApiRequestBody(bodyType: typeof(CheckInRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
+        [OpenApiRequestBody(bodyType: typeof(TicketRequest), contentType: MediaTypeNames.Application.Json, Required = true, Description = "The ticket request to check-in.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, Description = "The ticket was removed.")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Description = "The ticket was not found.")]
         public async Task RemoveTicket(
             [HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethod.Delete), Route = "Ticket")] HttpRequestMessage request)
         {
             this.logger.LogInformation("Starting remove ticket function");
-            CheckInRequest checkInRequest = await request.Content.ReadAsAsync<CheckInRequest>().ConfigureAwait(true);
-            await this.ticketDelegate.RemoveTicketAsync(checkInRequest).ConfigureAwait(true);
+            TicketRequest ticketRequest = await request.Content.ReadAsAsync<TicketRequest>().ConfigureAwait(true);
+            await this.ticketDelegate.RemoveTicketAsync(ticketRequest).ConfigureAwait(true);
         }
     }
 }

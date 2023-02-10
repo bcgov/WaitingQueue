@@ -31,6 +31,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using StackExchange.Redis;
+    using TicketRequest = BCGov.WaitingQueue.TicketManagement.Models.TicketRequest;
 
     /// <summary>
     /// A Redis implementation of the Ticket Service interface.
@@ -72,6 +73,25 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         }
 
         /// <inheritdoc />
+        public async Task<Ticket> GetTicketAsync(TicketRequest ticketRequest, long? utcUnixTime = null)
+        {
+            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticketRequest.Room);
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
+            IDatabase database = this.connectionMultiplexer.GetDatabase();
+            RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, ticketRequest.Id)).ConfigureAwait(true);
+            TicketCheckin.ValidateRedisTicket(redisTicket);
+
+            Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
+            TicketCheckin.ValidateTicket(ticket, ticketRequest.Nonce, utcUnixTime);
+
+            stopwatch.Stop();
+            this.logger.LogDebug("GetTicketAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
+
+            return ticket;
+        }
+
+        /// <inheritdoc />
         public async Task<Ticket> RequestTicketAsync(string room)
         {
             Ticket ticket = new()
@@ -82,13 +102,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
             RoomConfiguration? roomConfig = this.GetRoomConfiguration(room);
-            TicketRequest.ValidateRoomConfig(roomConfig);
+            Validation.TicketRequest.ValidateRoomConfig(roomConfig);
 
             Stopwatch stopwatch = new();
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig).ConfigureAwait(true);
-            TicketRequest.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
+            Validation.TicketRequest.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
 
             string member = ticket.Id.ToString();
             ITransaction trans;
@@ -133,18 +153,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         }
 
         /// <inheritdoc />
-        public async Task<Ticket> CheckInAsync(CheckInRequest checkInRequest)
+        public async Task<Ticket> CheckInAsync(TicketRequest ticketRequest)
         {
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(checkInRequest.Room);
+            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticketRequest.Room);
             Stopwatch stopwatch = new();
             stopwatch.Start();
-            IDatabase database = this.connectionMultiplexer.GetDatabase();
-            RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, checkInRequest.Id)).ConfigureAwait(true);
-            TicketCheckin.ValidateRedisTicket(redisTicket);
-
-            Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
-            TicketCheckin.ValidateTicket(ticket, checkInRequest.Nonce, this.dateTimeDelegate.UtcUnixTime);
-
+            Ticket ticket = await this.GetTicketAsync(ticketRequest, this.dateTimeDelegate.UtcUnixTime).ConfigureAwait(true);
             bool admit = false;
             string member = ticket.Id.ToString();
 
@@ -155,6 +169,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 admit = participantCount + position < roomConfig.ParticipantLimit;
             }
 
+            IDatabase database = this.connectionMultiplexer.GetDatabase();
             ITransaction trans = database.CreateTransaction();
             if (admit)
             {
