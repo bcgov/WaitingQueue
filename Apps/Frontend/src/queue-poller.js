@@ -140,7 +140,7 @@ class QueuePoller extends HTMLElement {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
             this.#interval = setInterval(
                 this.#refreshTicket,
-                json.checkInAfter * 100
+                json.checkInAfter - new Date().getTime() + 1000
             );
             this.#updatePosition();
         } catch (err) {
