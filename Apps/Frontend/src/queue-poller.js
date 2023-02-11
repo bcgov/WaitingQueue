@@ -182,6 +182,10 @@ class QueuePoller extends HTMLElement {
                     localStorage.removeItem(STORAGE_KEY);
                 } else {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+                    this.#interval = setInterval(
+                        this.#refreshTicket,
+                        json.checkInAfter * 1000 - new Date().getTime() + 1000
+                    );
                 }
             } catch (err) {
                 localStorage.removeItem(STORAGE_KEY);
