@@ -109,7 +109,7 @@ class QueuePoller extends HTMLElement {
             this.#refreshTicket();
             this.#interval = setInterval(
                 this.#refreshTicket,
-                this.#ticket.checkInAfter * 100
+                this.#ticket.checkInAfter * 1000 - new Date().getTime()
             );
         } else {
             this.#fetchTicket();
@@ -140,7 +140,7 @@ class QueuePoller extends HTMLElement {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
             this.#interval = setInterval(
                 this.#refreshTicket,
-                json.checkInAfter * 1000 - new Date().getTime() + 1000
+                json.checkInAfter * 1000 - new Date().getTime()
             );
             this.#updatePosition();
         } catch (err) {
@@ -182,10 +182,6 @@ class QueuePoller extends HTMLElement {
                     localStorage.removeItem(STORAGE_KEY);
                 } else {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
-                    this.#interval = setInterval(
-                        this.#refreshTicket,
-                        json.checkInAfter * 1000 - new Date().getTime() + 1000
-                    );
                 }
             } catch (err) {
                 localStorage.removeItem(STORAGE_KEY);
