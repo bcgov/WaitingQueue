@@ -157,10 +157,15 @@ class QueuePoller extends HTMLElement {
 
         if (this.#ticket) {
             const { id, room, nonce } = this.#ticket;
-            const body = new FormData();
-            body.append("id", id);
-            body.append("nonce", nonce);
-            body.append("room", room);
+            // const body = new FormData();
+            // body.append("id", id);
+            // body.append("nonce", nonce);
+            // body.append("room", room);
+            const body = JSON.stringify({
+                id,
+                nonce,
+                room,
+            });
 
             try {
                 const json = await request({
@@ -168,6 +173,7 @@ class QueuePoller extends HTMLElement {
                     fetchOptions: {
                         method: "PUT",
                         body,
+                        headers: { "Content-Type": "application/json" },
                     },
                 });
                 this.#ticket = json;
