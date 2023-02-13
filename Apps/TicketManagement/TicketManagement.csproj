@@ -8,7 +8,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.26.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.26.1" />
         <PackageReference Include="Refit" Version="6.3.2" />
         <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
         <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
