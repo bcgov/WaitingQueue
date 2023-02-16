@@ -4,10 +4,11 @@ const pollTemplate = document.querySelector("#poller-template");
 const errorTemplate = document.querySelector("#error-template");
 /** @type HTMLTemplateElement */
 const redirectTemplate = document.querySelector("#redirect-template");
+
 const STORAGE_KEY = "queue-poller.cached";
 
 /**
- * @typedef {Object} Ticket T
+ * @typedef {Object} Ticket
  * @property {string} id
  * @property {string=} room The room the ticket belongs to
  * @property {string=} nonce Ticket nonce
@@ -43,37 +44,37 @@ const STORAGE_KEY = "queue-poller.cached";
  * @returns {Promise<Ticket>} A ticket is returned
  */
 async function request(input) {
-    const { url, fetchOptions, params } = input;
-    try {
-        const composedUrl = new URL(url, location.href);
+  const { url, fetchOptions, params } = input;
+  try {
+    const composedUrl = new URL(url, location.href);
 
-        if (params) {
-            Object.entries(params).forEach((p) => {
-                const [key, value] = p;
-                composedUrl.searchParams.append(key, value);
-            });
-        }
-
-        const req = await fetch(composedUrl, fetchOptions);
-
-        if (!req.ok) {
-            let error = req.statusText;
-            // Only these types return JSON from the API
-            if ([404, 412].includes(req.status)) {
-                /** @type {ProblemDetails} */
-                const json = await req.json();
-                error = json.title;
-            }
-
-            throw error;
-        }
-
-        /** @type Ticket */
-        const json = await req.json();
-        return json;
-    } catch (err) {
-        throw err;
+    if (params) {
+      Object.entries(params).forEach((p) => {
+        const [key, value] = p;
+        composedUrl.searchParams.append(key, value);
+      });
     }
+
+    const req = await fetch(composedUrl, fetchOptions);
+
+    if (!req.ok) {
+      let error = req.statusText;
+      // Only these types return JSON from the API
+      if ([404, 412].includes(req.status)) {
+        /** @type {ProblemDetails} */
+        const json = await req.json();
+        error = json.detail;
+      }
+
+      throw error;
+    }
+
+    /** @type Ticket */
+    const json = await req.json();
+    return json;
+  } catch (err) {
+    throw err;
+  }
 }
 /**
  * Simple element for polling a specified endpoint and updating the UI
@@ -84,173 +85,169 @@ async function request(input) {
  * @property {redirect-url} The location the requester should be redirected to upon success.
  */
 class QueuePoller extends HTMLElement {
-    /**
-     * Sets the polling interval
-     * @type number
-     * */
-    #interval = null;
-    /** @type Ticket */
-    #ticket = null;
-    /** @type HTMLElement */
-    statusElement = null;
+  /**
+   * Sets the polling interval
+   * @type number
+   * */
+  #timer = null;
+  /** @type Ticket */
+  #ticket = null;
 
-    constructor() {
-        super();
-        this.replaceChildren(pollTemplate.content.cloneNode(true));
-        this.statusElement = this.querySelector("[data-loading-text]");
+  constructor() {
+    super();
+    this.replaceChildren(pollTemplate.content.cloneNode(true));
+  }
+
+  connectedCallback() {
+    const cached = localStorage.getItem(STORAGE_KEY);
+
+    if (cached) {
+      this.#ticket = JSON.parse(cached);
+      this.#updatePosition();
+      this.#setTimer();
+    } else {
+      this.#fetchTicket();
+    }
+  }
+
+  disconnectedCallback() {
+    this.cleanUp();
+  }
+
+  /**
+   * Request the status of the ticket
+   */
+  #fetchTicket = async () => {
+    const pollUrl = this.getAttribute("poll-url");
+    const room = this.getAttribute("room");
+
+    try {
+      const json = await request({
+        url: pollUrl,
+        fetchOptions: {
+          method: "POST",
+        },
+        params: { room },
+      });
+      this.#ticket = json;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+      this.#setTimer();
+      this.#updatePosition();
+    } catch (err) {
+      this.renderError(err ?? "Unable to queue you in line.");
+    }
+  };
+
+  /**
+   * This fetch function only runs in intervals
+   */
+  #refreshTicket = async () => {
+    if (!this.#ticket) {
+      return;
     }
 
-    connectedCallback() {
-        const cached = localStorage.getItem(STORAGE_KEY);
+    const refreshUrl = this.getAttribute("refresh-url");
+    const { id, room, nonce } = this.#ticket;
+    const body = JSON.stringify({
+      id,
+      nonce,
+      room,
+    });
 
-        if (cached) {
-            this.#ticket = JSON.parse(cached);
-            this.#updatePosition();
-            this.#refreshTicket();
-            this.#interval = setInterval(
-                this.#refreshTicket,
-                this.#ticket.checkInAfter * 1000 - new Date().getTime()
-            );
-        } else {
-            this.#fetchTicket();
-        }
+    try {
+      const json = await request({
+        url: refreshUrl,
+        fetchOptions: {
+          method: "PUT",
+          body,
+          headers: { "Content-Type": "application/json" },
+        },
+      });
+      this.#ticket = json;
+      this.#updatePosition();
+
+      if (this.#ticket.status === "Processed") {
+        this.#handleProcessed();
+      } else {
+        this.#setTimer();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+      }
+    } catch (err) {
+      localStorage.removeItem(STORAGE_KEY);
+      this.renderError(err.message ?? "Unable to refresh ticket.");
     }
+  };
 
-    disconnectedCallback() {
-        this.cleanUp();
+  #handleProcessed = async () => {
+    const redirectUrl = this.getAttribute("redirect-url");
+    await this.#deleteTicket();
+    this.cleanUp();
+    this.replaceChildren(redirectTemplate.content.cloneNode(true));
+    localStorage.removeItem(STORAGE_KEY);
+    location.assign(redirectUrl);
+  };
+
+  #setTimer = () => {
+    const timeout = this.#ticket.checkInAfter * 1000 - Date.now();
+
+    if (timeout > 0) {
+      this.#timer = setTimeout(this.#refreshTicket, timeout);
     }
+  };
 
-    /**
-     * Request the status of the ticket
-     */
-    #fetchTicket = async () => {
-        const pollUrl = this.getAttribute("poll-url");
-        const room = this.getAttribute("room");
+  /**
+   * Handle clean up of the ticket on the API side
+   * @returns {Promise<void>} Successful deletion of ticket
+   */
+  #deleteTicket = async () => {
+    const pollUrl = this.getAttribute("poll-url");
 
-        try {
-            this.statusElement.textContent = "Loading...";
-            const json = await request({
-                url: pollUrl,
-                fetchOptions: {
-                    method: "POST",
-                },
-                params: { room },
-            });
-            this.#ticket = json;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
-            this.#interval = setInterval(
-                this.#refreshTicket,
-                json.checkInAfter * 1000 - new Date().getTime()
-            );
-            this.#updatePosition();
-        } catch (err) {
-            this.renderError(err ?? "Unable to queue you in line.");
-        }
-    };
+    try {
+      const { id, room, nonce } = this.#ticket;
+      const body = JSON.stringify({
+        id,
+        nonce,
+        room,
+      });
 
-    /**
-     * This fetch function only runs in intervals
-     */
-    #refreshTicket = async () => {
-        const refreshUrl = this.getAttribute("refresh-url");
-        this.statusElement.textContent = "Loading...";
-
-        if (this.#ticket) {
-            const { id, room, nonce } = this.#ticket;
-            // const body = new FormData();
-            // body.append("id", id);
-            // body.append("nonce", nonce);
-            // body.append("room", room);
-            const body = JSON.stringify({
-                id,
-                nonce,
-                room,
-            });
-
-            try {
-                const json = await request({
-                    url: refreshUrl,
-                    fetchOptions: {
-                        method: "PUT",
-                        body,
-                        headers: { "Content-Type": "application/json" },
-                    },
-                });
-                this.#ticket = json;
-                this.#updatePosition();
-                if (this.#ticket.status === "Processed") {
-                    localStorage.removeItem(STORAGE_KEY);
-                } else {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
-                }
-            } catch (err) {
-                localStorage.removeItem(STORAGE_KEY);
-                this.renderError(err.message ?? "Unable to refresh ticket.");
-            }
-        }
-    };
-
-    /**
-     * Handle clean up of the ticket on the API side
-     * @returns {Promise<void>} Successful deletion of ticket
-     */
-    #deleteTicket = async () => {
-        const pollUrl = this.getAttribute("poll-url");
-
-        try {
-            const { id, room, nonce } = this.#ticket;
-            const body = new FormData();
-
-            body.append("id", id);
-            body.append("nonce", nonce);
-            body.append("room", room);
-
-            await request({
-                url: pollUrl,
-                fetchOptions: {
-                    method: "DELETE",
-                    body,
-                },
-            });
-            localStorage.removeItem(STORAGE_KEY);
-        } catch (err) {
-            this.renderError(
-                err.message ?? "Unable to remove ticket from queue"
-            );
-        }
-    };
-
-    /**
-     * Render and error message when an operation failed
-     * @param {string} error - The error message to display in UI
-     */
-    renderError = (error) => {
-        this.replaceChildren(errorTemplate.content.cloneNode(true));
-        this.querySelector("[data-error-text]").textContent = error;
-    };
-
-    /**
-     * Checks the position based on the API's response
-     */
-    #updatePosition = async () => {
-        if (this.#ticket.status === "Processed") {
-            const redirectUrl = this.getAttribute("redirect-url");
-            await this.#deleteTicket();
-            this.cleanUp();
-            this.replaceChildren(redirectTemplate.content.cloneNode(true));
-            window.location.href = redirectUrl;
-            return;
-        }
-        this.statusElement.textContent = this.#ticket.status;
-        this.querySelector("mark").innerText =
-            this.#ticket.queuePosition.toString();
-    };
-
-    cleanUp() {
-        clearInterval(this.#interval);
-        this.#interval = null;
-        // TODO: should we always delete the ticket here?
+      await request({
+        url: pollUrl,
+        fetchOptions: {
+          method: "DELETE",
+          body,
+        },
+      });
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {
+      this.renderError(err.message ?? "Unable to remove ticket from queue");
     }
+  };
+
+  /**
+   * Render and error message when an operation failed
+   * @param {string} error - The error message to display in UI
+   */
+  renderError = (error) => {
+    this.replaceChildren(errorTemplate.content.cloneNode(true));
+    this.querySelector("[data-error-text]").textContent = error;
+  };
+
+  /**
+   * Checks the position based on the API's response
+   */
+  #updatePosition = async () => {
+    if (!this.#ticket) {
+      return;
+    }
+    this.querySelector("mark").innerText =
+      this.#ticket.queuePosition?.toString();
+  };
+
+  cleanUp() {
+    clearInterval(this.#timer);
+    this.#timer = null;
+    // TODO: should we always delete the ticket here?
+  }
 }
 
 export default QueuePoller;

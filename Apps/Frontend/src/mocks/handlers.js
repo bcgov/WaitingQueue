@@ -3,6 +3,20 @@ const DB_STORAGE_KEY = "WaitingQueue.mockdb";
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
+/** @param {number} status
+ * @param {string} detail
+ * @returns {Object}
+ */
+function makeErrorResponse(status, detail) {
+  return {
+    type: "Waiting Queue Exception",
+    title: "Error during processing",
+    status,
+    detail,
+    instance: "TicketCheckin.MethodName",
+  };
+}
+
 const handlers = [
   rest.post("/Ticket", (req, res, ctx) => {
     const id = crypto.randomUUID();
@@ -14,12 +28,7 @@ const handlers = [
     if (room !== "HealthGateway") {
       return res(
         ctx.status(404),
-        ctx.json({
-          type: "NOT_FOUND",
-          title: "The requested room was not found.",
-          status: 404,
-          detail: "The requested room was not found.",
-        })
+        ctx.json(makeErrorResponse(404, "The requested room was not found."))
       );
     }
 
@@ -27,12 +36,13 @@ const handlers = [
       return res(ctx.status(503));
     }
 
+    const createdTime = Math.floor(Date.now() / 1000);
     ticket = {
       id,
       room,
       nonce,
-      createdTime: Date.now(),
-      checkInAfter: 100,
+      createdTime,
+      checkInAfter: createdTime + 120,
       tokenExpires: 0,
       queuePosition: 5,
       status: "Queued",
@@ -48,12 +58,9 @@ const handlers = [
     if (!ticket || nonce !== ticket.nonce) {
       return res(
         ctx.status(404),
-        ctx.json({
-          type: "NOT_FOUND",
-          title: "Ticket not found",
-          status: 404,
-          detail: "The requested ticket no longer exists.",
-        })
+        ctx.json(
+          makeErrorResponse(404, "The requested ticket no longer exists.")
+        )
       );
     }
 
@@ -64,19 +71,26 @@ const handlers = [
 
   rest.put("/Ticket/check-in", (req, res, ctx) => {
     const { unhappy } = req.params;
+
+    if (unhappy) {
+      return res(ctx.status(500));
+    }
+
     if (!ticket) {
       return res(ctx.status(404));
+    }
+
+    if (Date.now() < ticket.checkInAfter) {
+      return res(
+        ctx.status(412),
+        ctx.json(makeErrorResponse(412, "The check-in request was too early"))
+      );
     }
 
     if (ticket.nonce !== req.body.nonce) {
       return res(
         ctx.status(412),
-        ctx.json({
-          type: "Unable to complete request",
-          title: "Invalid nonce",
-          status: 412,
-          detail: "...",
-        })
+        ctx.json(makeErrorResponse(412, "Invalid nonce"))
       );
     }
 
@@ -84,10 +98,13 @@ const handlers = [
     const isReady = queuePosition === 0;
     let status = isReady ? "Processed" : "Queued";
     const nonce = crypto.randomUUID();
+    const createdTime = Math.floor(Date.now() / 1000);
+    const checkInAfter = createdTime + 120;
     ticket = {
       ...ticket,
       nonce,
-      createdTime: Date.now(),
+      createdTime,
+      checkInAfter,
       queuePosition,
       status,
     };
