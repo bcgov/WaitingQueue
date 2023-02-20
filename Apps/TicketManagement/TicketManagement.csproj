@@ -12,7 +12,7 @@
         <PackageReference Include="Refit" Version="6.3.2" />
         <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
         <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
         <PackageReference Update="Microsoft.CodeAnalysis" Version="4.4.0" />
         <PackageReference Update="SonarAnalyzer.CSharp" Version="8.51.0.59060">
           <PrivateAssets>all</PrivateAssets>
