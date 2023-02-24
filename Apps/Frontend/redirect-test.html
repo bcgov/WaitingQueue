@@ -5,9 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="/src/main.css" rel="stylesheet" />
-    <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
-    <script type="module" src="/src/mocks/handlers.js"></script>
-    <script type="module" src="./src/queue-poller.js"></script>
+    <script type="module" src="/src/queue-poller.js"></script>
+    <script type="module">
+      import { handleRedirect } from "./src/queue-poller.js";
+      handleRedirect();
+    </script>
   </head>
   <body>
     <header class="bc-header">
@@ -59,38 +61,7 @@
       <hgroup>Help</hgroup>
     </header>
     <main class="main">
-      <div class="content">
-        <queue-poller
-          redirect-url="http://localhost:8000/redirect-test.html"
-          room="HealthGateway"
-          poll-url="/Ticket"
-          refresh-url="/Ticket/check-in"
-          >You need JavaScript enabled to run this component</queue-poller
-        >
-      </div>
+      <div class="content">Redirect content test</div>
     </main>
-    <template id="poller-template">
-      <div role="status">
-        <h3>
-          Demo Ministry Service is busier than normal at this moment. We have
-          placed you in a queue.
-        </h3>
-        <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
-          Your position in the queue: <mark>-</mark>
-        </p>
-      </div>
-    </template>
-    <template id="redirect-template">
-      <div role="alert">
-        <h4>You're all set, redirecting...</h4>
-      </div>
-    </template>
-    <template id="error-template">
-      <div role="alert" class="error">
-        <h3>Can't access Demo Ministry Service.</h3>
-        <p data-error-text></p>
-        <button>Retry</button>
-      </div>
-    </template>
   </body>
 </html>

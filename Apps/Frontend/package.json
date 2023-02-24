@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "rome": "^11.0.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

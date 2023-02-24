@@ -1,5 +1,7 @@
 const { rest, setupWorker } = MockServiceWorker;
 const DB_STORAGE_KEY = "WaitingQueue.mockdb";
+// Normal interval should be around 120
+const TICKET_INTERVAL = 10;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
@@ -42,7 +44,7 @@ const handlers = [
       room,
       nonce,
       createdTime,
-      checkInAfter: createdTime + 120,
+      checkInAfter: createdTime + TICKET_INTERVAL,
       tokenExpires: 0,
       queuePosition: 5,
       status: "Queued",
@@ -50,7 +52,7 @@ const handlers = [
     };
 
     localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
-    return res(ctx.json(ticket));
+    return res(ctx.delay(3000), ctx.json(ticket));
   }),
   rest.delete("/Ticket", (req, res, ctx) => {
     const { nonce } = req.body;
@@ -99,7 +101,7 @@ const handlers = [
     let status = isReady ? "Processed" : "Queued";
     const nonce = crypto.randomUUID();
     const createdTime = Math.floor(Date.now() / 1000);
-    const checkInAfter = createdTime + 120;
+    const checkInAfter = createdTime + TICKET_INTERVAL;
     ticket = {
       ...ticket,
       nonce,
