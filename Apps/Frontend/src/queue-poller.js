@@ -133,6 +133,10 @@ class QueuePoller extends HTMLElement {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
       this.#setTimer();
       this.#updatePosition();
+
+      if (this.#ticket.status === "Processed") {
+        this.#handleProcessed();
+      }
     } catch (err) {
       this.renderError(err ?? "Unable to queue you in line.");
     }
@@ -215,6 +219,7 @@ class QueuePoller extends HTMLElement {
         fetchOptions: {
           method: "DELETE",
           body,
+          headers: { "Content-Type": "application/json" },
         },
       });
       localStorage.removeItem(STORAGE_KEY);
