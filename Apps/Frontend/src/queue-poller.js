@@ -198,7 +198,13 @@ class QueuePoller extends HTMLElement {
 
   #handleProcessed = async () => {
     const redirectUrl = this.getAttribute("redirect-url");
-    document.cookie = `${COOKIE_KEY}=${this.#ticket.token}`;
+    const cookie = JSON.stringify({
+      id: this.#ticket.id,
+      room: this.#ticket.room,
+      nonce: this.#ticket.nonce,
+      token: this.#ticket.token,
+    });
+    document.cookie = `${COOKIE_KEY}=${cookie}`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
@@ -296,13 +302,31 @@ export default QueuePoller;
 
 customElements.define("queue-poller", QueuePoller);
 
-export function handleRedirect() {
+/**
+ * @param {string} refreshUrl
+ */
+export async function handleRedirect(refreshUrl) {
   try {
-    const token = document.cookie
+    const body = document.cookie
       .split("; ")
       .find((c) => c.startsWith(COOKIE_KEY))
       .split("=")[1];
-    console.log(token);
+    /** @type Ticket */
+    const json = await request({
+      url: refreshUrl,
+      fetchOptions: {
+        method: "PUT",
+        body,
+        headers: { "Content-Type": "application/json" },
+      },
+    });
+    const timeout = json.checkInAfter * 1000 - Date.now();
+
+    if (timeout > 0) {
+      setTimeout(() => {
+        console.log("Ticket refreshed");
+      }, timeout);
+    }
   } catch {
     const div = document.createElement("div");
     div.innerText = "Unauthorized";
