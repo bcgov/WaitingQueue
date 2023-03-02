@@ -337,7 +337,7 @@ export async function handleTokenRefresh(refreshUrl) {
       });
       document.cookie = `${COOKIE_KEY}=${cookie}`;
 
-      handleRedirect(refreshUrl);
+      handleTokenRefresh(refreshUrl);
     }
 
     if (timeout > 0) {
