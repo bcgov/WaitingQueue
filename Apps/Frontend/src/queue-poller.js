@@ -198,18 +198,18 @@ class QueuePoller extends HTMLElement {
 
   #handleProcessed = async () => {
     const redirectUrl = this.getAttribute("redirect-url");
-    const cookie = JSON.stringify({
-      id: this.#ticket.id,
-      room: this.#ticket.room,
-      nonce: this.#ticket.nonce,
-      token: this.#ticket.token,
-      checkInAfter: this.#ticket.checkInAfter
-    });
-    document.cookie = `${COOKIE_KEY}=${cookie}`;
+    // const cookie = JSON.stringify({
+    //   id: this.#ticket.id,
+    //   room: this.#ticket.room,
+    //   nonce: this.#ticket.nonce,
+    //   token: this.#ticket.token,
+    //   checkInAfter: this.#ticket.checkInAfter
+    // });
+    document.cookie = `${COOKIE_KEY}=${this.#ticket.token}`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    localStorage.removeItem(STORAGE_KEY);
+    //localStorage.removeItem(STORAGE_KEY);
     location.assign(redirectUrl);
   };
 
@@ -308,18 +308,28 @@ customElements.define("queue-poller", QueuePoller);
  */
 export async function handleTokenRefresh(refreshUrl) {
   try {
-    const body = document.cookie
-      .split("; ")
-      .find((c) => c.startsWith(COOKIE_KEY))
-      .split("=")[1];
-    /** @type Ticket */
+    const cached = localStorage.getItem(STORAGE_KEY);
 
-    const ticket = JSON.parse(body);
+    // const body = document.cookie
+    //   .split("; ")
+    //   .find((c) => c.startsWith(COOKIE_KEY))
+    //   .split("=")[1];
+    // /** @type Ticket */
+
+    const ticket = JSON.parse(cached);
 
     const timeout = ticket.checkInAfter * 1000 - Date.now();
 
     const refreshToken = async function() {
-      const ticket = await request({
+
+      const { id, room, nonce } = ticket;
+      const body = JSON.stringify({
+        id,
+        nonce,
+        room,
+      });
+  
+      const newTicket = await request({
         url: refreshUrl,
         fetchOptions: {
           method: "PUT",
@@ -328,19 +338,21 @@ export async function handleTokenRefresh(refreshUrl) {
         },
       });
   
-      const cookie = JSON.stringify({
-        id: ticket.id,
-        room: ticket.room,
-        nonce: ticket.nonce,
-        token: ticket.token,
-        checkInAfter: ticket.checkInAfter
-      });
-      document.cookie = `${COOKIE_KEY}=${cookie}`;
+      // const cookie = JSON.stringify({
+      //   id: newTicket.id,
+      //   room: ticket.room,
+      //   nonce: ticket.nonce,
+      //   token: ticket.token,
+      //   checkInAfter: ticket.checkInAfter
+      // });
+      document.cookie = `${COOKIE_KEY}=${newTicket.token}`;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTicket));
 
       handleTokenRefresh(refreshUrl);
     }
 
     if (timeout > 0) {
+      console.log("Refresh token sleep for " + timeout/1000 + " seconds...");
       setTimeout(refreshToken, timeout);
     } else {
       refreshToken();
