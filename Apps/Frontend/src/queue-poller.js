@@ -203,6 +203,7 @@ class QueuePoller extends HTMLElement {
       room: this.#ticket.room,
       nonce: this.#ticket.nonce,
       token: this.#ticket.token,
+      checkInAfter: this.#ticket.checkInAfter
     });
     document.cookie = `${COOKIE_KEY}=${cookie}`;
     // await this.#deleteTicket();
@@ -312,26 +313,42 @@ export async function handleRedirect(refreshUrl) {
       .find((c) => c.startsWith(COOKIE_KEY))
       .split("=")[1];
     /** @type Ticket */
-    const json = await request({
-      url: refreshUrl,
-      fetchOptions: {
-        method: "PUT",
-        body,
-        headers: { "Content-Type": "application/json" },
-      },
-    });
-    const timeout = json.checkInAfter * 1000 - Date.now();
+
+    const ticket = JSON.parse(body);
+
+    const timeout = ticket.checkInAfter * 1000 - Date.now();
+
+    const refreshToken = async function() {
+      const ticket = await request({
+        url: refreshUrl,
+        fetchOptions: {
+          method: "PUT",
+          body,
+          headers: { "Content-Type": "application/json" },
+        },
+      });
+  
+      const cookie = JSON.stringify({
+        id: ticket.id,
+        room: ticket.room,
+        nonce: ticket.nonce,
+        token: ticket.token,
+        checkInAfter: ticket.checkInAfter
+      });
+      document.cookie = `${COOKIE_KEY}=${cookie}`;
+
+      handleRedirect(refreshUrl);
+    }
 
     if (timeout > 0) {
-      setTimeout(() => {
-        console.log("Ticket refreshed");
-      }, timeout);
+      setTimeout(refreshToken, timeout);
+    } else {
+      refreshToken();
     }
+
   } catch {
     const div = document.createElement("div");
-    div.innerText = "Unauthorized";
-    const target = document.querySelector("main > *").parentNode;
-    console.log(target);
-    document.body.insertBefore(div, target);
+    div.innerText = "Unauthorized WR0001";
+    document.body.insertBefore(div, document.body.firstChild);
   }
 }
