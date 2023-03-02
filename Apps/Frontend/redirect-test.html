@@ -7,8 +7,8 @@
     <link href="/src/main.css" rel="stylesheet" />
     <script type="module" src="/src/queue-poller.js"></script>
     <script type="module">
-      import { handleRedirect } from "./src/queue-poller.js";
-      handleRedirect("/Ticket/check-in");
+      import { handleTokenRefresh } from "./src/queue-poller.js";
+      handleTokenRefresh("/Ticket/check-in");
     </script>
   </head>
   <body>

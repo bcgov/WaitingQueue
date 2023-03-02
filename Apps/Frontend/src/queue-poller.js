@@ -306,7 +306,7 @@ customElements.define("queue-poller", QueuePoller);
 /**
  * @param {string} refreshUrl
  */
-export async function handleRedirect(refreshUrl) {
+export async function handleTokenRefresh(refreshUrl) {
   try {
     const body = document.cookie
       .split("; ")
