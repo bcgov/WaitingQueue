@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="/src/main.css" rel="stylesheet" />
+    <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
+    <script type="module" src="/src/mocks/handlers.js"></script>
     <script type="module" src="/src/queue-poller.js"></script>
     <script type="module">
       import { handleTokenRefresh } from "./src/queue-poller.js";

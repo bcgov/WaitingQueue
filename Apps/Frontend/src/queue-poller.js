@@ -198,18 +198,10 @@ class QueuePoller extends HTMLElement {
 
   #handleProcessed = async () => {
     const redirectUrl = this.getAttribute("redirect-url");
-    // const cookie = JSON.stringify({
-    //   id: this.#ticket.id,
-    //   room: this.#ticket.room,
-    //   nonce: this.#ticket.nonce,
-    //   token: this.#ticket.token,
-    //   checkInAfter: this.#ticket.checkInAfter
-    // });
     document.cookie = `${COOKIE_KEY}=${this.#ticket.token}`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    //localStorage.removeItem(STORAGE_KEY);
     location.assign(redirectUrl);
   };
 
@@ -304,61 +296,63 @@ export default QueuePoller;
 customElements.define("queue-poller", QueuePoller);
 
 /**
+ * A simple promise-based timeout
+ *
+ * @param {number} timeout
+ * @returns Promise<void>
+ */
+async function wait(timeout = 0) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, timeout);
+  });
+}
+
+/**
+ * Reload the ticket. Available for the redirect URLs
+ *
+ * @param {Ticket} ticket
+ * @param {string} refreshUrl
+ * @returns void
+ */
+async function refreshToken(ticket, refreshUrl) {
+  const { id, room, nonce } = ticket;
+  const body = JSON.stringify({
+    id,
+    nonce,
+    room,
+  });
+
+  /** @type {Ticket} */
+  const json = await request({
+    url: refreshUrl,
+    fetchOptions: {
+      method: "PUT",
+      body,
+      headers: { "Content-Type": "application/json" },
+    },
+  });
+
+  const timeout = json.checkInAfter * 1000 - Date.now();
+  document.cookie = `${COOKIE_KEY}=${json.token}`;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+
+  await wait(timeout);
+  refreshToken(json, refreshUrl);
+}
+
+/**
  * @param {string} refreshUrl
  */
 export async function handleTokenRefresh(refreshUrl) {
   try {
     const cached = localStorage.getItem(STORAGE_KEY);
-
-    // const body = document.cookie
-    //   .split("; ")
-    //   .find((c) => c.startsWith(COOKIE_KEY))
-    //   .split("=")[1];
-    // /** @type Ticket */
-
+    /** @type Ticket */
     const ticket = JSON.parse(cached);
-
-    const timeout = ticket.checkInAfter * 1000 - Date.now();
-
-    const refreshToken = async function() {
-
-      const { id, room, nonce } = ticket;
-      const body = JSON.stringify({
-        id,
-        nonce,
-        room,
-      });
-  
-      const newTicket = await request({
-        url: refreshUrl,
-        fetchOptions: {
-          method: "PUT",
-          body,
-          headers: { "Content-Type": "application/json" },
-        },
-      });
-  
-      // const cookie = JSON.stringify({
-      //   id: newTicket.id,
-      //   room: ticket.room,
-      //   nonce: ticket.nonce,
-      //   token: ticket.token,
-      //   checkInAfter: ticket.checkInAfter
-      // });
-      document.cookie = `${COOKIE_KEY}=${newTicket.token}`;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newTicket));
-
-      handleTokenRefresh(refreshUrl);
-    }
-
-    if (timeout > 0) {
-      console.log("Refresh token sleep for " + timeout/1000 + " seconds...");
-      setTimeout(refreshToken, timeout);
-    } else {
-      refreshToken();
-    }
-
+    refreshToken(ticket, refreshUrl);
   } catch {
+    // TODO: When there is a standard design for this page, handle error messaging in a more helpful way
     const div = document.createElement("div");
     div.innerText = "Unauthorized WR0001";
     document.body.insertBefore(div, document.body.firstChild);
