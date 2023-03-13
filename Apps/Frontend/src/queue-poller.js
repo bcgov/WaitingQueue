@@ -317,7 +317,13 @@ async function wait(timeout = 0) {
  * @returns void
  */
 async function refreshToken(ticket, refreshUrl) {
-  const { id, room, nonce } = ticket;
+  const { id, room, nonce, checkInAfter } = ticket;
+
+  const timeout = checkInAfter * 1000 - Date.now();
+  if (timeout > 0) {
+    await wait(timeout);
+  }
+
   const body = JSON.stringify({
     id,
     nonce,
@@ -334,11 +340,9 @@ async function refreshToken(ticket, refreshUrl) {
     },
   });
 
-  const timeout = json.checkInAfter * 1000 - Date.now();
   document.cookie = `${COOKIE_KEY}=${json.token}`;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
 
-  await wait(timeout);
   refreshToken(json, refreshUrl);
 }
 
@@ -350,7 +354,7 @@ export async function handleTokenRefresh(refreshUrl) {
     const cached = localStorage.getItem(STORAGE_KEY);
     /** @type Ticket */
     const ticket = JSON.parse(cached);
-    refreshToken(ticket, refreshUrl);
+    await refreshToken(ticket, refreshUrl);
   } catch {
     // TODO: When there is a standard design for this page, handle error messaging in a more helpful way
     const div = document.createElement("div");
