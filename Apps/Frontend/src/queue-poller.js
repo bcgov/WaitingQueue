@@ -103,16 +103,22 @@ class QueuePoller extends HTMLElement {
 
   connectedCallback() {
     const cached = localStorage.getItem(STORAGE_KEY);
+    this.replaceChildren(pollTemplate.content.cloneNode(true));
 
     if (cached) {
-      this.replaceChildren(pollTemplate.content.cloneNode(true));
-      this.#ticket = JSON.parse(cached);
-    } else {
-      this.#fetchTicket().then((ticket) => {
-        this.replaceChildren(pollTemplate.content.cloneNode(true));
+      /** @type Ticket */
+      const ticket = JSON.parse(cached);
+      // If the cached ticket is processed, restart
+      if (ticket.status !== "Processed") {
         this.#ticket = ticket;
-      });
+        return;
+      }
+      localStorage.removeItem(STORAGE_KEY);
     }
+
+    this.#fetchTicket().then((ticket) => {
+      this.#ticket = ticket;
+    });
   }
 
   disconnectedCallback() {
