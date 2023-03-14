@@ -11,10 +11,10 @@
   --bc-colors-error: #d8292f;
 }
 
-/*
-* Reset
-* Source: https://www.joshwcomeau.com/css/custom-css-reset/
-*/
+/**
+ * Reset
+ * Source: https://www.joshwcomeau.com/css/custom-css-reset/
+ */
 *,
 *::before,
 *::after {
@@ -30,6 +30,7 @@ body {
 body {
   line-height: 1.5;
   font-family: "BCSans", "Noto Sans", "Verdana", "Arial", "sans-serif";
+  color: var(--bc-colors-text);
   -webkit-font-smoothing: antialiased;
 }
 img,
@@ -118,14 +119,83 @@ h4 {
 }
 
 .content {
-  max-width: 50vw;
+  max-width: 880px;
 }
 
-.error {
-  color: var(--bc-colors-error);
+.container {
+  max-width: 880px;
+  text-align: center;
+  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 mark {
+  width: 100px;
+  height: 100px;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 100%;
   padding-inline: 3px;
-  background-color: var(--bc-colors-bg);
+  display: inline-grid;
+  place-items: center;
+  background-color: #f5f6fa;
+}
+
+.btn-secondary {
+  border: 3px solid var(--bc-colors-blue-alt);
+  background-color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+  padding-inline: 30px;
+  height: 44px;
+  color: var(--bc-colors-blue-alt);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: var(--bc-colors-blue-alt);
+  text-decoration: underline;
+}
+
+/**
+ * Loading ring taken from https://loading.io/css/
+ */
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

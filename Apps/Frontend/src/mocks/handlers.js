@@ -35,7 +35,7 @@ const handlers = [
     }
 
     if (unhappy) {
-      return res(ctx.status(503));
+      return res(ctx.status(500));
     }
 
     const createdTime = Math.floor(Date.now() / 1000);
@@ -56,6 +56,11 @@ const handlers = [
   }),
   rest.delete("/Ticket", (req, res, ctx) => {
     const { nonce } = req.body;
+    const unhappy = req.url.searchParams.get("unhappy");
+
+    if (unhappy) {
+      return res(ctx.status(500));
+    }
 
     if (!ticket || nonce !== ticket.nonce) {
       return res(
@@ -72,7 +77,7 @@ const handlers = [
   }),
 
   rest.put("/Ticket/check-in", (req, res, ctx) => {
-    const { unhappy } = req.params;
+    const unhappy = req.url.searchParams.get("unhappy");
 
     if (unhappy) {
       return res(ctx.status(500));
@@ -97,20 +102,23 @@ const handlers = [
     }
 
     const queuePosition = ticket.queuePosition - 1;
-    const isReady = queuePosition === 0;
-    let status = isReady ? "Processed" : "Queued";
-    const nonce = crypto.randomUUID();
-    const createdTime = Math.floor(Date.now() / 1000);
-    const checkInAfter = createdTime + TICKET_INTERVAL;
-    ticket = {
-      ...ticket,
-      nonce,
-      createdTime,
-      checkInAfter,
-      queuePosition,
-      status,
-    };
-    localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
+
+    if (queuePosition >= 0) {
+      const isReady = queuePosition === 0;
+      let status = isReady ? "Processed" : "Queued";
+      const nonce = crypto.randomUUID();
+      const createdTime = Math.floor(Date.now() / 1000);
+      const checkInAfter = createdTime + TICKET_INTERVAL;
+      ticket = {
+        ...ticket,
+        nonce,
+        createdTime,
+        checkInAfter,
+        queuePosition,
+        status,
+      };
+      localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
+    }
 
     return res(ctx.json(ticket));
   }),

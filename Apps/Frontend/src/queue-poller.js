@@ -67,7 +67,7 @@ async function request(input) {
         error = json.detail;
       }
 
-      throw error;
+      throw new Error(error);
     }
 
     /** @type Ticket */
@@ -166,7 +166,7 @@ class QueuePoller extends HTMLElement {
       });
       return json;
     } catch (err) {
-      this.#error = err;
+      this.#error = err.message;
     }
   };
 
@@ -254,11 +254,18 @@ class QueuePoller extends HTMLElement {
    */
   renderError = () => {
     this.replaceChildren(errorTemplate.content.cloneNode(true));
-    this.querySelector("[data-error-text]").textContent =
-      this.#error?.name ?? "An error occurred";
     this.querySelector("button").addEventListener(
       "click",
-      this.#refreshTicket,
+      () => {
+        this.#error = null;
+        if (this.#ticket) {
+          this.#refreshTicket();
+        } else {
+          this.#fetchTicket().then((ticket) => {
+            this.#ticket = ticket;
+          });
+        }
+      },
       {
         once: true,
       }
@@ -269,18 +276,20 @@ class QueuePoller extends HTMLElement {
    * Checks the position based on the API's response
    */
   #updatePosition = () => {
-    this.querySelector("mark").innerText =
-      this.#ticket.queuePosition?.toString();
+    const mark = this.querySelector("mark");
+    if (mark) {
+      mark.innerText = this.#ticket.queuePosition?.toString();
+    }
   };
 
   render() {
-    if (!this.#ticket) {
-      this.textContent = "Loading...";
+    if (this.#error) {
+      this.renderError();
       return;
     }
 
-    if (this.#error) {
-      this.renderError();
+    if (!this.#ticket) {
+      this.textContent = "Loading...";
       return;
     }
 

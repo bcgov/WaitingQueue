@@ -60,7 +60,6 @@
         </svg>
         <h2 class="bc-header__title">BC Demographic Survey - Waiting Room</h2>
       </hgroup>
-      <hgroup>Help</hgroup>
     </header>
     <main class="main">
       <div class="content">
@@ -74,14 +73,21 @@
       </div>
     </main>
     <template id="poller-template">
-      <div role="status">
+      <div role="status" class="container">
         <h3>
-          The Survey System is busier than normal at this moment. We have placed
-          you in a queue.
+          The Survey System is currently experiencing high demand and have
+          placed you in a queue.
         </h3>
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
-          Your position in the queue: <mark>-</mark>
+          Your current position in our queue is:
         </p>
+        <mark
+          ><div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div></div
+        ></mark>
       </div>
     </template>
     <template id="redirect-template">
@@ -90,10 +96,12 @@
       </div>
     </template>
     <template id="error-template">
-      <div role="alert" class="error">
-        <h3>Can't access BC Demographic Survey.</h3>
-        <p data-error-text></p>
-        <button>Retry</button>
+      <div role="alert" class="container">
+        <h3>
+          BC Demographic Survey is currently experiencing high demand which is
+          causing delays.
+        </h3>
+        <button class="btn-secondary">Retry</button>
       </div>
     </template>
   </body>

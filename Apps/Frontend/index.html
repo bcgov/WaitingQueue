@@ -62,7 +62,6 @@
         </svg>
         <h2 class="bc-header__title">Demo Ministry Service</h2>
       </hgroup>
-      <hgroup>Help</hgroup>
     </header>
     <main class="main">
       <div class="content">
@@ -76,14 +75,21 @@
       </div>
     </main>
     <template id="poller-template">
-      <div role="status">
+      <div class="container" role="status">
         <h3>
-          Demo Ministry Service is busier than normal at this moment. We have
+          Demo Ministry Service is currently experiencing high demand and have
           placed you in a queue.
         </h3>
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
-          Your position in the queue: <mark>-</mark>
+          Your current position in our queue is:
         </p>
+        <mark
+          ><div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div></div
+        ></mark>
       </div>
     </template>
     <template id="redirect-template">
@@ -92,10 +98,12 @@
       </div>
     </template>
     <template id="error-template">
-      <div role="alert" class="error">
-        <h3>Can't access Demo Ministry Service.</h3>
-        <p data-error-text></p>
-        <button>Retry</button>
+      <div role="alert" class="container">
+        <h3>
+          Demo Ministry Service is currently experiencing high demand which is
+          causing delays.
+        </h3>
+        <button class="btn-secondary">Retry</button>
       </div>
     </template>
   </body>
