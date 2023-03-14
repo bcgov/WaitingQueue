@@ -357,10 +357,12 @@ async function refreshToken(ticket, refreshUrl) {
     },
   });
 
-  document.cookie = `${COOKIE_KEY}=${json.token}`;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+  if (json) {
+    document.cookie = `${COOKIE_KEY}=${json.token}`;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
 
-  refreshToken(json, refreshUrl);
+    refreshToken(json, refreshUrl);
+  }
 }
 
 /**
