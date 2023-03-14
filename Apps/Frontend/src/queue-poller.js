@@ -333,12 +333,14 @@ async function wait(timeout = 0) {
  */
 async function refreshToken(ticket, refreshUrl) {
   const { id, room, nonce, checkInAfter } = ticket;
-
   const timeout = checkInAfter * 1000 - Date.now();
-  if (timeout > 0) {
-    await wait(timeout);
+
+  // Prevent an infinite loop
+  if (timeout <= 0) {
+    return;
   }
 
+  await wait(timeout);
   const body = JSON.stringify({
     id,
     nonce,
