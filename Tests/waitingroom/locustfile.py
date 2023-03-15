@@ -29,40 +29,50 @@ class WaitingRoom(HttpUser):
         for doc in documents:
           response = self.client.get("%s" % doc)
 
-        # Ask for a ticket
-        response = self.client.post("%s?room=%s" % (poll_url, room), headers = headers)
-
-        ticket = response.json()
-
-        attempts = 1
+        busy = 0
         while True:
-          print(ticket["id"])
+          # Ask for a ticket
+          response = self.client.post("%s?room=%s" % (poll_url, room), headers = headers)
 
-          if ticket["status"] == "Processed":
-            # If processed, then redirect back with the set cookie
-            cookies = {}
-            cookies[cookie_name] = ticket["token"]
+          ticket = response.json()
 
-            response = self.client.get(redirect_path, headers = headers, cookies = cookies)
+          # The waiting queue has exceeded maximum capacity, try again later
+          if response.status_code == 503:
+            busy = busy + 1
+            print("[%d] Exceeded capacity - sleeping 10 seconds" % busy)
+            time.sleep(10)
+          else:
+            attempts = 1
+            while True:
+              print(ticket["id"])
+
+              if ticket["status"] == "Processed":
+                # If processed, then redirect back with the set cookie
+                cookies = {}
+                cookies[cookie_name] = ticket["token"]
+
+                response = self.client.get(redirect_path, headers = headers, cookies = cookies)
+
+                break
+              else:
+                # else wait until next checkin time, to refresh the queue position
+                attempts = attempts + 1
+
+                wait_t = ticket["checkInAfter"] - time.time()
+                print("[%d] Wait for %d seconds" % (attempts, wait_t))
+                time.sleep(wait_t)
+
+                data = {
+                  "id": ticket["id"],
+                  "nonce": ticket["nonce"],
+                  "room": ticket["room"]
+                }
+                response = self.client.put("%s" % (refresh_url), json = data, headers = headers)
+                response.raise_for_status()
+
+                ticket = response.json()
 
             break
-          else:
-            # else wait until next checkin time, to refresh the queue position
-            attempts = attempts + 1
-
-            wait_t = ticket["checkInAfter"] - time.time()
-            print("[%d] Wait for %d seconds" % (attempts, wait_t))
-            time.sleep(wait_t)
-
-            data = {
-              "id": ticket["id"],
-              "nonce": ticket["nonce"],
-              "room": ticket["room"]
-            }
-            response = self.client.put("%s" % (refresh_url), json = data, headers = headers)
-            response.raise_for_status()
-
-            ticket = response.json()
 
         # wait some time before we go to the next Task
         wait_t = random.uniform(2, 4)
