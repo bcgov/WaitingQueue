@@ -46,3 +46,6 @@ Testing/functional/e2e/debug.log
 # Helm cached charts
 *.tgz
 
+# Testing files
+__pycache__
+_tmp
