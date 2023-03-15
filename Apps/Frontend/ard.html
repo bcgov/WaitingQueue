@@ -11,7 +11,8 @@
       rel="stylesheet"
     />
     <link href="/src/main.css" rel="stylesheet" />
-    <script type="module" src="/src/queue-poller.js"></script>
+    <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
+    <script type="module" src="./src/queue-poller.js"></script>
   </head>
   <body>
     <header class="bc-header">
@@ -73,7 +74,7 @@
       </div>
     </main>
     <template id="poller-template">
-      <div role="status" class="container">
+      <div class="container" role="status">
         <h3>
           The Survey System is currently experiencing high demand and have
           placed you in a queue.
