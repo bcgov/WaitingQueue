@@ -9,6 +9,7 @@
   --bc-colors-bg: #f2f2f2;
   --bc-colors-success: #2e8540;
   --bc-colors-error: #d8292f;
+  --spinner-dimensions: 80px;
 }
 
 /**
@@ -90,9 +91,9 @@ h4 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 30px;
+  padding: 0 30px;
   color: #fff;
-  background-color: var(--bc-colors-blue);
+  background-color: #036;
 }
 
 .bc-header svg {
@@ -104,10 +105,10 @@ h4 {
 .bc-header__title {
   line-height: 1.2;
   margin: 0;
+  padding-left: 10px;
 }
 
 .bc-header__inner {
-  gap: 10px;
   display: flex;
   align-items: center;
 }
@@ -143,6 +144,12 @@ mark {
   background-color: #f5f6fa;
 }
 
+mark loading-spinner {
+  display: block;
+  width: var(--spinner-dimensions);
+  height: var(--spinner-dimensions);
+}
+
 .btn-secondary {
   border: 3px solid var(--bc-colors-blue-alt);
   background-color: #fff;
@@ -166,8 +173,8 @@ mark {
 .spinner {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: var(--spinner-dimensions);
+  height: var(--spinner-dimensions);
 }
 
 .spinner div {
@@ -177,10 +184,10 @@ mark {
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid #fff;
+  border: 8px solid var(--spinner-color, #fff);
   border-radius: 50%;
   animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: var(--spinner-color, #fff) transparent transparent transparent;
 }
 .spinner div:nth-child(1) {
   animation-delay: -0.45s;
@@ -204,4 +211,24 @@ mark {
   .spinner div {
     display: none;
   }
+}
+
+.ie .bc-header {
+  background-color: #036;
+}
+
+.ie template,
+.ie queue-poller {
+  display: none;
+}
+
+.content {
+  margin: 200px auto;
+  max-width: 800px;
+}
+
+mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

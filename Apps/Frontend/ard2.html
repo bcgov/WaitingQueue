@@ -11,8 +11,7 @@
       rel="stylesheet"
     />
     <link href="/src/main.css" rel="stylesheet" />
-    <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
-    <script type="module" src="./src/queue-poller.js"></script>
+    <script type="module" src="./src/main.js"></script>
   </head>
   <body>
     <header class="bc-header">
@@ -63,7 +62,7 @@
       </hgroup>
     </header>
     <main class="main">
-      <div class="content">
+      <div id="content" class="content">
         <queue-poller
           redirect-url="https://survey-bcstats-dev.apps.gov.bc.ca/survey/cwx.cgi"
           room="ARD"
@@ -82,17 +81,12 @@
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
           Your current position in our queue is:
         </p>
-        <mark
-          ><div class="spinner" aria-hidden="true">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div></div
-        ></mark>
+        <mark><loading-spinner></loading-spinner></mark>
       </div>
     </template>
     <template id="redirect-template">
-      <div role="alert">
+      <div role="alert" class="container">
+        <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
         <h4>You're all set, redirecting...</h4>
       </div>
     </template>

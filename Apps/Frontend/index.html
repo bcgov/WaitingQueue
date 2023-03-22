@@ -13,7 +13,12 @@
     <link href="/src/main.css" rel="stylesheet" />
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
-    <script type="module" src="./src/queue-poller.js"></script>
+    <script type="module" src="./dist/main.js"></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js?test=123"
+    ></script>
+    <script nomodule src="./dist/ie.js"></script>
   </head>
   <body>
     <header class="bc-header">
@@ -64,8 +69,9 @@
       </hgroup>
     </header>
     <main class="main">
-      <div class="content">
+      <div id="content" class="content">
         <queue-poller
+          id="poller"
           redirect-url="http://localhost:8000/redirect-test.html"
           room="HealthGateway"
           poll-url="/Ticket"
@@ -83,17 +89,12 @@
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
           Your current position in our queue is:
         </p>
-        <mark
-          ><div class="spinner" aria-hidden="true">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div></div
-        ></mark>
+        <mark><loading-spinner></loading-spinner></mark>
       </div>
     </template>
     <template id="redirect-template">
-      <div role="alert">
+      <div role="alert" class="container">
+        <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
         <h4>You're all set, redirecting...</h4>
       </div>
     </template>
@@ -103,7 +104,7 @@
           Demo Ministry Service is currently experiencing high demand which is
           causing delays.
         </h3>
-        <button class="btn-secondary">Retry</button>
+        <button data-retry class="btn-secondary">Retry</button>
       </div>
     </template>
   </body>

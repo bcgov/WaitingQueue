@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json.schemastore.org/swcrc",
+  "minify": true,
+  "env": {
+    "targets": "> 0.5%, not dead",
+    "mode": "entry"
+  }
+}

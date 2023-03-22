@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
     "checkJs": true,
-    "target": "esnext"
-  }
+    "lib": [
+      "DOM",
+      "ES6"
+    ],
+    "target": "esnext",
+    "rootDir": "."
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

@@ -14,10 +14,18 @@
     <link href="/src/main.css" rel="stylesheet" />
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
-    <script type="module" src="/src/queue-poller.js"></script>
+    <script type="module" src="/src/main.js"></script>
     <script type="module">
-      import { handleTokenRefresh } from "./src/queue-poller.js";
+      import { handleTokenRefresh } from "./src/main.js";
       handleTokenRefresh("/Ticket/check-in");
+    </script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js?test=123"
+    ></script>
+    <script nomodule src="./dist/ie.js"></script>
+    <script nomodule>
+      window.handleTokenRefresh("/Ticket/check-in");
     </script>
   </head>
   <body>
