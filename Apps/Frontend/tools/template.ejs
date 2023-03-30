@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
     <link href="/main.css?v=<%= data.version %>" rel="stylesheet" />
-    <% if (data.env === 'dev') { %> 
+    <% if (data.env === 'local') { %> 
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
     <% } %>
