@@ -17,10 +17,6 @@
     <% } %>
     <script type="module" src="/main.js?v=<%= data.version %>"></script>
     <% if (data.legacyBrowser) { %>
-    <script
-      nomodule
-      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"
-    ></script>
     <script nomodule src="/legacy.js?v=<%= data.version %>"></script>
     <% } %>
   </head>

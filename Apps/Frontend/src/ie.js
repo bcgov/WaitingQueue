@@ -1,4 +1,8 @@
-import "fetch-polyfill";
+import "core-js/features/object/entries";
+import "core-js/features/array/includes";
+import "url-polyfill";
+import "promise-polyfill/src/polyfill";
+import "whatwg-fetch";
 import {
   request,
   wait,
@@ -20,10 +24,10 @@ function updatePosition(json) {
   var timeout = json.checkInAfter * 1000 - Date.now();
 
   if (mark) {
-    mark.innerText = json.queuePosition.toString();
+    mark.innerText = json.queuePosition?.toString();
   }
 
-  wait(timeout).then(function () {
+  wait(timeout).then(function() {
     return refreshTicket(json);
   });
 }
@@ -47,7 +51,7 @@ function refreshTicket(json) {
       body,
       headers: { "Content-Type": "application/json" },
     },
-  }).then(function (json) {
+  }).then(function(json) {
     document.cookie = COOKIE_KEY + "=" + json.token;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
     if (json.queuePosition === 0) {
@@ -80,10 +84,11 @@ function init() {
       },
     })
       .then(updatePosition)
-      .catch(function () {
+      .catch(function(err) {
+        console.error(err);
         document.querySelector("button[data-retry]").addEventListener(
           "click",
-          function () {
+          function() {
             request({
               url,
               params: {

@@ -11,7 +11,12 @@
       rel="stylesheet"
     />
     <link href="/src/main.css" rel="stylesheet" />
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./dist/main.js"></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js?test=123"
+    ></script>
+    <script nomodule src="./dist/ie.js"></script>
   </head>
   <body>
     <header class="bc-header">
