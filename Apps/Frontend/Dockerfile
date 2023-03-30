@@ -1,8 +1,14 @@
-FROM nginxinc/nginx-unprivileged
-COPY ./ /usr/share/nginx/html
+FROM node:19.8.1-alpine3.16 AS BUILD
 
-# COPY package.json package.json
-# COPY package-lock.json package-lock.json
-# RUN npm install
-# COPY . .
-# CMD ["npm", "run", "build"]
+WORKDIR /source
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+RUN npm install
+COPY . .
+RUN npm run build
+
+##########
+## RUNTIME
+FROM nginxinc/nginx-unprivileged
+COPY --from=BUILD /source/dist /usr/share/nginx/html
+

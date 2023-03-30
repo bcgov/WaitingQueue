@@ -1,7 +1,4 @@
 **/.git
 Dockerfile
-package.json
-package-lock.json
 README.md
-rome.json
-*.json
+node_modules
