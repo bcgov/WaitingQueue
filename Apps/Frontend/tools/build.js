@@ -25,7 +25,6 @@ async function loadConfig() {
               version,
             },
           };
-          console.log(data);
           const html = ejs.render(template.toString(), data);
           const targetDir = path.join(process.cwd(), "dist", env, app, lang);
           await fs.mkdir(targetDir, {
