@@ -1,0 +1,41 @@
+ard: 
+  environments: 
+    dev: 
+      room: HealthGatewayDev
+      legacyBrowser: true
+      redirectUrl: /redirect-test.html
+      pollUrl: /Ticket
+      refreshUrl: /Ticket/check-in
+    prod: 
+      room: HealthGateway
+      legacyBrowser: true
+      redirectUrl: https://survey-bcstats.apps.gov.bc.ca/survey/cwx.cgi
+      pollUrl: https://tickets.healthgateway.gov.bc.ca/Ticket
+      refreshUrl: https://tickets.healthgateway.gov.bc.ca/Ticket/check-in
+    test:
+      room: HealthGatewayTest
+      legacyBrowser: true
+      redirectUrl: https://survey-bcstats-dev.apps.gov.bc.ca/survey/cwx.cgi
+      pollUrl: https://tickets.healthgateway.gov.bc.ca/Ticket
+      refreshUrl: https://tickets.healthgateway.gov.bc.ca/Ticket/check-in
+  locales:
+    - en:    
+        appName: Waiting Room
+        title: BC Demographic Survey
+        errorText: Something went wrong
+        componentFallbackText: You need JavaScript enabled to run this component
+        statusTitle: The Survey System is currently experiencing high demand and have placed you in a queue.
+        statusPositionText: "Your current position in our queue is:"
+        errorTitle: BC Demographic Survey is currently experiencing high demand which is causing delays.
+        errorRetryText: Retry
+        redirectText: You're all set, redirecting...
+    - fr:
+        appName: Le Waiting Room
+        title: Le BC Demographic Survey
+        errorText: Le Something went wrong
+        componentFallbackText: Le You need JavaScript enabled to run this component
+        statusTitle: Le The Survey System is currently experiencing high demand and have placed you in a queue.
+        statusPositionText: "Le Your current position in our queue is:"
+        errorTitle: Le BC Demographic Survey is currently experiencing high demand which is causing delays.
+        errorRetryText: Le Retry
+        redirectText: Le You're all set, redirecting...

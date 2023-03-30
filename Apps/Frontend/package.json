@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:main && npm run build:legacy && npm run build:styles",
+    "build": "npm run build:main && npm run build:legacy && npm run build:styles && node tools/build.js",
     "build:main": "esbuild src/main.js --outdir=dist --bundle --minify",
     "build:legacy": "npx spack && swc dist/legacy.js -d dist/",
     "build:styles": "esbuild src/main.css --outdir=dist --minify",
@@ -24,7 +24,9 @@
     "workerDirectory": "public"
   },
   "dependencies": {
+    "ejs": "^3.1.9",
     "fetch-polyfill": "^0.8.2",
-    "promise-polyfill": "^8.3.0"
+    "promise-polyfill": "^8.3.0",
+    "yaml": "^2.2.1"
   }
 }
