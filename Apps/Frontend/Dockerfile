@@ -11,4 +11,4 @@ RUN npm run build
 ## RUNTIME
 FROM nginxinc/nginx-unprivileged
 COPY --from=BUILD /source/dist /usr/share/nginx/html
-
+COPY health.html /usr/share/nginx/html/health.html
