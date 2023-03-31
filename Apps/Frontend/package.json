@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build:main && npm run build:legacy && npm run build:styles && node tools/build.js",
-    "build:main": "esbuild src/main.js --outdir=dist --bundle --minify",
+    "build:main": "esbuild src/main.js --outdir=dist --bundle --minify --format=esm",
     "build:legacy": "webpack",
     "build:styles": "esbuild src/main.css --outdir=dist --minify"
   },
