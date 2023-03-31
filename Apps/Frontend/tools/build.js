@@ -8,6 +8,9 @@ const { version } = require("../package.json");
 async function loadConfig() {
   const configFile = await fs.readFile("./config.yaml");
   const template = await fs.readFile("./tools/template.ejs");
+  const templateCallbackPage = await fs.readFile(
+    "./tools/template-callback.ejs"
+  );
   const parsedConfig = yaml.parse(configFile.toString());
   const applications = Object.entries(parsedConfig);
 
@@ -25,13 +28,18 @@ async function loadConfig() {
               version,
             },
           };
-          const html = ejs.render(template.toString(), data);
           const targetDir = path.join(process.cwd(), "dist", app, env, lang);
           await fs.mkdir(targetDir, {
             recursive: true,
           });
-          const filePath = path.join(targetDir, "index.html");
-          await fs.writeFile(filePath, html);
+          await fs.writeFile(
+            path.join(targetDir, "index.html"),
+            ejs.render(template.toString(), data)
+          );
+          await fs.writeFile(
+            path.join(targetDir, "refresh.html"),
+            ejs.render(templateCallbackPage.toString(), data)
+          );
         });
       });
     });
