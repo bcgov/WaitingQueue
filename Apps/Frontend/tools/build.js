@@ -11,6 +11,9 @@ async function loadConfig() {
   const templateCallbackPage = await fs.readFile(
     "./tools/template-callback.ejs"
   );
+  const templateRefreshScript = await fs.readFile(
+    "./tools/template-refresh.ejs"
+  );
   const parsedConfig = yaml.parse(configFile.toString());
   const applications = Object.entries(parsedConfig);
 
@@ -37,8 +40,12 @@ async function loadConfig() {
             ejs.render(template.toString(), data)
           );
           await fs.writeFile(
-            path.join(targetDir, "refresh.html"),
+            path.join(targetDir, "callback.html"),
             ejs.render(templateCallbackPage.toString(), data)
+          );
+          await fs.writeFile(
+            path.join(targetDir, "refresh.js"),
+            ejs.render(templateRefreshScript.toString(), data)
           );
         });
       });

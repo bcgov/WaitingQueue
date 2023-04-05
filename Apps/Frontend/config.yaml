@@ -4,8 +4,8 @@ ard:
       room: ARD
       legacyBrowser: true
       redirectUrl: https://survey-bcstats-dev.apps.gov.bc.ca/survey/cwx.cgi
-      pollUrl: https://tickets.healthgateway.gov.bc.ca/Ticket
-      refreshUrl: https://tickets.healthgateway.gov.bc.ca/Ticket/check-in
+      pollUrl: https://waitroom-dev.api.gov.bc.ca/Ticket
+      refreshUrl: https://waitroom-dev.api.gov.bc.ca/Ticket/check-in
   locales:
     - en:
         appName: Waiting Room
