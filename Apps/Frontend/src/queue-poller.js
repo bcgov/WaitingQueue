@@ -142,7 +142,7 @@ class QueuePoller extends HTMLElement {
     const redirectUrl = this.getAttribute("redirect-url");
     document.cookie = `${COOKIE_KEY}=${
       this.#ticket.token
-    }; path=/; HttpOnly; Secure; SameSite=Strict`;
+    }; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
