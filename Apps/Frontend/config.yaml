@@ -3,7 +3,7 @@ ard:
     dev:
       room: ARD
       legacyBrowser: true
-      redirectUrl: https://survey-bcstats-dev.apps.gov.bc.ca/survey
+      redirectUrl: https://survey-bcstats-dev.apps.gov.bc.ca
       pollUrl: https://waitroom-dev.api.gov.bc.ca/Ticket
       refreshUrl: https://waitroom-dev.api.gov.bc.ca/Ticket/check-in
   locales:

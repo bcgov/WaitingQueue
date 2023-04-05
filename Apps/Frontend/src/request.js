@@ -119,7 +119,7 @@ export async function refreshToken(ticket, refreshUrl) {
   });
 
   if (json) {
-    document.cookie = `${COOKIE_KEY}=${json.token}; path=/; Secure; SameSite=Strict`;
+    document.cookie = `${COOKIE_KEY}=${json.token}; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
 
     refreshToken(json, refreshUrl);

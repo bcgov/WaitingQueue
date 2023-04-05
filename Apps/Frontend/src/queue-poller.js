@@ -30,7 +30,7 @@ class QueuePoller extends HTMLElement {
   /** @type Error */
   #_error = null;
 
-  #redirectPath = null;
+  #queryParams = null;
 
   constructor() {
     super();
@@ -142,11 +142,11 @@ class QueuePoller extends HTMLElement {
     const redirectUrl = this.getAttribute("redirect-url");
     document.cookie = `${COOKIE_KEY}=${
       this.#ticket.token
-    }; path=/; Secure; SameSite=Strict`;
+    }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    location.assign(redirectUrl + this.#redirectPath);
+    location.assign(redirectUrl + this.#queryParams);
   };
 
   #setTimer = () => {
@@ -221,7 +221,7 @@ class QueuePoller extends HTMLElement {
   };
 
   render() {
-    this.#redirectPath = window.location.pathname + window.location.search;
+    this.#queryParams = window.location.search;
 
     if (this.#error) {
       this.renderError();
