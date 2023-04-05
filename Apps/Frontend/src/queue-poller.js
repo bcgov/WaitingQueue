@@ -30,7 +30,7 @@ class QueuePoller extends HTMLElement {
   /** @type Error */
   #_error = null;
 
-  #queryParams = null;
+  #redirectPath = null;
 
   constructor() {
     super();
@@ -146,7 +146,7 @@ class QueuePoller extends HTMLElement {
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    location.assign(redirectUrl + this.#queryParams);
+    location.assign(redirectUrl + this.#redirectPath);
   };
 
   #setTimer = () => {
@@ -221,7 +221,7 @@ class QueuePoller extends HTMLElement {
   };
 
   render() {
-    this.#queryParams = window.location.search;
+    this.#redirectPath = window.location.pathname + window.location.search;
 
     if (this.#error) {
       this.renderError();
