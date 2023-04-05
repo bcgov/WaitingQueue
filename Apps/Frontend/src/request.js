@@ -119,7 +119,7 @@ export async function refreshToken(ticket, refreshUrl) {
   });
 
   if (json) {
-    document.cookie = `${COOKIE_KEY}=${json.token}`;
+    document.cookie = `${COOKIE_KEY}=${json.token};path=/`;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
 
     refreshToken(json, refreshUrl);
