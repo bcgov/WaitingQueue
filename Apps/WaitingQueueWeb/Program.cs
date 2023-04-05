@@ -15,14 +15,11 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue
 {
-    using System;
     using BCGov.WaitingQueue.Configuration;
-    using BCGov.WaitingQueue.TicketManagement.Api;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Refit;
 
     /// <summary>
     /// Main entry.
@@ -49,12 +46,7 @@ namespace BCGov.WaitingQueue
             CorsConfiguration.ConfigureCors(services);
 
             // Add services
-            ServiceConfiguration.ConfigureServices(services);
-
-            // Add Refit APIs
-            Uri? baseUri = builder.Configuration.GetValue<Uri>("Keycloak:BaseUri");
-            builder.Services.AddRefitClient<IKeycloakApi>()
-                .ConfigureHttpClient(c => c.BaseAddress = baseUri);
+            ServiceConfiguration.ConfigureServices(services, configuration);
 
             // Add problem details
             ExceptionHandlingConfiguration.ConfigureProblemDetails(services, environment);

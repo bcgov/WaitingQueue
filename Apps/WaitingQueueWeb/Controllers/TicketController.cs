@@ -41,7 +41,7 @@ namespace BCGov.WaitingQueue.Controllers
         }
 
         /// <summary>
-        /// Request a ticket which either creates a ticket or puts the user in a waiting room.
+        /// Gets an existing ticket for the user.
         /// </summary>
         /// <returns>A ticket response when successful.</returns>
         /// <param name="room">The room to query.</param>

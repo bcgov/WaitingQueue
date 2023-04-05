@@ -13,38 +13,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
+namespace BCGov.WaitingQueue.TicketManagement.Issuers
 {
-    using System.Net;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents the Problem Details which will be sent out to the client.
+    /// Generic mechanism to generate signed tokens.
     /// </summary>
-    public class ProblemDetails
+    public interface ITokenIssuer
     {
         /// <summary>
-        /// Gets or sets problem type.
+        /// The default issuer to use.
         /// </summary>
-        public string ProblemType { get; set; } = null!;
+        public const string DefaultIssuer = "KeycloakIssuer";
 
         /// <summary>
-        /// Gets or sets detail.
+        /// Generates a signed token for the given room.
         /// </summary>
-        public string Detail { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets title.
-        /// </summary>
-        public string Title { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets instance.
-        /// </summary>
-        public string Instance { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets status code.
-        /// </summary>
-        public HttpStatusCode StatusCode { get; set; }
+        /// <param name="room">The room for token configuration.</param>
+        /// <returns>The encoded token and when it expires.</returns>
+        Task<(string Token, long Expires)> CreateTokenAsync(string room);
     }
 }

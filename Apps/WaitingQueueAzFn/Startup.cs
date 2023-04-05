@@ -24,8 +24,11 @@ using StackExchange.Redis;
 
 namespace WaitingRoom
 {
+    using System;
     using System.Reflection;
+    using BCGov.WaitingQueue.TicketManagement.Api;
     using BCGov.WebCommon.Delegates;
+    using Refit;
 
     /// <summary>
     /// Azure Function startup.
@@ -57,6 +60,11 @@ namespace WaitingRoom
             builder.Services.AddTransient<ITicketService, RedisTicketService>();
             builder.Services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             builder.Services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
+
+            // Add Refit APIs
+            Uri? baseUri = configuration.GetValue<Uri>("Keycloak:BaseUri");
+            builder.Services.AddRefitClient<IKeycloakApi>()
+                .ConfigureHttpClient(c => c.BaseAddress = baseUri);
         }
     }
 }

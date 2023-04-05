@@ -26,7 +26,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models.Keycloak
         /// Gets or sets the access token.
         /// </summary>
         [JsonPropertyName("access_token")]
-        required public string AccessToken { get; set; }
+        public string AccessToken { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the token expiration in seconds.

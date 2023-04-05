@@ -13,38 +13,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
+namespace BCGov.WaitingQueue.TicketManagement.Models
 {
-    using System.Net;
+    using System;
+    using System.Collections.Generic;
+    using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
 
     /// <summary>
-    /// Represents the Problem Details which will be sent out to the client.
+    /// Provides the configuration for the Keycloak issuer.
     /// </summary>
-    public class ProblemDetails
+    public class KeycloakIssuerOptions
     {
         /// <summary>
-        /// Gets or sets problem type.
+        /// Gets or sets the base URI to use to connect to the Keycloak server.
         /// </summary>
-        public string ProblemType { get; set; } = null!;
+        public Uri BaseUri { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets detail.
+        /// Gets the room based configuration of token requests for the issuer.
         /// </summary>
-        public string Detail { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets title.
-        /// </summary>
-        public string Title { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets instance.
-        /// </summary>
-        public string Instance { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets status code.
-        /// </summary>
-        public HttpStatusCode StatusCode { get; set; }
+        public Dictionary<string, TokenRequest> RoomConfiguration { get; init; } = null!;
     }
 }

@@ -4,15 +4,16 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
         <UserSecretsId>f23b8f4f-20e2-4ab0-a7ce-af57d1d4ed4b</UserSecretsId>
+        <RootNamespace>WaitingRoom</RootNamespace>
         <!-- need skip cleanup or code fails to load assembly Microsoft.IdentityModel.Protocols.OpenIdConnect -->
         <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.3" />
     </ItemGroup>
     <ItemGroup>

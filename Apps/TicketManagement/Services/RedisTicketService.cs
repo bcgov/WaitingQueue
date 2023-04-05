@@ -17,21 +17,18 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 {
     using System;
     using System.Diagnostics;
-    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
-    using BCGov.WaitingQueue.TicketManagement.Api;
     using BCGov.WaitingQueue.TicketManagement.Constants;
+    using BCGov.WaitingQueue.TicketManagement.Issuers;
     using BCGov.WaitingQueue.TicketManagement.Models;
-    using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
     using BCGov.WaitingQueue.TicketManagement.Validation;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using StackExchange.Redis;
-    using TicketRequest = BCGov.WaitingQueue.TicketManagement.Models.TicketRequest;
 
     /// <summary>
     /// A Redis implementation of the Ticket Service interface.
@@ -46,7 +43,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         private readonly IConfiguration configuration;
         private readonly IConnectionMultiplexer connectionMultiplexer;
         private readonly IDateTimeDelegate dateTimeDelegate;
-        private readonly IKeycloakApi keycloakApi;
+        private readonly ITokenIssuer tokenIssuer;
 
         private readonly OpenIdConnectProtocolValidator nonceGenerator = new();
 
@@ -57,19 +54,19 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <param name="configuration">The configuration provider.</param>
         /// <param name="connectionMultiplexer">The Redis connection multiplexer.</param>
         /// <param name="dateTimeDelegate">The datetime delegate.</param>
-        /// <param name="keycloakApi">The keycloak api.</param>
+        /// <param name="tokenIssuer">The token issuer.</param>
         public RedisTicketService(
             ILogger<RedisTicketService> logger,
             IConfiguration configuration,
             IConnectionMultiplexer connectionMultiplexer,
             IDateTimeDelegate dateTimeDelegate,
-            IKeycloakApi keycloakApi)
+            ITokenIssuer tokenIssuer)
         {
             this.logger = logger;
             this.configuration = configuration;
             this.connectionMultiplexer = connectionMultiplexer;
             this.dateTimeDelegate = dateTimeDelegate;
-            this.keycloakApi = keycloakApi;
+            this.tokenIssuer = tokenIssuer;
         }
 
         /// <inheritdoc />
@@ -80,10 +77,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, ticketRequest.Id)).ConfigureAwait(true);
-            TicketCheckin.ValidateRedisTicket(redisTicket);
+            CheckIn.ValidateRedisTicket(redisTicket);
 
             Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
-            TicketCheckin.ValidateTicket(ticket, ticketRequest.Nonce, utcUnixTime);
+            CheckIn.ValidateTicket(ticket, ticketRequest.Nonce, utcUnixTime);
 
             stopwatch.Stop();
             this.logger.LogDebug("GetTicketAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
@@ -102,13 +99,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
             RoomConfiguration? roomConfig = this.GetRoomConfiguration(room);
-            Validation.TicketRequest.ValidateRoomConfig(roomConfig);
+            Request.ValidateRoomConfig(roomConfig);
 
             Stopwatch stopwatch = new();
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
             (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig).ConfigureAwait(true);
-            Validation.TicketRequest.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
+            Request.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
 
             string member = ticket.Id.ToString();
             ITransaction trans;
@@ -196,19 +193,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             return $"{{{config.Name}}}:Ticket:{ticketId}";
         }
 
-        private async Task<(string Token, long Expires)> CreateJwtAsync(RoomConfiguration roomConfig)
-        {
-            Stopwatch stopwatch = new();
-            stopwatch.Start();
-            TokenResponse tokenResponse = await this.keycloakApi.AuthenticateAsync(roomConfig.TokenRequest).ConfigureAwait(true);
-            JwtSecurityTokenHandler handler = new();
-            JwtSecurityToken token = handler.ReadJwtToken(tokenResponse.AccessToken);
-            DateTimeOffset ticketExpiry = token.ValidTo;
-            stopwatch.Stop();
-            this.logger.LogDebug("CreateJwtAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
-            return (tokenResponse.AccessToken, ticketExpiry.ToUnixTimeSeconds());
-        }
-
         private async Task<(long ParticipantCount, long WaitingCount, long Position)> RoomCountsAsync(
             RoomConfiguration roomConfig,
             string? member = null)
@@ -261,7 +245,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             ticket.Nonce = this.nonceGenerator.GenerateNonce();
             if (ticket.Status == TicketStatus.Processed && ticket.CheckInAfter >= ticket.TokenExpires)
             {
-                (ticket.Token, ticket.TokenExpires) = await this.CreateJwtAsync(roomConfig).ConfigureAwait(true);
+                (ticket.Token, ticket.TokenExpires) = await this.tokenIssuer.CreateTokenAsync(roomConfig.Name).ConfigureAwait(true);
             }
 
             string ticketJson = JsonSerializer.Serialize(ticket);
