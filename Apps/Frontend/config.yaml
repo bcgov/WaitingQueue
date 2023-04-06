@@ -10,8 +10,8 @@ ard:
       room: ARD
       legacyBrowser: true
       redirectUrl: https://bcstats-test.apps.gov.bc.ca/i
-      pollUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket
-      refreshUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket/check-in
+      pollUrl: https://bcstats-waitroom-test.api.gov.bc.ca/Ticket
+      refreshUrl: https://bcstats-waitroom-test.api.gov.bc.ca/Ticket/check-in
     prod:
       room: ARD
       legacyBrowser: true
