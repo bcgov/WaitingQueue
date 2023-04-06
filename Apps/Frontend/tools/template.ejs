@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
     <link href="/main.css?v=<%= data.version %>" rel="stylesheet" />
-    <% if (data.env === 'local') { %> 
+    <% if (data.env === 'local') { %>
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
     <% } %>
@@ -65,7 +65,7 @@
           />
           <rect x="116.9" y="36.6" class="st3" width="0.6" height="0.6" />
         </svg>
-        <h2 class="bc-header__title">Demo Ministry Service</h2>
+        <h2 class="bc-header__title"><%= _.title %></h2>
       </hgroup>
     </header>
     <main class="main">
@@ -82,9 +82,7 @@
     </main>
     <template id="poller-template">
       <div class="container" role="status">
-        <h3>
-          <%= _.statusTitle %>
-        </h3>
+        <h3><%= _.statusTitle %></h3>
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
           <%= _.statusPositionText %>
         </p>
@@ -99,12 +97,11 @@
     </template>
     <template id="error-template">
       <div role="alert" class="container">
-        <h3>
-          <%= _.errorTitle %>
-        </h3>
-        <button data-retry class="btn-secondary"><%= _.errorButtonText %></button>
+        <h3><%= _.errorTitle %></h3>
+        <button data-retry class="btn-secondary">
+          <%= _.errorRetryText %>
+        </button>
       </div>
     </template>
   </body>
 </html>
-
