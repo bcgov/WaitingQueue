@@ -25,22 +25,22 @@ namespace BCGov.WaitingQueue.TicketManagement.ErrorHandling
         /// <summary>
         /// Gets or sets problem type.
         /// </summary>
-        public string ProblemType { get; set; } = null!;
+        public required string ProblemType { get; set; }
 
         /// <summary>
         /// Gets or sets detail.
         /// </summary>
-        public string Detail { get; set; } = null!;
+        public required string Detail { get; set; }
 
         /// <summary>
         /// Gets or sets title.
         /// </summary>
-        public string Title { get; set; } = null!;
+        public required string Title { get; set; }
 
         /// <summary>
         /// Gets or sets instance.
         /// </summary>
-        public string Instance { get; set; } = null!;
+        public required string Instance { get; set; }
 
         /// <summary>
         /// Gets or sets status code.
