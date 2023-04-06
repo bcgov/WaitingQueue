@@ -22,22 +22,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
     /// <summary>
     /// Configuration for a Room.
     /// </summary>
-    public class RoomConfiguration
+    public record RoomConfiguration
     {
         /// <summary>
         /// Gets or sets the name of the Room.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the signing private key.
-        /// </summary>
-        public string PrivateKey { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the issuer of the ticket.
-        /// </summary>
-        public string Issuer { get; set; } = string.Empty;
+        public required string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the frequency in seconds that the user must checkin.
@@ -78,10 +68,5 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// Gets or sets the maximum expired entries to remove at a time.
         /// </summary>
         public int RemoveExpiredMax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the properties to use to create the Token.
-        /// </summary>
-        public TokenRequest? TokenRequest { get; set; }
     }
 }

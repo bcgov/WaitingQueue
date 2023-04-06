@@ -13,6 +13,28 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 // -------------------------------------------------------------------------
-using System;
+namespace BCGov.WaitingQueue.TicketManagement.Models
+{
+    using System;
 
-[assembly: CLSCompliant(false)]
+    /// <summary>
+    /// Simple object to wrap properties required for a Ticket request.
+    /// </summary>
+    public class TicketRequest
+    {
+        /// <summary>
+        /// Gets or sets the Id used to retrieve the Token Response.
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the room.
+        /// </summary>
+        public string Room { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the Nonce that is used to validate the request.
+        /// </summary>
+        public string Nonce { get; set; } = null!;
+    }
+}

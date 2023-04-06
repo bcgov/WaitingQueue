@@ -16,25 +16,22 @@
 namespace BCGov.WaitingQueue.TicketManagement.Models
 {
     using System;
+    using System.Collections.Generic;
+    using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
 
     /// <summary>
-    /// Simple object to wrap properties required for a Token request.
+    /// Provides the configuration for the Keycloak issuer.
     /// </summary>
-    public class CheckInRequest
+    public record KeycloakIssuerOptions
     {
         /// <summary>
-        /// Gets or sets the Id used to retrieve the Token Response.
+        /// Gets or sets the base URI to use to connect to the Keycloak server.
         /// </summary>
-        public Guid Id { get; set; }
+        public required Uri BaseUri { get; set; }
 
         /// <summary>
-        /// Gets or sets the room.
+        /// Gets the room based configuration of token requests for the issuer.
         /// </summary>
-        public string Room { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets the Nonce that is used to validate the request.
-        /// </summary>
-        public string Nonce { get; set; } = null!;
+        public required Dictionary<string, TokenRequest> RoomConfiguration { get; init; }
     }
 }

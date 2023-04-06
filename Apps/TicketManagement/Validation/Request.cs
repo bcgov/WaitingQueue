@@ -22,7 +22,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
     /// <summary>
     /// Rules to check for ticket request.
     /// </summary>
-    public static class TicketRequest
+    public static class Request
     {
         /// <summary>
         /// Validate room configuration.
@@ -36,7 +36,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The requested room was not found.",
                     HttpStatusCode.NotFound,
-                    nameof(TicketRequest)));
+                    nameof(Request)));
             }
         }
 
@@ -53,7 +53,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The waiting queue has exceeded maximum capacity, try again later",
                     HttpStatusCode.ServiceUnavailable,
-                    nameof(TicketRequest)));
+                    nameof(Request)));
             }
         }
     }

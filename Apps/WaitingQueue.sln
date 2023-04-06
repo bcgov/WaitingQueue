@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingQueueWeb", "WaitingQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagement", "TicketManagement\TicketManagement.csproj", "{29574CB9-23B7-48EA-B95B-178B63130379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingRoom", "WaitingRoom\WaitingRoom.csproj", "{4DFFF6D4-5EA9-43E9-8738-25FCEDBF4A41}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCommon", "WebCommon\WebCommon.csproj", "{E1D78F39-7F34-423A-9755-7E5A7283248F}"
 EndProject
 Global

@@ -24,7 +24,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
     /// <summary>
     /// Rules to check for ticket checkin.
     /// </summary>
-    public static class TicketCheckin
+    public static class CheckIn
     {
         /// <summary>
         /// Validate redis ticket rules.
@@ -38,7 +38,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The supplied ticket id was invalid.",
                     HttpStatusCode.NotFound,
-                    nameof(TicketCheckin)));
+                    nameof(CheckIn)));
             }
         }
 
@@ -48,7 +48,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
         /// <param name="ticket">The ticket to validate.</param>
         /// <param name="nonce">The nonce to validate against.</param>
         /// <param name="utcUnixTime">The utc unix time to validate against.</param>
-        public static void ValidateTicket([NotNull]Ticket? ticket, string nonce, long utcUnixTime)
+        public static void ValidateTicket([NotNull]Ticket? ticket, string nonce, long? utcUnixTime = null)
         {
             if (ticket is null)
             {
@@ -56,7 +56,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "Unable to deserialize ticket.",
                     HttpStatusCode.InternalServerError,
-                    nameof(TicketCheckin)));
+                    nameof(CheckIn)));
             }
 
             if (ticket.Nonce != nonce)
@@ -65,16 +65,16 @@ namespace BCGov.WaitingQueue.TicketManagement.Validation
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The supplied ticket nonce was invalid.",
                     HttpStatusCode.NotFound,
-                    nameof(TicketCheckin)));
+                    nameof(CheckIn)));
             }
 
-            if (ticket.CheckInAfter > utcUnixTime)
+            if (utcUnixTime != null && ticket.CheckInAfter > utcUnixTime)
             {
                 // Too early
                 throw new ProblemDetailsException(ExceptionUtility.CreateProblemDetails(
                     "The check-in request was too early",
                     HttpStatusCode.PreconditionFailed,
-                    nameof(TicketCheckin)));
+                    nameof(CheckIn)));
             }
         }
     }
