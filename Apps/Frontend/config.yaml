@@ -6,6 +6,18 @@ ard:
       redirectUrl: https://bcstats-dev.apps.gov.bc.ca/i
       pollUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket
       refreshUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket/check-in
+    test:
+      room: ARD
+      legacyBrowser: true
+      redirectUrl: https://bcstats-test.apps.gov.bc.ca/i
+      pollUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket
+      refreshUrl: https://bcstats-waitroom-dev.api.gov.bc.ca/Ticket/check-in
+    prod:
+      room: ARD
+      legacyBrowser: true
+      redirectUrl: https://bcstats.apps.gov.bc.ca/i
+      pollUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket
+      refreshUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket/check-in
   locales:
     - en:
         appName: Waiting Room
