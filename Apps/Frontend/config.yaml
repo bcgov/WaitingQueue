@@ -18,6 +18,7 @@ ard:
       redirectUrl: https://bcstats.apps.gov.bc.ca/i
       pollUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket
       refreshUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket/check-in
+
   locales:
     - en:
         appName: Waiting Room
