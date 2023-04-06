@@ -22,16 +22,16 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
     /// <summary>
     /// Provides the configuration for the Keycloak issuer.
     /// </summary>
-    public class KeycloakIssuerOptions
+    public record KeycloakIssuerOptions
     {
         /// <summary>
         /// Gets or sets the base URI to use to connect to the Keycloak server.
         /// </summary>
-        public Uri BaseUri { get; set; } = null!;
+        public required Uri BaseUri { get; set; }
 
         /// <summary>
         /// Gets the room based configuration of token requests for the issuer.
         /// </summary>
-        public Dictionary<string, TokenRequest> RoomConfiguration { get; init; } = null!;
+        public required Dictionary<string, TokenRequest> RoomConfiguration { get; init; }
     }
 }

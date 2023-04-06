@@ -16,8 +16,11 @@
 namespace BCGov.WebCommon.Delegates
 {
     using System;
+    using System.Collections.Generic;
+    using System.Text.Json.Serialization;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Services;
 
     /// <summary>
     /// Wraps Ticket Management responses into reusable web responses.
@@ -69,5 +72,82 @@ namespace BCGov.WebCommon.Delegates
         /// <response code="200">The ticket returned.</response>
         /// <response code="404">The requested ticket was not found.</response>
         Task RemoveTicketAsync(TicketRequest ticketRequest);
+
+        /// <summary>
+        /// Gets the OIDC configuration for the given room.
+        /// </summary>
+        /// <param name="room">The room to lookup.</param>
+        /// <returns>The OIDC configuration.</returns>
+        OidcConfiguration? GetOidcConfiguration(string room);
+
+        /// <summary>
+        /// Returns a the JSON Web Keys for the given room.
+        /// </summary>
+        /// <param name="room">The room to lookup.</param>
+        /// <returns>The list of JsonWebTokens.</returns>
+        JsonWebKeys GetJsonWebKeys(string room);
+    }
+
+    /// <summary>
+    /// Represents the list of JSON Web Keys.
+    /// </summary>
+    public record JsonWebKeys
+    {
+        /// <summary>
+        /// Gets the list of keys.
+        /// </summary>
+        public IEnumerable<JsonWebKey> Keys { get; init; } = Array.Empty<JsonWebKey>();
+    }
+
+    /// <summary>
+    /// Represents a Json Web Key.
+    /// </summary>
+    public record JsonWebKey
+    {
+        /// <summary>
+        /// Gets the 'kid' (Key ID).
+        /// </summary>
+        public string Kid { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'kty' (Key Type).
+        /// </summary>
+        public string Kty { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'alg' (KeyType)..
+        /// </summary>
+        public string Alg { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'use' (Public Key Use).
+        /// </summary>
+        public string Use { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'n' (RSA - Modulus).
+        /// </summary>
+        public string N { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'e' (RSA - Exponent).
+        /// </summary>
+        public string E { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'x5c' collection (X.509 Certificate Chain).
+        /// </summary>
+        public IList<string> X5c { get; init; } = Array.Empty<string>();
+
+        /// <summary>
+        /// Gets the 'x5t' (X.509 Certificate SHA-1 thumbprint)..
+        /// </summary>
+        public string X5t { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Gets the 'x5t#S256' (X.509 Certificate SHA-1 thumbprint).
+        /// </summary>
+        [JsonPropertyName("x5t#S256")]
+        public string X5tS256 { get; init; } = string.Empty;
     }
 }

@@ -20,7 +20,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models.Keycloak
     /// <summary>
     /// The json web token model.
     /// </summary>
-    public class TokenResponse
+    public record TokenResponse
     {
         /// <summary>
         /// Gets or sets the access token.

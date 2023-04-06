@@ -18,6 +18,7 @@ namespace BCGov.WaitingQueue.Controllers
     using System;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Services;
     using BCGov.WebCommon.Delegates;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,37 @@ namespace BCGov.WaitingQueue.Controllers
         public TicketController(IWebTicketDelegate ticketDelegate)
         {
             this.ticketDelegate = ticketDelegate;
+        }
+
+        /// <summary>
+        /// Gets The Oidc Configuration for the given room.
+        /// </summary>
+        /// <param name="room">The room to get signing tokens for.</param>
+        /// <returns>The OIDC Configuration.</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("/{room}/.well-known/openid-configuration")]
+        public IActionResult GetOidcConfiguration([FromRoute] string room)
+        {
+            OidcConfiguration? config = this.ticketDelegate.GetOidcConfiguration(room);
+            if (config is null)
+            {
+                return this.BadRequest("OIDC Configuration not available.");
+            }
+
+            return this.Ok(config);
+        }
+
+        /// <summary>
+        /// Gets a list of signing keys for token validation.
+        /// </summary>
+        /// <param name="room">The room to get signing tokens for.</param>
+        /// <returns>The list of valid signing tokens.</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("/{room}/protocol/openid-connect/jwks")]
+        public IActionResult GetJwks([FromRoute] string room)
+        {
+            return this.Ok(this.ticketDelegate.GetJsonWebKeys(room));
         }
 
         /// <summary>

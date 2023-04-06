@@ -1,12 +1,12 @@
 <Project>
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <LangVersion>10.0</LangVersion>
+        <LangVersion>11.0</LangVersion>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
      	<WarningLevel>4</WarningLevel>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-      <NoWarn>CA1848</NoWarn>
+      <NoWarn>CA1848,SA1206</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis" Version="4.5.0" ExcludeAssets="All" />

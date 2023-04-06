@@ -31,7 +31,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Issuers
         /// Generates a signed token for the given room.
         /// </summary>
         /// <param name="room">The room for token configuration.</param>
+        /// <param name="ticketId">The id for the ticket.</param>
         /// <returns>The encoded token and when it expires.</returns>
-        Task<(string Token, long Expires)> CreateTokenAsync(string room);
+        Task<(string Token, long Expires)> CreateTokenAsync(string room, string ticketId);
     }
 }

@@ -20,7 +20,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models.Keycloak
     /// <summary>
     /// Properties used for OIDC Authentication flows.
     /// </summary>
-    public class TokenRequest
+    public record TokenRequest
     {
         /// <summary>
         /// Gets or sets the client id to use for authentication.

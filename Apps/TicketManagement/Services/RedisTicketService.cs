@@ -245,7 +245,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             ticket.Nonce = this.nonceGenerator.GenerateNonce();
             if (ticket.Status == TicketStatus.Processed && ticket.CheckInAfter >= ticket.TokenExpires)
             {
-                (ticket.Token, ticket.TokenExpires) = await this.tokenIssuer.CreateTokenAsync(roomConfig.Name).ConfigureAwait(true);
+                (ticket.Token, ticket.TokenExpires) = await this.tokenIssuer.CreateTokenAsync(roomConfig.Name, ticket.Id.ToString("D")).ConfigureAwait(true);
             }
 
             string ticketJson = JsonSerializer.Serialize(ticket);

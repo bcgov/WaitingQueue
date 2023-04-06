@@ -46,13 +46,13 @@ namespace BCGov.WaitingQueue.Configuration
             services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
 
-            string ticketIssuer = configuration.GetValue("ITokenIssuer", ITokenIssuer.DefaultIssuer)!;
+            string ticketIssuer = configuration.GetValue("TokenIssuer", ITokenIssuer.DefaultIssuer)!;
             string issuerTypeFullname = $"BCGov.WaitingQueue.TicketManagement.Issuers.{ticketIssuer}";
             Type issuerType = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic)
                 .SelectMany(a => a.GetTypes())
                 .FirstOrDefault(t => t.FullName != null && issuerTypeFullname.Equals(t.FullName, StringComparison.OrdinalIgnoreCase)) ?? throw new ConfigurationException($"Unknown token issuer: {issuerTypeFullname}");
-            services.AddTransient(typeof(ITokenIssuer), issuerType);
+            services.AddSingleton(typeof(ITokenIssuer), issuerType);
 
             // Dynamically add IOptions and other required dependencies
             switch (ticketIssuer)
@@ -66,9 +66,12 @@ namespace BCGov.WaitingQueue.Configuration
                         .ConfigureHttpClient(c => c.BaseAddress = issuerOptions.BaseUri);
                     break;
                 case "InternalIssuer":
+                    services.AddMemoryCache();
+                    services.AddSingleton(typeof(ISecurityService), issuerType);
+                    services.Configure<InternalIssuerOptions>(configuration.GetSection(ticketIssuer));
                     break;
                 default:
-                    throw new ArgumentException($"Unknown ticket issuer: {ticketIssuer}");
+                    throw new ConfigurationException($"Unknown token issuer: {ticketIssuer}");
             }
         }
     }

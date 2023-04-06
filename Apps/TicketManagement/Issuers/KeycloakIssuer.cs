@@ -24,6 +24,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Issuers
     using BCGov.WaitingQueue.TicketManagement.Models.Keycloak;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
 
     /// <summary>
     /// Generates signed tokens using Keycloak APIs.
@@ -48,7 +49,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Issuers
         }
 
         /// <inheritdoc />
-        public async Task<(string Token, long Expires)> CreateTokenAsync(string room)
+        public async Task<(string Token, long Expires)> CreateTokenAsync(string room, string ticketId)
         {
             Stopwatch stopwatch = new();
             stopwatch.Start();
@@ -58,7 +59,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Issuers
             JwtSecurityToken token = handler.ReadJwtToken(tokenResponse.AccessToken);
             DateTimeOffset ticketExpiry = token.ValidTo;
             stopwatch.Stop();
-            this.logger.LogDebug("CreateJwtAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
+            this.logger.LogDebug("CreateToken Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return (tokenResponse.AccessToken, ticketExpiry.ToUnixTimeSeconds());
         }
     }
