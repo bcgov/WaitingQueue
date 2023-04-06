@@ -8,7 +8,7 @@ RUN dotnet tool install --tool-path /tools dotnet-dump
 
 WORKDIR /src
 
-COPY ["stylecop.json", "global.json", ".editorconfig", "./"]
+COPY ["Directory.Build.props", "stylecop.json", "global.json", ".editorconfig", "./"]
 COPY ["WaitingQueueWeb/WaitingQueueWeb.csproj", "./WaitingQueueWeb/"]
 COPY ["WebCommon/WebCommon.csproj", "./WebCommon/"]
 COPY ["TicketManagement/TicketManagement.csproj", "./TicketManagement/"]
