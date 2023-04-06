@@ -20,8 +20,8 @@ class WaitingRoom(HttpUser):
 
       documents = [
         "/",
-        "/src/main.css",
-        "/src/queue-poller.js"
+        "/main.css",
+        "/main.js"
       ]
 
       try:
@@ -41,6 +41,11 @@ class WaitingRoom(HttpUser):
             busy = busy + 1
             print("[%d] Exceeded capacity - sleeping 10 seconds" % busy)
             time.sleep(10)
+          elif response.status_code == 429:
+            busy = busy + 1
+            wait_t = random.uniform(0, 2)
+            print("[%d] Too Many Requests - sleeping %f seconds" % (busy, wait_t))
+            time.sleep(wait_t)
           else:
             attempts = 1
             while True:
@@ -59,7 +64,7 @@ class WaitingRoom(HttpUser):
                 attempts = attempts + 1
 
                 wait_t = ticket["checkInAfter"] - time.time()
-                print("[%d] Wait for %d seconds" % (attempts, wait_t))
+                print("[%d] Wait for %f seconds" % (attempts, wait_t))
                 time.sleep(wait_t)
 
                 data = {
