@@ -51,11 +51,8 @@ namespace BCGov.WaitingQueue.Configuration
         /// <param name="app">The web application to use.</param>
         public static void UseSwagger(WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
     }
 }
