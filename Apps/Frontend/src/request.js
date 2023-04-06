@@ -135,8 +135,9 @@ export async function handleTokenRefresh(refreshUrl) {
     /** @type Ticket */
     const ticket = JSON.parse(cached);
     await refreshToken(ticket, refreshUrl);
-  } catch {
+  } catch (err) {
     // TODO: When there is a standard design for this page, handle error messaging in a more helpful way
+    console.error(err.message);
     const div = document.createElement("div");
     div.innerText = "Unauthorized WR0001";
     document.body.insertBefore(div, document.body.firstChild);
