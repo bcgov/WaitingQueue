@@ -30,6 +30,30 @@
 export const STORAGE_KEY = "queue-poller.cached";
 export const COOKIE_KEY = "WAITINGROOM";
 
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+async function fetchAndRetryIfNecessary(apiURL, requestOptions, delay = 1) {
+  while (true) {
+    const response = await fetch(apiURL, requestOptions);
+    if (response.status === 429) {
+      const waitMS = getRandomArbitrary(
+        delay * 1000 * 0.75,
+        delay * 1000 * 1.25
+      );
+      console.warn("[429] Retry in " + waitMS + " milliseconds..");
+      await wait(waitMS);
+      delay = delay * 2;
+      if (delay >= 64) {
+        return response;
+      }
+    } else {
+      return response;
+    }
+  }
+}
+
 /**
  * A simple promise-based timeout
  *
@@ -63,7 +87,7 @@ export async function request(input) {
       });
     }
 
-    const req = await fetch(composedUrl, fetchOptions);
+    const req = await fetchAndRetryIfNecessary(composedUrl, fetchOptions);
 
     if (!req.ok) {
       let error = req.statusText;
