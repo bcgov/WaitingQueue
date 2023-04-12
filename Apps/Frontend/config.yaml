@@ -20,7 +20,7 @@ ard:
       refreshUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket/check-in
 
   locales:
-    - en:
+    - en-ca:
         appName: Waiting Room
         title: BC Demographic Survey
         errorText: Something went wrong
@@ -52,7 +52,7 @@ sample:
       pollUrl: https://tickets.healthgateway.gov.bc.ca/Ticket
       refreshUrl: https://tickets.healthgateway.gov.bc.ca/Ticket/check-in
   locales:
-    - en:
+    - en-ca:
         appName: Waiting Room
         title: BC Demographic Survey
         errorText: Something went wrong
@@ -62,7 +62,7 @@ sample:
         errorTitle: BC Demographic Survey is currently experiencing high demand which is causing delays.
         errorRetryText: Retry
         redirectText: You're all set, redirecting...
-    - fr:
+    - fr-ca:
         appName: Le Waiting Room
         title: Le BC Demographic Survey
         errorText: Le Something went wrong

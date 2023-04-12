@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tests</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="fixture"></div>
+    <template id="poller-template">
+      <div>
+        <h3>
+          Demo Ministry Service is busier than normal at this moment. We have
+          placed you in a queue.
+        </h3>
+        <p>Your position in the queue: <mark>-</mark></p>
+        <p data-loading-text="">idle</p>
+      </div>
+    </template>
+    <template id="redirect-template">
+      <h4>You're all set, redirecting...</h4>
+    </template>
+    <template id="error-template">
+      <div role="alert" class="error">
+        <h3>Can't access Demo Ministry Service.</h3>
+        <p>Please try again later.</p>
+      </div>
+    </template>
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
+    <div id="mocha"></div>
+
+    <script type="module">
+      mocha.setup("bdd");
+      mocha.checkLeaks();
+      const { assert } = chai;
+      import { findUserLanguage } from "./src/lang.js";
+
+      describe("#findUserLanguage", () => {
+        it("should pass language and region", () => {
+          const supported = ["en-CA", "fr-CA"];
+          assert.equal(findUserLanguage("en-CA", supported), "en-CA");
+          assert.equal(findUserLanguage("fr-CA", supported), "fr-CA");
+        });
+
+        it("should pass language only", () => {
+          assert.equal(findUserLanguage("en", ["en-CA", "fr-CA"]), "en-CA");
+          assert.equal(findUserLanguage("fr", ["en-CA", "fr-CA"]), "fr-CA");
+        });
+
+        it("should try and match language only when region isn't supported", () => {
+          assert.equal(findUserLanguage("en-US", ["en-CA", "fr-CA"]), "en-CA");
+        });
+
+        it("should fail when language is unsupported", () => {
+          assert.equal(findUserLanguage("de", ["en-CA", "fr-CA"]), undefined);
+        });
+      });
+      mocha.run();
+    </script>
+  </body>
+</html>
