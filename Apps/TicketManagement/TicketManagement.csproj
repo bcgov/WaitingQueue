@@ -11,7 +11,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
         <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.28.1" />
         <PackageReference Include="Refit" Version="6.3.2" />
-        <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="6.5.1" />
         <PackageReference Include="StackExchange.Redis" Version="2.6.104" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
     </ItemGroup>
