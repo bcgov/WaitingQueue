@@ -121,6 +121,7 @@ h4 {
 
 .content {
   max-width: 880px;
+  padding: 0 2rem;
 }
 
 .container {
@@ -231,4 +232,10 @@ mark {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 30em) {
+  h2 {
+    font-size: 1em;
+  }
 }

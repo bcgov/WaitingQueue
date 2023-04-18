@@ -16,7 +16,10 @@
     </script>
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
-    <script type="module" src="./src/main.js"></script>
+    <script
+      type="module"
+      src="http://localhost:8002/main.js?hash=123123&redirectUrl=/Ticket/check-in"
+    ></script>
     <script
       nomodule
       src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"
@@ -73,14 +76,14 @@
     </header>
     <main class="main">
       <div id="content" class="content">
+        <noscript> You need JavaScript enabled to run this component </noscript>
         <queue-poller
           id="poller"
-          redirect-url="http://localhost:8000/redirect-test.html"
+          redirect-url="/"
           room="HealthGateway"
           poll-url="/Ticket"
           refresh-url="/Ticket/check-in"
-          >You need JavaScript enabled to run this component</queue-poller
-        >
+        ></queue-poller>
       </div>
     </main>
     <template id="poller-template">

@@ -3,6 +3,7 @@
   <head>
     <title><%= _.title %> - <%= _.appName %></title>
     <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,14 +11,14 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link href="/main.css?v=<%= data.version %>" rel="stylesheet" />
+    <link href="/main.css?v=<%= data.hash %>" rel="stylesheet" />
     <% if (data.env === 'local') { %>
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
     <% } %>
-    <script type="module" src="/main.js?v=<%= data.version %>"></script>
+    <script type="module" src="/main.js?v=<%= data.hash %>"></script>
     <% if (data.legacyBrowser) { %>
-    <script nomodule src="/legacy.js?v=<%= data.version %>"></script>
+    <script nomodule src="/legacy.js?v=<%= data.hash %>"></script>
     <% } %>
   </head>
   <body>
@@ -70,13 +71,14 @@
     </header>
     <main class="main">
       <div id="content" class="content">
+        <noscript><%= _.componentFallbackText %></noscript>
         <queue-poller
           id="poller"
           redirect-url="<%= data.redirectUrl %>"
           room="<%= data.room %>"
           poll-url="<%= data.pollUrl %>"
           refresh-url="<%= data.refreshUrl %>"
-          ><%= _.componentFallbackText %></queue-poller
+          ></queue-poller
         >
       </div>
     </main>

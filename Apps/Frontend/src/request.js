@@ -81,8 +81,7 @@ export async function request(input) {
     const composedUrl = new URL(url, location.href);
 
     if (params) {
-      Object.entries(params).forEach((p) => {
-        const [key, value] = p;
+      Object.entries(params).forEach(([key, value]) => {
         composedUrl.searchParams.append(key, value);
       });
     }
@@ -151,6 +150,7 @@ export async function refreshToken(ticket, refreshUrl) {
 }
 
 /**
+ * Start a refresh token request for use on redirect callback pages
  * @param {string} refreshUrl
  */
 export async function handleTokenRefresh(refreshUrl) {

@@ -19,9 +19,9 @@ import {
  * @param {Ticket} json
  */
 function updatePosition(json) {
-  var content = document.getElementById("content");
-  var mark = content.getElementsByTagName("mark")[0];
-  var timeout = json.checkInAfter * 1000 - Date.now();
+  const content = document.getElementById("content");
+  const mark = content.getElementsByTagName("mark")[0];
+  const timeout = json.checkInAfter * 1000 - Date.now();
 
   if (mark) {
     mark.innerText = json.queuePosition?.toString();
@@ -36,9 +36,9 @@ function updatePosition(json) {
  * @param {Ticket} json
  */
 function refreshTicket(json) {
-  var queuePoller = document.getElementById("poller");
-  var url = queuePoller.getAttribute("refresh-url");
-  var body = JSON.stringify({
+  const queuePoller = document.getElementById("poller");
+  const url = queuePoller.getAttribute("refresh-url");
+  const body = JSON.stringify({
     id: json.id,
     nonce: json.nonce,
     room: json.room,
