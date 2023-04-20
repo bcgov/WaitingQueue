@@ -51,18 +51,9 @@ async function loadConfig() {
           );
 
           // Refresh script
-          const templateRefreshScript = await fs.readFile("./src/refresh.js");
-          const refresh = await esbuild.transform(templateRefreshScript, {
-            define: { NEW_URL: `'"${data.data.refreshUrl}"'` },
-          });
           await esbuild.build({
             entryPoints: ["./src/refresh.js"],
-            // stdin: {
-            //   contents: refresh.code,
-            //   sourcefile: "refresh.js",
-            //   resolveDir: "./src",
-            // },
-            define: { NEW_URL: `'"${data.data.refreshUrl}"'` },
+            define: { NEW_URL: `"${data.data.refreshUrl}"` },
             bundle: true,
             minify: true,
             format: "esm",
