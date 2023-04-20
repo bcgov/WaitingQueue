@@ -160,6 +160,8 @@ mark loading-spinner {
   height: 44px;
   color: var(--bc-colors-blue-alt);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
 }
 
 .btn-secondary:hover {

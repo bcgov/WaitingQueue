@@ -7,7 +7,7 @@
  */
 export function findUserLanguage(preferredLanguage, supportedLanguages) {
   const preferred = preferredLanguage.toLowerCase();
-  const languageSupported = supportedLanguages.find((l) => {
+  const languageSupported = supportedLanguages?.find((l) => {
     // strict match, language or <language>-<region>
     if (preferred === l.toLowerCase()) {
       return true;
@@ -29,7 +29,7 @@ export function findUserLanguage(preferredLanguage, supportedLanguages) {
 export function checkLanguage() {
   const userLanguage = navigator.language;
   /** @type string[] */
-  const supportedLanguages = globalThis.supportedLanguages;
+  const supportedLanguages = globalThis.supportedLanguages ?? [];
   const language = findUserLanguage(userLanguage, supportedLanguages);
   const currentLanguage = document.querySelector("html")?.getAttribute("lang");
 

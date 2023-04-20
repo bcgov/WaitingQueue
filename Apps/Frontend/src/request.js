@@ -30,19 +30,29 @@
 export const STORAGE_KEY = "queue-poller.cached";
 export const COOKIE_KEY = "WAITINGROOM";
 
+/**
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-async function fetchAndRetryIfNecessary(apiURL, requestOptions, delay = 1) {
+/**
+ * @param {Request} request
+ * @param {number} delay
+ * @returns {Promise<Response>}
+ */
+async function fetchAndRetryIfNecessary(request, delay = 1) {
   while (true) {
-    const response = await fetch(apiURL, requestOptions);
+    const response = await fetch(request);
     if (response.status === 429) {
       const waitMS = getRandomArbitrary(
         delay * 1000 * 0.75,
         delay * 1000 * 1.25
       );
-      console.warn("[429] Retry in " + waitMS + " milliseconds..");
+      console.warn(`[429] Retry in ${waitMS} milliseconds..`);
       await wait(waitMS);
       delay = delay * 2;
       if (delay >= 64) {
@@ -86,7 +96,8 @@ export async function request(input) {
       });
     }
 
-    const req = await fetchAndRetryIfNecessary(composedUrl, fetchOptions);
+    const settings = new Request(composedUrl, fetchOptions);
+    const req = await fetchAndRetryIfNecessary(settings);
 
     if (!req.ok) {
       let error = req.statusText;

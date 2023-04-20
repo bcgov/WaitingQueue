@@ -30,22 +30,20 @@ class QueuePoller extends HTMLElement {
   /** @type Error */
   #_error = null;
 
-  #redirectPath = null;
-
   constructor() {
     super();
-    this.innerText = "Loading...";
+    this.innerText = "";
   }
 
   connectedCallback() {
     const cached = localStorage.getItem(STORAGE_KEY);
-    this.replaceChildren(pollTemplate.content.cloneNode(true));
 
     if (cached) {
       /** @type Ticket */
       const ticket = JSON.parse(cached);
       // If the cached ticket is processed, restart
       if (ticket.status !== "Processed") {
+        this.render();
         this.#ticket = ticket;
         return;
       }
@@ -53,6 +51,7 @@ class QueuePoller extends HTMLElement {
     }
 
     this.#fetchTicket().then((ticket) => {
+      this.render();
       this.#ticket = ticket;
     });
   }
@@ -139,14 +138,20 @@ class QueuePoller extends HTMLElement {
   };
 
   #handleProcessed = async () => {
-    const redirectUrl = this.getAttribute("redirect-url");
-    document.cookie = `${COOKIE_KEY}=${
-      this.#ticket.token
-    }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
+    const currentUrl = new URL(location.href);
+    const redirectUrl = new URL(this.getAttribute("redirect-url"));
+    redirectUrl.pathname = (
+      redirectUrl.pathname + currentUrl.pathname
+    ).replaceAll(/\/{2,}/g, "/");
+    currentUrl.searchParams.forEach((value, key) => {
+      redirectUrl.searchParams.append(key, value);
+    });
+    document.cookie = `${COOKIE_KEY}=${this.#ticket.token
+      }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    location.assign(redirectUrl + this.#redirectPath);
+    location.assign(redirectUrl);
   };
 
   #setTimer = () => {
@@ -221,7 +226,7 @@ class QueuePoller extends HTMLElement {
   };
 
   render() {
-    this.#redirectPath = window.location.pathname + window.location.search;
+    this.replaceChildren(pollTemplate.content.cloneNode(true));
 
     if (this.#error) {
       this.renderError();
