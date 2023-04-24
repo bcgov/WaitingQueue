@@ -146,8 +146,9 @@ class QueuePoller extends HTMLElement {
     currentUrl.searchParams.forEach((value, key) => {
       redirectUrl.searchParams.append(key, value);
     });
-    document.cookie = `${COOKIE_KEY}=${this.#ticket.token
-      }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
+    document.cookie = `${COOKIE_KEY}=${
+      this.#ticket.token
+    }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
     this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));

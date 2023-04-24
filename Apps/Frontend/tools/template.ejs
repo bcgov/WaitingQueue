@@ -16,6 +16,9 @@
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
     <% } %>
+    <script type="text/javascript">
+      window.supportedLanuages = [<%- data.supportedLanguages %>];
+    </script>
     <script type="module" src="/main.js?v=<%= data.hash %>"></script>
     <% if (data.legacyBrowser) { %>
     <script nomodule src="/legacy.js?v=<%= data.hash %>"></script>

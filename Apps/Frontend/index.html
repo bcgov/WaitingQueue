@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-ca">
+<html lang="en">
   <head>
     <title>WaitingQueue</title>
     <meta charset="UTF-8" />
@@ -11,17 +11,21 @@
       rel="stylesheet"
     />
     <link href="/src/main.css" rel="stylesheet" />
-    <script>
-      window.supportedLanguages = ["en-ca", "fr-ca", "en-us"];
-    </script>
+    <link href="/src/main.css" rel="stylesheet" />
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
     <script type="module" src="/src/mocks/handlers.js"></script>
-    <script type="module" src="/src/main.js"></script>
+    <script>
+      window.NEW_URL = "/Ticket/check-in";
+    </script>
+    <script type="module" src="/src/refresh.js"></script>
     <script
       nomodule
-      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"
+      src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js?test=123"
     ></script>
-    <script nomodule src="./dist/legacy.js"></script>
+    <script nomodule src="./dist/ie.js"></script>
+    <script nomodule>
+      window.handleTokenRefresh("/Ticket/check-in");
+    </script>
   </head>
   <body>
     <header class="bc-header">
@@ -70,45 +74,23 @@
         </svg>
         <h2 class="bc-header__title">Demo Ministry Service</h2>
       </hgroup>
+      <hgroup>Help</hgroup>
     </header>
     <main class="main">
-      <div id="content" class="content">
-        <noscript> You need JavaScript enabled to run this component </noscript>
-        <queue-poller
-          id="poller"
-          redirect-url="http://localhost:8000/redirect-test.html"
-          room="HealthGateway"
-          poll-url="/Ticket"
-          refresh-url="/Ticket/check-in"
-        ></queue-poller>
+      <div class="content">
+        <h1>Demo Ministry Survey</h1>
+        <p style="margin-bottom: 20px">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
+          laudantium nobis, ratione perferendis quas saepe aperiam totam beatae,
+          obcaecati quaerat ad? Blanditiis neque quo expedita harum deserunt
+          necessitatibus, a accusantium!
+        </p>
+        <div>
+          <p>
+            <a href="/queue.html" class="btn-secondary">Start the survey</a>
+          </p>
+        </div>
       </div>
     </main>
-    <template id="poller-template">
-      <div class="container" role="status">
-        <h3>
-          Demo Ministry Service is currently experiencing high demand and have
-          placed you in a queue.
-        </h3>
-        <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
-          Your current position in our queue is:
-        </p>
-        <mark><loading-spinner></loading-spinner></mark>
-      </div>
-    </template>
-    <template id="redirect-template">
-      <div role="alert" class="container">
-        <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
-        <h4>You're all set, redirecting...</h4>
-      </div>
-    </template>
-    <template id="error-template">
-      <div role="alert" class="container">
-        <h3>
-          Demo Ministry Service is currently experiencing high demand which is
-          causing delays.
-        </h3>
-        <button data-retry class="btn-secondary">Retry</button>
-      </div>
-    </template>
   </body>
 </html>
