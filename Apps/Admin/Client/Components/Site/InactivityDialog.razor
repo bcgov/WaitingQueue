@@ -1,0 +1,19 @@
+@using Button = BCGov.WaitingQueue.Admin.Client.Components.Common.WqaButton
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Are you still there?</MudText>
+    </TitleContent>
+    <DialogContent>
+        You will be automatically logged out in @CountdownTicksRemaining @(CountdownTicksRemaining == 1 ? "second" : "seconds").
+    </DialogContent>
+    <DialogActions>
+        <WqaButton
+            RightMargin="Breakpoint.Always"
+            BottomMargin="Breakpoint.Always"
+            OnClick="HandleClick">
+            I'm here!
+        </WqaButton>
+    </DialogActions>
+</MudDialog>
