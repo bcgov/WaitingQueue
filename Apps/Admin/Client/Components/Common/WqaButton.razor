@@ -1,0 +1,23 @@
+@inherits BCGov.WaitingQueue.Admin.Client.Components.Common.ComponentBase
+
+<MudButton Class="@CombinedClass"
+           Style="@Style"
+           Tag="@Tag"
+           Variant="@Variant"
+           Color="@Color"
+           OnClick="@OnClick"
+           Disabled="@Loading"
+           @attributes="@UnmatchedAttributes">
+    @if (Loading)
+    {
+        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+        if (LoadingContent != null)
+        {
+            @LoadingContent
+        }
+    }
+    else
+    {
+        @ChildContent
+    }
+</MudButton>

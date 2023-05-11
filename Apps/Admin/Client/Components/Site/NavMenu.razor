@@ -1,0 +1,12 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<MudNavMenu>
+    <AuthorizeView Roles="@($"{Roles.Admin}")">
+        <MudNavLink Href="room-config" Icon="fas fa-glass-water">Rooms</MudNavLink>
+    </AuthorizeView>
+    <AuthorizeView Roles="@($"{Roles.Admin}")">
+        <MudNavLink Href="admin" Icon="fas fa-screwdriver-wrench">Administration</MudNavLink>
+    </AuthorizeView>
+    <MudSpacer />
+    <MudSpacer />
+</MudNavMenu>

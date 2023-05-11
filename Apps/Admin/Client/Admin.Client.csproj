@@ -1,0 +1,90 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <RootNamespace>BCGov.WaitingQueue.Admin.Client</RootNamespace>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Admin' ">
+        <ExternalConsole>true</ExternalConsole>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+        <PackageReference Include="Blazored.TextEditor" Version="1.0.8" />
+        <PackageReference Include="Fluxor" Version="5.7.0" />
+        <PackageReference Include="Fluxor.Blazor.Web" Version="5.7.0" />
+        <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="5.7.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
+        <PackageReference Include="MudBlazor" Version="6.2.2" />
+        <PackageReference Include="Refit" Version="6.3.2" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="../../stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Common/Admin.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Api\" />
+        <Folder Include="Models\" />
+        <Folder Include="wwwroot\fonts\" />
+        <Folder Include="Authorization\" />
+        <Folder Include="Theme\" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Authorization\" />
+        <None Remove="Pages\" />
+        <None Remove="Services\" />
+        <None Remove="Store\" />
+        <None Remove="Theme\" />
+        <None Include="wwwroot\images\health-gateway-logo.svg" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Update="wwwroot\appsettings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\appsettings.Development.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Alerts.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Chips.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\ExpansionPanels.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Forms.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\LinksAndButtons.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\MessageBox.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Pagination.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\PaperAndCards.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Tabs.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\ToolBar.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Showcase\Typography.razor" />
+      <_ContentIncludedByDefault Remove="Components\Support\MessageVerificationTable.razor" />
+      <_ContentIncludedByDefault Remove="Components\Communications\BroadcastDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Communications\BroadcastsTable.razor" />
+      <_ContentIncludedByDefault Remove="Components\Communications\CommunicationDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Communications\CommunicationsTable.razor" />
+      <_ContentIncludedByDefault Remove="Components\Dashboard\RatingSummary.razor" />
+      <_ContentIncludedByDefault Remove="Components\Delegation\DelegateDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Delegation\DelegateTable.razor" />
+      <_ContentIncludedByDefault Remove="Components\Delegation\DelegationChangeEntry.razor" />
+      <_ContentIncludedByDefault Remove="Components\Delegation\DelegationConfirmationDialog.razor" />
+      <_ContentIncludedByDefault Remove="Components\Delegation\DependentTable.razor" />
+    </ItemGroup>
+</Project>
