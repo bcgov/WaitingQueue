@@ -9,15 +9,15 @@ RUN dotnet tool install --tool-path /tools dotnet-dump
 WORKDIR /src
 
 COPY ["Directory.Build.props", "stylecop.json", "global.json", ".editorconfig", "./"]
-COPY ["Client/Admin.Client.csproj", "./Client/"]
-COPY ["Common/Admin.Common.csproj", "./Common/"]
-COPY ["Server/Admin.Server.csproj", "./Server/"]
+COPY ["Admin/Client/Admin.Client.csproj", "./Admin/Client/"]
+COPY ["Admin/Common/Admin.Common.csproj", "./Admin/Common/"]
+COPY ["Admin/Server/Admin.Server.csproj", "./Admin/Server/"]
 
-RUN dotnet restore "Server/Admin.Server.csproj"
+RUN dotnet restore "Admin/Server/Admin.Server.csproj"
 COPY . .
 
 # Publish the main project
-RUN dotnet publish "Server/Admin.Server.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Admin/Server/Admin.Server.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Debian image
 #FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base

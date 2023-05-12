@@ -14,6 +14,6 @@ jobs:
     uses: ./.github/workflows/cd-template.yml
     secrets: inherit
     with:
-      DOCKER_CONTEXT: Apps/Admin
+      DOCKER_CONTEXT: Apps
       DOCKER_FILE: Apps/Admin/Dockerfile
       DOCKER_IMAGE_NAME: admin
