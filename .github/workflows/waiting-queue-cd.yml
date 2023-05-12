@@ -5,7 +5,10 @@ on:
     branches:
       - main
     paths:
-      - Apps/**
+      - Apps/*
+      - Apps/WebCommon/**
+      - Apps/TicketManagement/**
+      - Apps/WaitingQueueWeb/**
       - .github/workflows/waiting-queue-cd.yml
       - .github/workflows/cd-template.yml
 

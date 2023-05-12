@@ -1,0 +1,19 @@
+name: admin-cd
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Apps/Admin/**
+      - .github/workflows/admin-cd.yml
+      - .github/workflows/cd-template.yml
+
+jobs:
+  CD:
+    uses: ./.github/workflows/cd-template.yml
+    secrets: inherit
+    with:
+      DOCKER_CONTEXT: Apps/Admin
+      DOCKER_FILE: Apps/Admin/Dockerfile
+      DOCKER_IMAGE_NAME: admin
