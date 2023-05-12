@@ -1,14 +1,11 @@
-name: waiting-queue-ci
+name: admin-ci
 
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
     paths:
-      - Apps/*
-      - Apps/WebCommon/**
-      - Apps/TicketManagement/**
-      - Apps/WaitingQueueWeb/**
-      - .github/workflows/waiting-queue-ci.yml
+      - Apps/Admin/**
+      - .github/workflows/admin-ci.yml
       - .github/workflows/ci-template.yml
 
 jobs:
@@ -16,4 +13,4 @@ jobs:
     uses: ./.github/workflows/ci-template.yml
     with:
       DOCKER_CONTEXT: Apps
-      DOCKER_FILE: Apps/Dockerfile
+      DOCKER_FILE: Apps/Admin/Dockerfile
