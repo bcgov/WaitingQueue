@@ -5,7 +5,8 @@ const TICKET_INTERVAL = 5;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
-/** @param {number} status
+/**
+ * @param {number} status
  * @param {string} detail
  * @returns {Object}
  */
@@ -78,6 +79,7 @@ const handlers = [
 
   rest.put("/Ticket/check-in", (req, res, ctx) => {
     const unhappy = req.url.searchParams.get("unhappy");
+    const isRedirectRequest = !req.referrer.includes("/queue.html");
 
     if (unhappy) {
       return res(ctx.status(500));
@@ -109,6 +111,22 @@ const handlers = [
       const nonce = crypto.randomUUID();
       const createdTime = Math.floor(Date.now() / 1000);
       const checkInAfter = createdTime + TICKET_INTERVAL;
+      ticket = {
+        ...ticket,
+        nonce,
+        createdTime,
+        checkInAfter,
+        queuePosition,
+        status,
+      };
+      localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
+    }
+
+    if (isRedirectRequest) {
+      const createdTime = Math.floor(Date.now() / 1000);
+      const nonce = crypto.randomUUID();
+      const checkInAfter = createdTime + TICKET_INTERVAL;
+
       ticket = {
         ...ticket,
         nonce,

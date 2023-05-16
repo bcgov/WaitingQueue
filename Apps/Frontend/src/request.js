@@ -130,11 +130,6 @@ export async function refreshToken(ticket, refreshUrl) {
   const { id, room, nonce, checkInAfter } = ticket;
   const timeout = checkInAfter * 1000 - Date.now();
 
-  // Prevent an infinite loop
-  if (timeout <= 0) {
-    return;
-  }
-
   await wait(timeout);
   const body = JSON.stringify({
     id,
@@ -173,6 +168,7 @@ export async function handleTokenRefresh(refreshUrl) {
   } catch (err) {
     // TODO: When there is a standard design for this page, handle error messaging in a more helpful way
     console.error(err.message);
+    localStorage.removeItem(STORAGE_KEY);
     const div = document.createElement("div");
     div.innerText = "Unauthorized WR0001";
     document.body.insertBefore(div, document.body.firstChild);
