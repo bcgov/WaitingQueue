@@ -14,7 +14,7 @@
     <link href="/main.css?v=<%= data.hash %>" rel="stylesheet" />
     <% if (data.env === 'local') { %>
     <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
-    <script type="module" src="/src/mocks/handlers.js"></script>
+    <script type="module" src="/mocks/handlers.js"></script>
     <% } %>
     <script type="text/javascript">
       window.supportedLanuages = [<%- data.supportedLanguages %>];
@@ -70,7 +70,19 @@
           <rect x="116.9" y="36.6" class="st3" width="0.6" height="0.6" />
         </svg>
         <h2 class="bc-header__title"><%= _.title %></h2>
-      </hgroup>
+        </hgroup>
+        <hgroup>
+          <select name="lang-dropdown" id="lang-dropdown" class="bc-gov-dropdown">
+            <% data.languageOptions.forEach(function(l) { %>
+              <option
+                value="/<%= l.url %>"
+                lang="<%= l.lang %>"
+              >
+                <%= l.name %>
+              </option>
+            <% }); %>
+          </select>
+        </hgroup>
     </header>
     <main class="main">
       <div id="content" class="content">
@@ -106,6 +118,14 @@
         <button data-retry class="btn-secondary">
           <%= _.errorRetryText %>
         </button>
+      </div>
+    </template>
+    <template id="notice-template">
+      <div role="alert" class="notice">
+        <p>
+          <strong><%= _.incidentTitle %></strong>
+          <%= _.incidentText %>
+        </p>
       </div>
     </template>
   </body>

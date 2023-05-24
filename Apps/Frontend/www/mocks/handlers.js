@@ -1,7 +1,7 @@
 const { rest, setupWorker } = MockServiceWorker;
 const DB_STORAGE_KEY = "WaitingQueue.mockdb";
 // Normal interval should be around 120
-const TICKET_INTERVAL = 5;
+const TICKET_INTERVAL = 5000;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
@@ -28,7 +28,7 @@ const handlers = [
     const unhappy = req.url.searchParams.get("unhappy");
     const room = req.url.searchParams.get("room");
 
-    if (room !== "HealthGateway") {
+    if (room !== "HealthGatewayDev") {
       return res(
         ctx.status(404),
         ctx.json(makeErrorResponse(404, "The requested room was not found."))
@@ -81,8 +81,12 @@ const handlers = [
     const unhappy = req.url.searchParams.get("unhappy");
     const isRedirectRequest = !req.referrer.includes("/queue.html");
 
-    if (unhappy) {
+    if (unhappy === "1") {
       return res(ctx.status(500));
+    }
+
+    if (unhappy === "2") {
+      return res(ctx.set("X-INCIDENT", "Y"), ctx.json(ticket));
     }
 
     if (!ticket) {
@@ -121,23 +125,6 @@ const handlers = [
       };
       localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
     }
-
-    if (isRedirectRequest) {
-      const createdTime = Math.floor(Date.now() / 1000);
-      const nonce = crypto.randomUUID();
-      const checkInAfter = createdTime + TICKET_INTERVAL;
-
-      ticket = {
-        ...ticket,
-        nonce,
-        createdTime,
-        checkInAfter,
-        queuePosition,
-        status,
-      };
-      localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
-    }
-
     return res(ctx.json(ticket));
   }),
 ];

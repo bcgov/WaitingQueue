@@ -83,6 +83,39 @@ h4 {
   font-size: 1.2em;
 }
 
+:focus {
+  outline: 4px solid #3b99fc;
+  outline-offset: 1px;
+}
+
+.bc-gov-dropdown {
+  font-family: "BCSans", "Noto Sans", Verdana, Arial, sans-serif;
+  font-size: 16px;
+  color: #fff;
+  background: #036;
+  box-shadow: none;
+  border: 2px solid #fff;
+  min-width: 200px;
+  padding: 8px 45px 8px 15px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: top 14px right 14px;
+  background-size: 16px 16px;
+}
+
+.fa-chevron-down {
+  pointer-events: none;
+  position: absolute;
+  top: calc(1em - 4px);
+  right: 1em;
+}
+
+.bc-gov-dropdown-wrapper {
+  position: relative;
+  display: inline;
+}
+
 /*
 * Main
 */
@@ -168,6 +201,16 @@ mark loading-spinner {
   color: #fff;
   background-color: var(--bc-colors-blue-alt);
   text-decoration: underline;
+}
+
+.notice {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 90px;
+  color: var(--bc-colors-blue);
+  background-color: var(--bc-colors-yellow);
 }
 
 /**

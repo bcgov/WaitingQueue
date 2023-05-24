@@ -64,6 +64,8 @@ async function fetchAndRetryIfNecessary(request, delay = 1) {
   }
 }
 
+export class IncidentError extends Error {}
+
 /**
  * A simple promise-based timeout
  *
@@ -109,6 +111,10 @@ export async function request(input) {
       }
 
       throw new Error(error);
+    }
+    const incidentHeader = req.headers.get("X-INCIDENT");
+    if (incidentHeader === "Y") {
+      throw new IncidentError();
     }
 
     /** @type Ticket */

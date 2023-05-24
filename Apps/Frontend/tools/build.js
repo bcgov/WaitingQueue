@@ -21,8 +21,13 @@ async function loadConfig() {
       .map((l) => {
         return Object.keys(l);
       })
-      .flat()
-      .map((l) => `"${l}"`);
+      .flat();
+    const languageOptions = supportedLanguages.map((lang) => {
+      return {
+        lang,
+        name: languages[lang],
+      };
+    });
     config.locales.forEach((locale) => {
       Object.entries(locale).forEach(async ([lang, strings]) => {
         environments.forEach(async (env) => {
@@ -33,7 +38,8 @@ async function loadConfig() {
               env,
               locale: lang,
               hash,
-              supportedLanguages,
+              supportedLanguages: supportedLanguages.map((l) => `"${l}"`),
+              languageOptions,
             },
           };
           const targetDir = path.join(process.cwd(), "dist", app, env, lang);

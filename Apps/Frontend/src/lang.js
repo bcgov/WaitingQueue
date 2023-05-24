@@ -1,3 +1,5 @@
+import utils from "./utils.js";
+
 /**
  * Checks to see if any format of the user's preferred language is supported by the application
  *
@@ -27,14 +29,34 @@ export function findUserLanguage(preferredLanguage, supportedLanguages) {
 }
 
 export function checkLanguage() {
-  const userLanguage = navigator.language;
+  const userLanguage = utils.getLanguage();
   /** @type string[] */
   const supportedLanguages = globalThis.supportedLanguages ?? [];
   const language = findUserLanguage(userLanguage, supportedLanguages);
   const currentLanguage = document.querySelector("html")?.getAttribute("lang");
 
   if (language && currentLanguage !== language) {
-    const languageRedirectUrl = new URL(`/${language}`, location.href);
-    location.assign(languageRedirectUrl);
+    const languageRedirectUrl = new URL(`/${language}`, utils.getLocation());
+    utils.open(languageRedirectUrl);
   }
+  updateLanguageSelect();
+}
+
+/**
+ * @param {Event & { target: HTMLSelectElement}} event
+ */
+function handleLangChange(event) {
+  const url = event.target.value;
+  utils.open(url);
+}
+
+export function updateLanguageSelect() {
+  const pageLanguage = document.querySelector("html").lang;
+  /** @type HTMLSelectElement */
+  const langDropdown = document.querySelector("select#lang-dropdown");
+  langDropdown
+    .querySelector(`option[lang="${pageLanguage}"]`)
+    .setAttribute("selected", "selected");
+
+  langDropdown.addEventListener("change", handleLangChange);
 }

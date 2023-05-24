@@ -1,4 +1,4 @@
-import { request, COOKIE_KEY, STORAGE_KEY } from "./request.js";
+import { request, IncidentError, COOKIE_KEY, STORAGE_KEY } from "./request.js";
 
 /**
  * @typedef {import("./request.js").Ticket} Ticket
@@ -10,6 +10,8 @@ const pollTemplate = document.querySelector("#poller-template");
 const errorTemplate = document.querySelector("#error-template");
 /** @type HTMLTemplateElement */
 const redirectTemplate = document.querySelector("#redirect-template");
+/** @type HTMLTemplateElement */
+const noticeTemplate = document.querySelector("#notice-template");
 
 /**
  * Simple element for polling a specified endpoint and updating the UI
@@ -60,6 +62,17 @@ class QueuePoller extends HTMLElement {
     this.cleanUp();
   }
 
+  /** @param {boolean} value */
+  set #incident(value) {
+    this.value = value;
+    this.render();
+  }
+
+  /** @returns {boolean} value */
+  get #incident() {
+    return this.value;
+  }
+
   /** @param {Ticket} ticket */
   set #ticket(ticket) {
     this.#_ticket = ticket;
@@ -96,6 +109,7 @@ class QueuePoller extends HTMLElement {
         url: pollUrl,
         fetchOptions: {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
         },
         params: { room },
       });
@@ -132,8 +146,12 @@ class QueuePoller extends HTMLElement {
       });
       this.#ticket = json;
     } catch (err) {
+      if (err instanceof IncidentError) {
+        this.#incident = true;
+      } else {
+        this.#error = err.message;
+      }
       localStorage.removeItem(STORAGE_KEY);
-      this.#error = err.message;
     }
   };
 
@@ -216,6 +234,10 @@ class QueuePoller extends HTMLElement {
     );
   };
 
+  renderIncident = () => {
+    this.replaceChildren(noticeTemplate.content.cloneNode(true));
+  };
+
   /**
    * Checks the position based on the API's response
    */
@@ -231,6 +253,11 @@ class QueuePoller extends HTMLElement {
 
     if (this.#error) {
       this.renderError();
+      return;
+    }
+
+    if (this.#incident) {
+      this.renderIncident();
       return;
     }
 
@@ -252,6 +279,6 @@ class QueuePoller extends HTMLElement {
   }
 }
 
-// export default QueuePoller;
+export default QueuePoller;
 
 customElements.define("queue-poller", QueuePoller);

@@ -18,18 +18,32 @@ ard:
       redirectUrl: https://bcstats.apps.gov.bc.ca/i
       pollUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket
       refreshUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket/check-in
-
   locales:
-    - en-ca:
+    - en-CA:
         appName: Waiting Room
         title: BC Demographic Survey
         errorText: Something went wrong
+        incidentTitle: The BC Demographic Survey is currently unavailable.
+        incidentText: We are working to fix this as quickly as possible.
         componentFallbackText: You need JavaScript enabled to run this component
         statusTitle: The Survey System is currently experiencing high demand and have placed you in a queue.
         statusPositionText: "Your current position in our queue is:"
         errorTitle: BC Demographic Survey is currently experiencing high demand which is causing delays.
         errorRetryText: Retry
         redirectText: You're all set, redirecting...
+    # TODO: Repace this with official translation.
+    - fr-CA:
+        appName: Waiting Room
+        title: Enquête démographique de la Colombie-Britannique
+        errorText: Quelque chose s'est mal passé
+        incidentTitle: L'enquête démographique de la Colombie-Britannique n'est pas disponible actuellement.
+        incidentText: Nous nous efforçons de résoudre ce problème le plus rapidement possible.
+        componentFallbackText: Vous devez activer JavaScript pour exécuter ce composant
+        statusTitle: Le système de sondage connaît actuellement une forte demande et vous a placé dans une file d'attente.
+        statusPositionText: "Votre position actuelle dans notre file d'attente est :"
+        errorTitle: L'enquête démographique de la Colombie-Britannique connaît actuellement une forte demande, ce qui entraîne des retards.
+        errorRetryText: Le Retry
+        redirectText: Le You're all set, redirecting...
 
 sample:
   environments:
@@ -52,23 +66,25 @@ sample:
       pollUrl: https://tickets.healthgateway.gov.bc.ca/Ticket
       refreshUrl: https://tickets.healthgateway.gov.bc.ca/Ticket/check-in
   locales:
-    - en-ca:
+    - en-CA:
         appName: Waiting Room
         title: BC Demographic Survey
         errorText: Something went wrong
+        incidentTitle: The BC Demographic Survey is currently unavailable.
+        incidentText: We are working to fix this as quickly as possible.
         componentFallbackText: You need JavaScript enabled to run this component
         statusTitle: The Survey System is currently experiencing high demand and have placed you in a queue.
         statusPositionText: "Your current position in our queue is:"
         errorTitle: BC Demographic Survey is currently experiencing high demand which is causing delays.
         errorRetryText: Retry
         redirectText: You're all set, redirecting...
-    - fr-ca:
-        appName: Le Waiting Room
+    - fr-CA:
+        appName: Waiting Room
         title: Le BC Demographic Survey
         errorText: Le Something went wrong
+        incidentText: We are working to fix this as quickly as possible.
         componentFallbackText: Le You need JavaScript enabled to run this component
         statusTitle: Le The Survey System is currently experiencing high demand and have placed you in a queue.
         statusPositionText: "Le Your current position in our queue is:"
         errorTitle: Le BC Demographic Survey is currently experiencing high demand which is causing delays.
         errorRetryText: Le Retry
-        redirectText: Le You're all set, redirecting...
