@@ -4,6 +4,7 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <UserSecretsId>d00e96bf-e6e6-44c2-8a82-bfc26a098cac</UserSecretsId>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'Admin' " />
@@ -29,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\TicketManagement\TicketManagement.csproj" />
         <ProjectReference Include="..\Client\Admin.Client.csproj" />
         <ProjectReference Include="..\Common\Admin.Common.csproj" />
     </ItemGroup>

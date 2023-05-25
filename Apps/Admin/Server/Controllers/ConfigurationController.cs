@@ -22,7 +22,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
-    /// Web API to return Health Gateway configuration to approved clients.
+    /// Web API to return waiting queue configuration for approved clients.
     /// </summary>
     [ApiController]
     [ApiVersion("1.0")]

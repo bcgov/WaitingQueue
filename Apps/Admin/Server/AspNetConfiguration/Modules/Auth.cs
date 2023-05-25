@@ -76,7 +76,6 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                         };
                         options.Events = new JwtBearerEvents
                         {
-
                             OnAuthenticationFailed = ctx => OnAuthenticationFailed(logger, ctx),
                         };
                     });

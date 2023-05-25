@@ -53,8 +53,6 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                             Type = exception.ProblemDetails?.Type,
                             Instance = exception.ProblemDetails?.Instance,
                         });
-
-                    // setup.MapToStatusCode<CommunicationException>(StatusCodes.Status502BadGateway);
                 });
         }
 

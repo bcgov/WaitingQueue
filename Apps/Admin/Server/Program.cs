@@ -20,6 +20,8 @@ namespace BCGov.WaitingQueue.Admin.Server
     using BCGov.WaitingQueue.Admin.Server.AspNetConfiguration;
     using BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules;
     using BCGov.WaitingQueue.Admin.Server.Services;
+    using BCGov.WaitingQueue.Common.Delegates;
+    using BCGov.WaitingQueue.TicketManagement.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -86,11 +88,14 @@ namespace BCGov.WaitingQueue.Admin.Server
             Auth.ConfigureAuthServicesForJwtBearer(services, logger, configuration, environment);
             SwaggerDoc.ConfigureSwaggerServices(services, configuration);
             ExceptionHandling.ConfigureProblemDetails(services, environment);
+            RedisConfiguration.ConfigureRedis(services, configuration);
         }
 
         private static void AddServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IConfigurationService, ConfigurationService>();
+            services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
+            services.AddTransient<IRoomService, RedisRoomService>();
         }
     }
 }
