@@ -14,6 +14,7 @@ async function loadConfig() {
   const template = await fs.readFile("./tools/template.ejs");
   const parsedConfig = yaml.parse(configFile.toString());
   const applications = Object.entries(parsedConfig);
+  const { languages } = await import("./shared.mjs");
 
   applications.forEach(([app, config]) => {
     const environments = Object.keys(config.environments);
