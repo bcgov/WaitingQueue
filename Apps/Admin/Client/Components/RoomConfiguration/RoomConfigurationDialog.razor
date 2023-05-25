@@ -1,0 +1,54 @@
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="Form">
+            <MudGrid Spacing="0">
+                <MudItem xs="6">
+                    <WqaTextField Label="Name" @bind-Value="RoomConfiguration.Id" T="@string" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Description" @bind-Value="RoomConfiguration.Name" T="@string" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Check In Frequency" @bind-Value="RoomConfiguration.CheckInFrequency" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Check In Grace" @bind-Value="RoomConfiguration.CheckInGrace" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Room Idle TTL" @bind-Value="RoomConfiguration.RoomIdleTtl" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Queue Threshold" @bind-Value="RoomConfiguration.QueueThreshold" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Queue Maximum Size" @bind-Value="RoomConfiguration.QueueMaxSize" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Remove Expured Maximum" @bind-Value="RoomConfiguration.RemoveExpiredMax" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+                <MudItem xs="6">
+                    <WqaTextField Label="Participant Limit" @bind-Value="RoomConfiguration.ParticipantLimit" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <WqaButton Color="@Color.Primary"
+                   Variant="@Variant.Text"
+                   RightMargin="Breakpoint.Always"
+                   HorizontalMarginSize="@(WqaButton.DefaultHorizontalMarginSize - 2)"
+                   BottomMargin="Breakpoint.Always"
+                   OnClick="@HandleClickCancelAsync"
+                   data-testid="cancel-btn">
+            Cancel
+        </WqaButton>
+        <WqaButton Color="@Color.Primary"
+                   RightMargin="Breakpoint.Always"
+                   BottomMargin="Breakpoint.Always"
+                   OnClick="@HandleClickSaveAsync"
+                   data-testid="save-btn">
+            Save
+        </WqaButton>
+    </DialogActions>
+</MudDialog>
+

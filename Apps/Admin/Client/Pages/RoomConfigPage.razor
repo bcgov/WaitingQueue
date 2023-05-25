@@ -3,5 +3,43 @@
 @layout MainLayout
 
 <WqaPageHeading>Room Configuration</WqaPageHeading>
+<WqaButton OnClick="@HandleClickNewAsync">New</WqaButton>
+<MudList>
+    @foreach (var room in Rooms)
+    {
+        <MudListItem>
+            <MudCard>
+                <MudCardHeader>@room.Name</MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Checkin Frequency" Value=@room.CheckInFrequency.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Checkin Grace" Value=@room.CheckInGrace.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Room Idle TTL" Value=@room.RoomIdleTtl.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Queue Threshold" Value=@room.QueueThreshold.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Queue Maximum Size" Value=@room.QueueMaxSize.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Remove Expired Maximum" Value=@room.RemoveExpiredMax.ToString() />
+                        </MudItem>
+                        <MudItem sm="4" xs="12">
+                            <WqaField Label="Participant Limit" Value=@room.ParticipantLimit.ToString() />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <WqaButton OnClick="@(e=>HandleClickEditAsync(room))">Edit</WqaButton>
+                </MudCardActions>
+            </MudCard>
+        </MudListItem>
+    }
+</MudList>
 
-Nothing to see
