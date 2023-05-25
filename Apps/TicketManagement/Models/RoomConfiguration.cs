@@ -68,5 +68,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// Gets or sets the maximum expired entries to remove at a time.
         /// </summary>
         public int RemoveExpiredMax { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last updated timestamp in UTC Epoch format.
+        /// </summary>
+        public long LastUpdated { get; set; }
     }
 }

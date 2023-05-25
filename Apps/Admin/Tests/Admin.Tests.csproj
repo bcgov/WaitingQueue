@@ -31,4 +31,8 @@
     <ProjectReference Include="..\Common\Admin.Common.csproj" />
     <ProjectReference Include="..\Server\Admin.Server.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Integration\" />
+  </ItemGroup>
 </Project>
