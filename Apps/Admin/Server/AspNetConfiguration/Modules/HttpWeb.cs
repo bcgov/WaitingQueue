@@ -59,11 +59,13 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
         /// details middleware.
         public static void UseHttp(IApplicationBuilder app, ILogger logger, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            app.UseResponseCompression();
-
             if (environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseResponseCompression();
             }
 
             app.UseStaticFiles(

@@ -13,35 +13,90 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //-------------------------------------------------------------------------
-namespace BCGov.WaitingQueue.Admin.Client.Pages
+namespace BCGov.WaitingQueue.Admin.Client.Pages;
+
+using BCGov.WaitingQueue.Admin.Client.Components.RoomConfiguration;
+using BCGov.WaitingQueue.Admin.Common.Models;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Backing logic for the Room Config page.
+/// </summary>
+public partial class RoomConfigPage : ComponentBase
 {
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-    using BCGov.WaitingQueue.Admin.Client.Authorization;
-    using Microsoft.AspNetCore.Components;
-    using Microsoft.AspNetCore.Components.Authorization;
-
     /// <summary>
-    /// Backing logic for the Room Config page.
+    /// Gets the configured rooms.
     /// </summary>
-    public partial class RoomConfigPage : ComponentBase
+    public ReadOnlyCollection<RoomConfiguration> Rooms { get; private set; } = null!;
+
+    private bool IsDialogOpen { get; set; }
+
+    [Inject]
+    private IDialogService Dialog { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+    /// <inheritdoc/>
+    protected override async Task OnInitializedAsync()
     {
-        [Inject]
-        private NavigationManager Navigation { get; set; } = default!;
+        AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
+        var user = authState.User;
 
-        [Inject]
-        private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+        this.Rooms = new ReadOnlyCollection<RoomConfiguration>(
+            new List<RoomConfiguration>()
+            {
+                new RoomConfiguration
+                {
+                    Id = "room1",
+                    Name = "test room 1",
+                },
+                new RoomConfiguration
+                {
+                    Id = "room2",
+                    Name = "test room 2",
+                },
+            });
+    }
 
-        /// <inheritdoc/>
-        protected override async Task OnInitializedAsync()
+    private async Task HandleClickNewAsync()
+    {
+        await OpenRoomConfigurationDialog(new RoomConfiguration());
+    }
+
+    private async Task HandleClickEditAsync(RoomConfiguration roomConfiguration)
+    {
+        await OpenRoomConfigurationDialog(roomConfiguration);
+    }
+
+    private async Task OpenRoomConfigurationDialog(RoomConfiguration item)
+    {
+        if (this.IsDialogOpen)
         {
-            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
-            ClaimsPrincipal user = authState.User;
-
-            // if (user.IsInRole(Roles.Admin))
-            // {
-            //     this.Navigation.NavigateTo("user-info", replace: true);
-            // }
+            return;
         }
+
+        this.IsDialogOpen = true;
+
+        DialogParameters parameters = new() { ["roomConfiguration"] = item };
+        DialogOptions options = new() { DisableBackdropClick = true };
+        IDialogReference dialog = await this.Dialog.ShowAsync<RoomConfigurationDialog>("Room Configuration", parameters, options);
+
+        var result = await dialog.Result;
+        this.IsDialogOpen = false;
+        if (!result.Canceled)
+        {
+            //TODO: save config
+        }
+
+        return;
     }
 }
