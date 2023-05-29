@@ -81,11 +81,12 @@ export async function wait(timeout = 0) {
 }
 
 /**
+ * @async
  * @param {Object} input The request options input
  * @param {RequestInit} [input.fetchOptions] Add any native `fetch` options here
  * @param {Record<string, string>} [input.params] Any key/value to append to search params.
  * @param {string} input.url The request URL. Can include params, which will be merged with `options.params`.
- * @returns {Promise<Ticket, Error>} A ticket is returned
+ * @returns {Promise<Ticket>}
  */
 export async function request(input) {
   const { url, fetchOptions, params } = input;
@@ -112,8 +113,8 @@ export async function request(input) {
 
       throw new Error(error);
     }
-    const incidentHeader = req.headers.get("X-INCIDENT");
-    if (incidentHeader === "Y") {
+    const isIncident = req.headers.has("X-INCIDENT");
+    if (isIncident) {
       throw new IncidentError();
     }
 

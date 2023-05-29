@@ -27,6 +27,7 @@ async function loadConfig() {
       return {
         lang,
         name: languages[lang],
+        url: lang === "en-CA" ? "" : lang.toLowerCase(),
       };
     });
     config.locales.forEach((locale) => {

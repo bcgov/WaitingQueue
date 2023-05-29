@@ -1,7 +1,7 @@
 const { rest, setupWorker } = MockServiceWorker;
 const DB_STORAGE_KEY = "WaitingQueue.mockdb";
 // Normal interval should be around 120
-const TICKET_INTERVAL = 5000;
+const TICKET_INTERVAL = 10;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
@@ -35,8 +35,12 @@ const handlers = [
       );
     }
 
-    if (unhappy) {
+    if (unhappy === "1") {
       return res(ctx.status(500));
+    }
+
+    if (unhappy === "2") {
+      return res(ctx.set("X-INCIDENT", "Y"), ctx.json(ticket));
     }
 
     const createdTime = Math.floor(Date.now() / 1000);
@@ -79,7 +83,6 @@ const handlers = [
 
   rest.put("/Ticket/check-in", (req, res, ctx) => {
     const unhappy = req.url.searchParams.get("unhappy");
-    const isRedirectRequest = !req.referrer.includes("/queue.html");
 
     if (unhappy === "1") {
       return res(ctx.status(500));
@@ -108,23 +111,29 @@ const handlers = [
     }
 
     const queuePosition = ticket.queuePosition - 1;
+    const nonce = crypto.randomUUID();
+    const createdTime = Math.floor(Date.now() / 1000);
+    const checkInAfter = createdTime + TICKET_INTERVAL;
+
+    ticket = {
+      ...ticket,
+      nonce,
+      createdTime,
+      checkInAfter,
+    };
 
     if (queuePosition >= 0) {
       const isReady = queuePosition === 0;
       let status = isReady ? "Processed" : "Queued";
-      const nonce = crypto.randomUUID();
-      const createdTime = Math.floor(Date.now() / 1000);
-      const checkInAfter = createdTime + TICKET_INTERVAL;
+
       ticket = {
         ...ticket,
-        nonce,
-        createdTime,
-        checkInAfter,
         queuePosition,
         status,
       };
-      localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
     }
+    localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(ticket));
+
     return res(ctx.json(ticket));
   }),
 ];

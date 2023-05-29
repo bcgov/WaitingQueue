@@ -29,7 +29,7 @@ class QueuePoller extends HTMLElement {
   #timer = null;
   /** @type Ticket */
   #_ticket = null;
-  /** @type Error */
+  /** @type string */
   #_error = null;
 
   constructor() {
@@ -115,7 +115,7 @@ class QueuePoller extends HTMLElement {
       });
       return json;
     } catch (err) {
-      this.#error = err.message;
+      this.handlerError(err);
     }
   };
 
@@ -146,12 +146,19 @@ class QueuePoller extends HTMLElement {
       });
       this.#ticket = json;
     } catch (err) {
-      if (err instanceof IncidentError) {
-        this.#incident = true;
-      } else {
-        this.#error = err.message;
-      }
+      this.handlerError(err);
       localStorage.removeItem(STORAGE_KEY);
+    }
+  };
+
+  /**
+   * @param {Error} err
+   */
+  handlerError = (err) => {
+    if (err instanceof IncidentError) {
+      this.#incident = true;
+    } else {
+      this.#error = err.message;
     }
   };
 
