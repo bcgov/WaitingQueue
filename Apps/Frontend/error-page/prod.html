@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Upstream Service Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <error-app
+      title="Request Timed Out"
+      message="The system was slow to respond, please try again"
+      action="continue"
+      url="https://bcstats-dev.apps.gov.bc.ca"
+    ></error-app>
+    <noscript>
+      <h1>Request Timed Out</h1>
+      <p>The system was slow to respond, please try again.</p>
+    </noscript>
+    <script type="module" src="./error-page.js"></script>
+    <script nomodule src="./error-page.legacy.js"></script>
+  </body>
+</html>
