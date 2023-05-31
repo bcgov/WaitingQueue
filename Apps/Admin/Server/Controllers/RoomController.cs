@@ -28,7 +28,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
-    [Authorize]
+    [Authorize(Roles = "AdminUser")]
     [Route("api/[controller]")]
     [Produces("application/json")]
     public class RoomController : Controller
@@ -45,14 +45,14 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         }
 
         /// <summary>
-        /// Returns a list of of all known rooms.
+        /// Returns a dictionary of rooms along with their associated configuration.
         /// </summary>
-        /// <returns>The Health Gateway Configuration.</returns>
+        /// <returns>The key/value pairs of room configurations.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<string>> Index()
+        [ProducesResponseType(typeof(IEnumerable<RoomConfiguration>), StatusCodes.Status200OK)]
+        public async Task<IDictionary<string, RoomConfiguration>> Index()
         {
-            return await this.roomService.GetRoomsAsync().ConfigureAwait(true);
+            return await this.roomService.GetRoomsAsync();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetConfig(string room)
         {
-            RoomConfiguration? roomConfig = await this.roomService.ReadConfigurationAsync(room).ConfigureAwait(true);
+            RoomConfiguration? roomConfig = await this.roomService.ReadConfigurationAsync(room);
             if (roomConfig is not null)
             {
                 return new JsonResult(roomConfig);
@@ -85,46 +85,21 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<bool> Exists(string room)
         {
-            bool exists = await this.roomService.RoomExists(room).ConfigureAwait(true);
+            bool exists = await this.roomService.RoomExists(room);
             return exists;
         }
 
         /// <summary>
-        /// Creates the room configuration.
+        /// Creates or updates the room configuration.
         /// </summary>
-        /// <param name="room">The room to create.</param>
-        /// <param name="roomConfig">The new room configuration to create.</param>
-        /// <returns>The room configuration that was created.</returns>
-        [HttpPost]
-        [Route("{room}")]
-        [ProducesResponseType(typeof(RoomConfiguration), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateRoom(string room, RoomConfiguration roomConfig)
-        {
-            roomConfig.Name = room;
-            (bool committed, RoomConfiguration config) = await this.roomService.WriteConfigurationAsync(roomConfig, true).ConfigureAwait(true);
-            if (committed)
-            {
-                return new JsonResult(config);
-            }
-
-            return new ConflictResult();
-        }
-
-        /// <summary>
-        /// Updates the room configuration.
-        /// </summary>
-        /// <param name="room">The room to create.</param>
-        /// <param name="roomConfig">The room configuration to update.</param>
-        /// <returns>The updated room configuration or.</returns>
+        /// <param name="roomConfig">The new room configuration.</param>
+        /// <returns>The newly updated/created room configuration.</returns>
         [HttpPut]
-        [Route("{room}")]
         [ProducesResponseType(typeof(RoomConfiguration), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateRoom(string room, RoomConfiguration roomConfig)
+        public async Task<IActionResult> UpsertRoom(RoomConfiguration roomConfig)
         {
-            roomConfig.Name = room;
-            (bool committed, RoomConfiguration config) = await this.roomService.WriteConfigurationAsync(roomConfig).ConfigureAwait(true);
+            (bool committed, RoomConfiguration config) = await this.roomService.WriteConfigurationAsync(roomConfig);
             if (committed)
             {
                 return new JsonResult(config);

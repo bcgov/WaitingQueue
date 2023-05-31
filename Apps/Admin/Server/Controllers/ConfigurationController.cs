@@ -31,7 +31,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     public class ConfigurationController : Controller
     {
         /// <summary>
-        /// Returns the external Health Gateway configuration.
+        /// Returns the external Waiting Queue configuration.
         /// </summary>
         /// <param name="configurationService">The injected configuration provider.</param>
         /// <returns>The Health Gateway Configuration.</returns>

@@ -43,6 +43,7 @@ namespace BCGov.WaitingQueue.Configuration
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ITicketService, RedisTicketService>();
+            services.AddTransient<IRoomService, RedisRoomService>();
             services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             services.AddTransient<IWebTicketDelegate, WebTicketDelegate>();
 

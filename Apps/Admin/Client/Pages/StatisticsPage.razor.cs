@@ -24,7 +24,7 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
     /// <summary>
     /// Backing logic for the Asdmin page.
     /// </summary>
-    public partial class AdminPage : ComponentBase
+    public partial class StatisticsPage : ComponentBase
     {
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;
@@ -35,7 +35,7 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
+            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
             ClaimsPrincipal user = authState.User;
 
             // if (user.IsInRole(Roles.Admin))

@@ -116,7 +116,7 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                 {
                     context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                     context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
-                    await next().ConfigureAwait(true);
+                    await next();
                 });
 
             // Enable Cache control and set defaults
@@ -188,7 +188,7 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                         async (context, next) =>
                         {
                             context.Request.PathBase = basePath;
-                            await next.Invoke().ConfigureAwait(true);
+                            await next.Invoke();
                         });
                     app.UsePathBase(basePath);
                 }
@@ -224,7 +224,7 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                 async (context, next) =>
                 {
                     context.Response.Headers.Add("Content-Security-Policy", csp);
-                    await next().ConfigureAwait(true);
+                    await next();
                 });
         }
 
@@ -242,7 +242,7 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                     async (context, next) =>
                     {
                         context.Response.Headers.Add("Permissions-Policy", policyValue);
-                        await next().ConfigureAwait(true);
+                        await next();
                     });
             }
         }
@@ -268,7 +268,7 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                             MustRevalidate = true,
                         };
                     context.Response.Headers[HeaderNames.Pragma] = new[] { "no-cache" };
-                    await next().ConfigureAwait(true);
+                    await next();
                 });
         }
     }

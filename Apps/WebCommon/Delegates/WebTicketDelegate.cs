@@ -51,25 +51,25 @@ namespace BCGov.WebCommon.Delegates
                 Id = ticketId,
                 Nonce = nonce,
             };
-            return await this.ticketService.GetTicketAsync(ticketRequest).ConfigureAwait(true);
+            return await this.ticketService.GetTicketAsync(ticketRequest);
         }
 
         /// <inheritdoc />
         public async Task<Ticket> CreateTicket(string room)
         {
-            return await this.ticketService.RequestTicketAsync(room).ConfigureAwait(true);
+            return await this.ticketService.RequestTicketAsync(room);
         }
 
         /// <inheritdoc />
         public async Task<Ticket> CheckInAsync(TicketRequest ticketRequest)
         {
-            return await this.ticketService.CheckInAsync(ticketRequest).ConfigureAwait(true);
+            return await this.ticketService.CheckInAsync(ticketRequest);
         }
 
         /// <inheritdoc />
         public async Task RemoveTicketAsync(TicketRequest ticketRequest)
         {
-            await Task.CompletedTask.ConfigureAwait(true);
+            await Task.CompletedTask;
         }
 
         /// <inheritdoc />

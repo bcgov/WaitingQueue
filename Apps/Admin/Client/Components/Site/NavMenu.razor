@@ -2,10 +2,10 @@
 
 <MudNavMenu>
     <AuthorizeView Roles="@($"{Roles.Admin}")">
-        <MudNavLink Href="room-config" Icon="fas fa-glass-water">Rooms</MudNavLink>
+        <MudNavLink Href="room-config" Icon="fas fa-screwdriver-wrench">Room Config</MudNavLink>
     </AuthorizeView>
-    <AuthorizeView Roles="@($"{Roles.Admin}")">
-        <MudNavLink Href="admin" Icon="fas fa-screwdriver-wrench">Administration</MudNavLink>
+    <AuthorizeView Roles="@($"{Roles.Admin}, {Roles.Stats}")">
+        <MudNavLink Href="stats" Icon="fas fa-chart-bar">Statistics</MudNavLink>
     </AuthorizeView>
     <MudSpacer />
     <MudSpacer />

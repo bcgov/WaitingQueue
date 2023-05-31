@@ -15,7 +15,6 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.TicketManagement.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.Json;
@@ -31,6 +30,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     {
         private const string ConfigKey = "config";
         private const string VersionKey = "version";
+        private const string IndexKey = "Configuration:Index";
 
         private readonly ILogger<RedisRoomService> logger;
         private readonly IConfiguration configuration;
@@ -61,18 +61,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             this.logger.LogDebug("Fetching room configuration for {Room}", room);
             IDatabase db = this.connectionMultiplexer.GetDatabase();
-            HashEntry[] hashEntries = await db.HashGetAllAsync(GetRoomConfigKey(room)).ConfigureAwait(true);
-            if (hashEntries.Length == 0)
-            {
-                return null;
-            }
-
-            RedisValue value = hashEntries.FirstOrDefault(e => e.Name == ConfigKey).Value;
+            RedisValue value = await db.HashGetAsync(GetRoomConfigKey(room), ConfigKey);
             return JsonSerializer.Deserialize<RoomConfiguration>(value);
         }
 
         /// <inheritdoc />
-        public async Task<(bool Committed, RoomConfiguration RoomConfig)> WriteConfigurationAsync(RoomConfiguration roomConfig, bool create = false)
+        public async Task<(bool Committed, RoomConfiguration RoomConfig)> WriteConfigurationAsync(RoomConfiguration roomConfig)
         {
             this.logger.LogDebug("Writing room configuration for {Room}", roomConfig.Name);
             long oldUpdated = roomConfig.LastUpdated;
@@ -81,19 +75,20 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             ITransaction transaction = db.CreateTransaction();
             string key = GetRoomConfigKey(roomConfig.Name);
             string configJson = JsonSerializer.Serialize(roomConfig);
+            bool create = oldUpdated == 0;
             transaction.AddCondition(create ? Condition.KeyNotExists(key) : Condition.HashEqual(key, VersionKey, oldUpdated));
             _ = transaction.HashSetAsync(
                 key,
-                new HashEntry[]
+                new[]
                 {
                     new HashEntry(ConfigKey, configJson),
                     new HashEntry(VersionKey, roomConfig.LastUpdated),
                 });
-            bool committed = await transaction.ExecuteAsync().ConfigureAwait(true);
+            bool committed = await transaction.ExecuteAsync();
             if (committed)
             {
                 // Add to index to query for all rooms
-                await db.HashSetAsync(GetIndexKey(), roomConfig.Name, string.Empty).ConfigureAwait(true);
+                await db.HashSetAsync(IndexKey, roomConfig.Name, string.Empty);
             }
 
             return (committed, roomConfig);
@@ -104,21 +99,26 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             this.logger.LogDebug("Querying if room exists {Room}", room);
             IDatabase db = this.connectionMultiplexer.GetDatabase();
-            return await db.HashExistsAsync(GetIndexKey(), room).ConfigureAwait(true);
+            return await db.HashExistsAsync(IndexKey, room);
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<string>> GetRoomsAsync()
+        public async Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync()
         {
             this.logger.LogDebug("Fetching configured rooms");
+            Dictionary<string, RoomConfiguration> roomsConfig = new();
             IDatabase db = this.connectionMultiplexer.GetDatabase();
-            RedisValue[] keys = await db.HashKeysAsync(GetIndexKey()).ConfigureAwait(true);
-            return keys.Select(k => k.ToString());
-        }
+            RedisValue[] keys = await db.HashKeysAsync(IndexKey);
+            foreach (RedisValue k in keys)
+            {
+                RoomConfiguration? roomConfig = await this.ReadConfigurationAsync(k);
+                if (roomConfig != null)
+                {
+                    roomsConfig.Add(k, roomConfig);
+                }
+            }
 
-        private static string GetIndexKey()
-        {
-            return "Configuration:Index";
+            return roomsConfig;
         }
 
         private static string GetRoomConfigKey(string room)
