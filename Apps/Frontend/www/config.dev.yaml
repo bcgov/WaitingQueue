@@ -4,6 +4,7 @@ settings:
   redirectUrl: http://localhost:8000/i
   pollUrl: /Ticket
   refreshUrl: /Ticket/check-in
+
 locales:
   ja:
     appName: "&#24453;&#21512;&#23460"
@@ -15,13 +16,13 @@ locales:
     statusPositionText: "&#29694;&#22312;&#12354;&#12394;&#12383;&#12398;&#38918;&#30058;&#12399;"
     statusTitle: "&#35519;&#26619;&#12471;&#12473;&#12486;&#12512;&#12399;&#29694;&#22312;&#12289;&#12450;&#12463;&#12475;&#12473;&#37327;&#12364;&#22810;&#12367;&#12289;&#12354;&#12394;&#12383;&#12399;&#12289;&#12461;&#12517;&#12540;&#12395;&#20006;&#12435;&#12391;&#12356;&#12414;&#12377;&#12290"
     title: BC Demographic Survey in Japanese
-    incidentTitle: (ja) The BC General Survey is currently unavailable.
+    incidentTitle: "&#20877;&#35430;&#34892 (ja) The BC General Survey is currently unavailable."
     incidentText: (ja) We are working to fix this as quickly as possible.
   en-CA:
     appName: Waiting Room
     title: BC General Survey
     errorText: Something went wrong
-    incidentTitle: The BC General Survey is currently unavailable.
+    incidentTitle: The BC General Survey is currently unavailable. (&#20877;&#35430;&#34892;)
     incidentText: We are working to fix this as quickly as possible.
     componentFallbackText: You need JavaScript enabled to run this component
     statusTitle: The Survey System is currently experiencing high demand and have placed you in a queue.
