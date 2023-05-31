@@ -44,6 +44,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         private readonly IConnectionMultiplexer connectionMultiplexer;
         private readonly IDateTimeDelegate dateTimeDelegate;
         private readonly ITokenIssuer tokenIssuer;
+        private readonly IRoomService roomService;
 
         private readonly OpenIdConnectProtocolValidator nonceGenerator = new();
 
@@ -55,28 +56,31 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <param name="connectionMultiplexer">The Redis connection multiplexer.</param>
         /// <param name="dateTimeDelegate">The datetime delegate.</param>
         /// <param name="tokenIssuer">The token issuer.</param>
+        /// <param name="roomService">The room service for configuration lookup.</param>
         public RedisTicketService(
             ILogger<RedisTicketService> logger,
             IConfiguration configuration,
             IConnectionMultiplexer connectionMultiplexer,
             IDateTimeDelegate dateTimeDelegate,
-            ITokenIssuer tokenIssuer)
+            ITokenIssuer tokenIssuer,
+            IRoomService roomService)
         {
             this.logger = logger;
             this.configuration = configuration;
             this.connectionMultiplexer = connectionMultiplexer;
             this.dateTimeDelegate = dateTimeDelegate;
             this.tokenIssuer = tokenIssuer;
+            this.roomService = roomService;
         }
 
         /// <inheritdoc />
         public async Task<Ticket> GetTicketAsync(TicketRequest ticketRequest, long? utcUnixTime = null)
         {
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticketRequest.Room);
+            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(ticketRequest.Room);
             Stopwatch stopwatch = new();
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
-            RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, ticketRequest.Id)).ConfigureAwait(true);
+            RedisValue redisTicket = await database.StringGetAsync(GetTicketKey(roomConfig, ticketRequest.Id));
             CheckIn.ValidateRedisTicket(redisTicket);
 
             Ticket? ticket = JsonSerializer.Deserialize<Ticket>(redisTicket.ToString());
@@ -98,13 +102,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 Status = TicketStatus.Processed,
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(room);
+            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(room);
             Request.ValidateRoomConfig(roomConfig);
 
             Stopwatch stopwatch = new();
             stopwatch.Start();
             IDatabase database = this.connectionMultiplexer.GetDatabase();
-            (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig).ConfigureAwait(true);
+            (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig);
             Request.ValidateWaitingCount(waitingCount, roomConfig.QueueMaxSize);
 
             string member = ticket.Id.ToString();
@@ -114,8 +118,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 ticket.Status = TicketStatus.Processed;
                 trans = database.CreateTransaction();
                 _ = trans.HashSetAsync(GetRoomKey(roomConfig, ParticipantsKey), member, string.Empty);
-                await this.CheckInAsync(trans, roomConfig, ticket).ConfigureAwait(true);
-                await trans.ExecuteAsync().ConfigureAwait(true);
+                await this.CheckInAsync(trans, roomConfig, ticket);
+                await trans.ExecuteAsync();
             }
             else
             {
@@ -128,19 +132,18 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
                 SortedSetEntry waitingScoreEntry = (await database.SortedSetRangeByRankWithScoresAsync(
                         GetRoomKey(roomConfig, WaitingKey),
-                        -1)
-                    .ConfigureAwait(true)).FirstOrDefault();
+                        -1)).FirstOrDefault();
                 trans = database.CreateTransaction();
                 _ = trans.SortedSetAddAsync(
                         GetRoomKey(roomConfig, WaitingKey),
                         member,
                         waitingScoreEntry.Score + 1)
-                    .ConfigureAwait(true);
+                    ;
                 Task<long?> positionTask = trans.SortedSetRankAsync(GetRoomKey(roomConfig, WaitingKey), member);
-                await this.CheckInAsync(trans, roomConfig, ticket, nextCheckIn).ConfigureAwait(true);
-                await trans.ExecuteAsync().ConfigureAwait(true);
+                await this.CheckInAsync(trans, roomConfig, ticket, nextCheckIn);
+                await trans.ExecuteAsync();
 
-                long? position = await positionTask.ConfigureAwait(true);
+                long? position = await positionTask;
                 ticket.QueuePosition = position + 1 ?? 0;
             }
 
@@ -152,16 +155,16 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <inheritdoc />
         public async Task<Ticket> CheckInAsync(TicketRequest ticketRequest)
         {
-            RoomConfiguration? roomConfig = this.GetRoomConfiguration(ticketRequest.Room);
+            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(ticketRequest.Room);
             Stopwatch stopwatch = new();
             stopwatch.Start();
-            Ticket ticket = await this.GetTicketAsync(ticketRequest, this.dateTimeDelegate.UtcUnixTime).ConfigureAwait(true);
+            Ticket ticket = await this.GetTicketAsync(ticketRequest, this.dateTimeDelegate.UtcUnixTime);
             bool admit = false;
             string member = ticket.Id.ToString();
 
             if (ticket.Status == TicketStatus.Queued)
             {
-                (long participantCount, _, long position) = await this.RoomCountsAsync(roomConfig, member).ConfigureAwait(true);
+                (long participantCount, _, long position) = await this.RoomCountsAsync(roomConfig, member);
                 ticket.QueuePosition = position + 1;
                 admit = participantCount + position < roomConfig.ParticipantLimit;
             }
@@ -176,8 +179,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 _ = trans.HashSetAsync(GetRoomKey(roomConfig, ParticipantsKey), member, string.Empty);
             }
 
-            await this.CheckInAsync(trans, roomConfig, ticket).ConfigureAwait(true);
-            await trans.ExecuteAsync().ConfigureAwait(true);
+            await this.CheckInAsync(trans, roomConfig, ticket);
+            await trans.ExecuteAsync();
             stopwatch.Stop();
             this.logger.LogDebug("CheckInAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return ticket;
@@ -205,7 +208,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                     0,
                     this.dateTimeDelegate.UtcUnixTime,
                     take: roomConfig.RemoveExpiredMax)
-                .ConfigureAwait(true);
+                ;
             ITransaction transaction = database.CreateTransaction();
             if (expired.Length > 0)
             {
@@ -222,13 +225,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 positionTask = transaction.SortedSetRankAsync(GetRoomKey(roomConfig, WaitingKey), member);
             }
 
-            await transaction.ExecuteAsync().ConfigureAwait(true);
-            long participantCount = await participantCountTask.ConfigureAwait(true);
-            long waitingCount = await waitingCountTask.ConfigureAwait(true);
+            await transaction.ExecuteAsync();
+            long participantCount = await participantCountTask;
+            long waitingCount = await waitingCountTask;
             long position = 0;
             if (positionTask != null)
             {
-                position = await positionTask.ConfigureAwait(true) ?? 0;
+                position = await positionTask ?? 0;
             }
 
             stopwatch.Stop();
@@ -245,7 +248,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             ticket.Nonce = this.nonceGenerator.GenerateNonce();
             if (ticket.Status == TicketStatus.Processed && ticket.CheckInAfter >= ticket.TokenExpires)
             {
-                (ticket.Token, ticket.TokenExpires) = await this.tokenIssuer.CreateTokenAsync(roomConfig.Name, ticket.Id.ToString("D")).ConfigureAwait(true);
+                (ticket.Token, ticket.TokenExpires) = await this.tokenIssuer.CreateTokenAsync(roomConfig.Name, ticket.Id.ToString("D"));
             }
 
             string ticketJson = JsonSerializer.Serialize(ticket);
@@ -264,9 +267,9 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, WaitingKey), roomIdleTtl);
         }
 
-        private RoomConfiguration? GetRoomConfiguration(string room)
+        private async Task<RoomConfiguration?> GetRoomConfiguration(string room)
         {
-            RoomConfiguration? roomConfig = this.configuration.GetSection($"Room{room}").Get<RoomConfiguration>();
+            RoomConfiguration? roomConfig = await this.roomService.ReadConfigurationAsync(room);
             return roomConfig;
         }
     }

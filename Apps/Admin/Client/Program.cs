@@ -97,12 +97,13 @@ namespace BCGov.WaitingQueue.Admin.Client
             builder.Services.AddBlazoredLocalStorage();
 
             app[0] = builder.Build();
-            await app[0].RunAsync().ConfigureAwait(true);
+            await app[0].RunAsync();
         }
 
         private static void RegisterRefitClients(this WebAssemblyHostBuilder builder)
         {
             RegisterRefitClient<IConfigurationApi>(builder, "api/Configuration", false);
+            RegisterRefitClient<IRoomApi>(builder, "api/Room", true);
         }
 
         private static void RegisterRefitClient<T>(WebAssemblyHostBuilder builder, string servicePath, bool isAuthorized)

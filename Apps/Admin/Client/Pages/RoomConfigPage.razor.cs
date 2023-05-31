@@ -15,14 +15,17 @@
 //-------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Admin.Client.Pages;
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading.Tasks;
+using BCGov.WaitingQueue.Admin.Client.Api;
 using BCGov.WaitingQueue.Admin.Client.Components.RoomConfiguration;
 using BCGov.WaitingQueue.Admin.Common.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using Refit;
 
 /// <summary>
 /// Backing logic for the Room Config page.
@@ -32,7 +35,7 @@ public partial class RoomConfigPage : ComponentBase
     /// <summary>
     /// Gets the configured rooms.
     /// </summary>
-    public ReadOnlyCollection<RoomConfiguration> Rooms { get; private set; } = null!;
+    public IDictionary<string, RoomConfiguration> Rooms { get; private set; } = new Dictionary<string, RoomConfiguration>();
 
     private bool IsDialogOpen { get; set; }
 
@@ -43,38 +46,37 @@ public partial class RoomConfigPage : ComponentBase
     private NavigationManager Navigation { get; set; } = default!;
 
     [Inject]
-    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+    private IRoomApi RoomApi { get; set; } = default!;
+
+    private string? ErrorMessage { get; set; }
 
     /// <inheritdoc/>
     protected override async Task OnInitializedAsync()
     {
-        AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
-        var user = authState.User;
-
-        this.Rooms = new ReadOnlyCollection<RoomConfiguration>(
-            new List<RoomConfiguration>()
-            {
-                new RoomConfiguration
-                {
-                    Id = "room1",
-                    Name = "test room 1",
-                },
-                new RoomConfiguration
-                {
-                    Id = "room2",
-                    Name = "test room 2",
-                },
-            });
+        try
+        {
+            this.Rooms = await this.RoomApi.GetRoomsAsync();
+        }
+        catch (Exception e) when (e is ApiException or HttpRequestException)
+        {
+            this.ErrorMessage = "Unable to load room configurations, please try refreshing the page or contact support";
+        }
     }
 
     private async Task HandleClickNewAsync()
     {
-        await OpenRoomConfigurationDialog(new RoomConfiguration());
+        await this.OpenRoomConfigurationDialog(new RoomConfiguration());
     }
 
     private async Task HandleClickEditAsync(RoomConfiguration roomConfiguration)
     {
-        await OpenRoomConfigurationDialog(roomConfiguration);
+        await this.OpenRoomConfigurationDialog(roomConfiguration);
+    }
+
+    private async Task HandleCloseError()
+    {
+        this.ErrorMessage = null;
+        await Task.CompletedTask;
     }
 
     private async Task OpenRoomConfigurationDialog(RoomConfiguration item)
@@ -90,11 +92,21 @@ public partial class RoomConfigPage : ComponentBase
         DialogOptions options = new() { DisableBackdropClick = true };
         IDialogReference dialog = await this.Dialog.ShowAsync<RoomConfigurationDialog>("Room Configuration", parameters, options);
 
-        var result = await dialog.Result;
+        DialogResult result = await dialog.Result;
         this.IsDialogOpen = false;
         if (!result.Canceled)
         {
-            //TODO: save config
+            this.ErrorMessage = null;
+            try
+            {
+                this.Rooms[item.Name] = await this.RoomApi.UpsertConfiguration(item);
+            }
+            catch (Exception e) when (e is ApiException or HttpRequestException)
+            {
+                this.ErrorMessage = "Unable to save room configuration, please try refreshing the page or contact support";
+            }
+
+            this.StateHasChanged();
         }
 
         return;

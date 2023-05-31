@@ -54,7 +54,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Issuers
             Stopwatch stopwatch = new();
             stopwatch.Start();
             TokenRequest tokenRequest = this.configuration.RoomConfiguration[room];
-            TokenResponse tokenResponse = await this.keycloakApi.AuthenticateAsync(tokenRequest).ConfigureAwait(true);
+            TokenResponse tokenResponse = await this.keycloakApi.AuthenticateAsync(tokenRequest);
             JwtSecurityTokenHandler handler = new();
             JwtSecurityToken token = handler.ReadJwtToken(tokenResponse.AccessToken);
             DateTimeOffset ticketExpiry = token.ValidTo;

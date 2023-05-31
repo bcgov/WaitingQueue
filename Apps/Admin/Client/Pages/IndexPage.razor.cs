@@ -35,9 +35,16 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
+            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
             ClaimsPrincipal user = authState.User;
-            this.Navigation.NavigateTo("room-config", replace: true);
+            if (user.IsInRole(Roles.Admin))
+            {
+                this.Navigation.NavigateTo("room-config", replace: true);
+            }
+            else
+            {
+                this.Navigation.NavigateTo("stats", replace: true);
+            }
         }
     }
 }

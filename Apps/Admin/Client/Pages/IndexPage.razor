@@ -1,5 +1,5 @@
 @page "/"
-@attribute [Authorize]
+@attribute [Authorize(Roles = $"{Roles.Admin}, {Roles.Stats}")]
 
 <p class="text-center">
     Determining Default User Route

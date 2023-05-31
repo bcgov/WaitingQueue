@@ -44,7 +44,7 @@ public partial class NavigationConfirmation : FluxorComponent
     {
         bool navigationConfirmed = await this.JsRuntime
             .InvokeAsync<bool>("confirm", "Leave page? Changes you made may not be saved.")
-            .ConfigureAwait(true);
+            ;
 
         if (!navigationConfirmed)
         {

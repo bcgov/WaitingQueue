@@ -88,7 +88,7 @@ namespace BCGov.WaitingQueue.Controllers
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<Ticket>> GetTicket(string room, Guid ticketId, string nonce)
         {
-            return await this.ticketDelegate.GetTicket(room, ticketId, nonce).ConfigureAwait(true);
+            return await this.ticketDelegate.GetTicket(room, ticketId, nonce);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace BCGov.WaitingQueue.Controllers
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<Ticket>> CreateTicket([FromQuery]string room)
         {
-            return await this.ticketDelegate.CreateTicket(room).ConfigureAwait(true);
+            return await this.ticketDelegate.CreateTicket(room);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace BCGov.WaitingQueue.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CheckIn(TicketRequest ticketRequest)
         {
-            return this.Ok(await this.ticketDelegate.CheckInAsync(ticketRequest).ConfigureAwait(true));
+            return this.Ok(await this.ticketDelegate.CheckInAsync(ticketRequest));
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace BCGov.WaitingQueue.Controllers
         [HttpDelete]
         public async Task RemoveTicket(TicketRequest ticketRequest)
         {
-            await this.ticketDelegate.RemoveTicketAsync(ticketRequest).ConfigureAwait(true);
+            await this.ticketDelegate.RemoveTicketAsync(ticketRequest);
         }
     }
 }

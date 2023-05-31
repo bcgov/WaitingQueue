@@ -3,10 +3,10 @@
         <MudForm @ref="Form">
             <MudGrid Spacing="0">
                 <MudItem xs="6">
-                    <WqaTextField Label="Name" @bind-Value="RoomConfiguration.Id" T="@string" Required="@true" RightMargin="@Breakpoint.Always" />
+                    <WqaTextField Label="Name" @bind-Value="RoomConfiguration.Name" T="@string" Required="@true" RightMargin="@Breakpoint.Always" />
                 </MudItem>
                 <MudItem xs="6">
-                    <WqaTextField Label="Description" @bind-Value="RoomConfiguration.Name" T="@string" Required="@true" RightMargin="@Breakpoint.Always" />
+                    &nbsp;
                 </MudItem>
                 <MudItem xs="6">
                     <WqaTextField Label="Check In Frequency" @bind-Value="RoomConfiguration.CheckInFrequency" T="@int" Required="@true" RightMargin="@Breakpoint.Always" />

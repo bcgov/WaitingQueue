@@ -24,5 +24,10 @@ namespace BCGov.WaitingQueue.Admin.Client.Authorization
         /// Represents an overall Admin User (super).
         /// </summary>
         public const string Admin = "AdminUser";
+
+        /// <summary>
+        /// Represents a user that is able to view statistics.
+        /// </summary>
+        public const string Stats = "StatsUser";
     }
 }

@@ -21,47 +21,47 @@ namespace BCGov.WaitingQueue.Admin.Common.Models;
 public record RoomConfiguration
 {
     /// <summary>
-    /// Gets or sets the room id.
-    /// </summary>
-    public string? Id { get; set; }
-
-    /// <summary>
     /// Gets or sets the room's name.
     /// </summary>
     public string? Name { get; set; }
 
     /// <summary>
-    /// Gets or sets the check in frequencey in seconds.
+    /// Gets or sets the check in frequency in seconds.
     /// </summary>
-    public int CheckInFrequency { get; set; }
+    public int CheckInFrequency { get; set; } = 180;
 
     /// <summary>
     /// Gets or sets the check in grace period in seconds.
     /// </summary>
-    public int CheckInGrace { get; set; }
+    public int CheckInGrace { get; set; } = 10;
 
     /// <summary>
     /// Gets or sets the room idle time to live.
     /// </summary>
-    public int RoomIdleTtl { get; set; }
+    public int RoomIdleTtl { get; set; } = 300;
 
     /// <summary>
-    /// Gets or sets the number of participants limit.
+    /// Gets or sets the maximum number of participants.
     /// </summary>
-    public int ParticipantLimit { get; set; }
+    public int ParticipantLimit { get; set; } = 800;
 
     /// <summary>
     /// Gets or sets the queue number of participant threshold.
     /// </summary>
-    public int QueueThreshold { get; set; }
+    public int QueueThreshold { get; set; } = 600;
 
     /// <summary>
     /// Gets or sets the queue maximum size.
     /// </summary>
-    public int QueueMaxSize { get; set; }
+    public int QueueMaxSize { get; set; } = 500;
 
     /// <summary>
     /// Gets or sets the maximum of remove expired maximum?.
     /// </summary>
-    public int RemoveExpiredMax { get; set; }
+    public int RemoveExpiredMax { get; set; } = 250;
+
+    /// <summary>
+    /// Gets or sets the last updated timestamp in UTC Epoch format.
+    /// </summary>
+    public long LastUpdated { get; set; }
 }

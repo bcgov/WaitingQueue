@@ -78,7 +78,7 @@ namespace BCGov.WaitingQueue.Admin.Server
             app.MapControllers();
             app.MapFallbackToFile("index.html");
 
-            await app.RunAsync().ConfigureAwait(true);
+            await app.RunAsync();
         }
 
         private static void AddModules(IServiceCollection services, IConfiguration configuration, ILogger logger, IWebHostEnvironment environment)

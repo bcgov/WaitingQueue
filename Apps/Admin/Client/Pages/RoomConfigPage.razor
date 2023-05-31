@@ -1,11 +1,16 @@
 @page "/room-config"
-@attribute [Authorize]
+@using BCGov.WaitingQueue.Admin.Common.Models
+@attribute [Authorize(Roles = $"{Roles.Admin}")]
 @layout MainLayout
 
 <WqaPageHeading>Room Configuration</WqaPageHeading>
+@if(!string.IsNullOrEmpty(ErrorMessage))
+{
+    <MudAlert Severity="Severity.Error" ShowCloseIcon="true" CloseIconClicked="@HandleCloseError" Class="my-2">@ErrorMessage</MudAlert>
+}
 <WqaButton OnClick="@HandleClickNewAsync">New</WqaButton>
 <MudList>
-    @foreach (var room in Rooms)
+    @foreach (RoomConfiguration room in Rooms.Values)
     {
         <MudListItem>
             <MudCard>

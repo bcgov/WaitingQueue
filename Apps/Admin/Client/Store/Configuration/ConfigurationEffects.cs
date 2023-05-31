@@ -45,7 +45,7 @@ namespace BCGov.WaitingQueue.Admin.Client.Store.Configuration
 
             try
             {
-                ExternalConfiguration response = await this.ConfigApi.GetConfigurationAsync().ConfigureAwait(true);
+                ExternalConfiguration response = await this.ConfigApi.GetConfigurationAsync();
                 this.Logger.LogInformation("External configuration loaded successfully!");
                 dispatcher.Dispatch(new ConfigurationActions.LoadSuccessAction(response));
             }

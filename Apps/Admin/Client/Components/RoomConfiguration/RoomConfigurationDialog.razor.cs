@@ -16,26 +16,26 @@
 
 namespace BCGov.WaitingQueue.Admin.Client.Components.RoomConfiguration;
 
+using System.Threading.Tasks;
 using BCGov.WaitingQueue.Admin.Common.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Show dialog to add/edit room configuration.
 /// </summary>
 public partial class RoomConfigurationDialog
 {
+    /// <summary>
+    /// Gets or sets the room configuration instance to edit.
+    /// </summary>
+    [Parameter]
+    public RoomConfiguration RoomConfiguration { get; set; } = new();
+
     [CascadingParameter]
     private MudDialogInstance MudDialog { get; set; } = default!;
 
     private MudForm Form { get; set; } = default!;
-
-    /// <summary>
-    /// Gets or set the room configuration instance to edit
-    /// </summary>
-    [Parameter]
-    public RoomConfiguration RoomConfiguration { get; set; } = new RoomConfiguration();
 
     private async Task HandleClickCancelAsync()
     {

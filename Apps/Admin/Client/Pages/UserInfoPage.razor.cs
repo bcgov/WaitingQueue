@@ -54,8 +54,8 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            await this.GetClaimsPrincipalData().ConfigureAwait(true);
-            await this.CreateCookie("HGAdmin", "dark mode", 365).ConfigureAwait(true);
+            await this.GetClaimsPrincipalData();
+            await this.CreateCookie("HGAdmin", "dark mode", 365);
         }
 
         private async Task CreateCookie(string name, string value, int days)
@@ -72,17 +72,17 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
             }
 
             string cookieValue = $"{name}={value}{expires}; path=/";
-            await this.JsRuntime.InvokeVoidAsync("eval", $@"document.cookie = ""{cookieValue}""").ConfigureAwait(true);
+            await this.JsRuntime.InvokeVoidAsync("eval", $@"document.cookie = ""{cookieValue}""");
         }
 
         private async Task GetClaimsPrincipalData()
         {
-            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync().ConfigureAwait(true);
+            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
             ClaimsPrincipal user = authState.User;
 
             if (user.Identity != null && user.Identity.IsAuthenticated)
             {
-                AccessTokenResult? tokenResult = await this.TokenProvider.RequestAccessToken().ConfigureAwait(true);
+                AccessTokenResult? tokenResult = await this.TokenProvider.RequestAccessToken();
                 tokenResult.TryGetToken(out AccessToken? accessToken);
                 this.Token = accessToken.Value;
 

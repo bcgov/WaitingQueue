@@ -35,21 +35,20 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// Creates or Updates the room configuration in the datastore.
         /// </summary>
         /// <param name="roomConfig">The room configuration to create or update.</param>
-        /// <param name="create">If true attempts to create the configuration instead of updating.</param>
         /// <returns>A boolean indicating if the operation was successful and the configuration.</returns>
-        Task<(bool Committed, RoomConfiguration RoomConfig)> WriteConfigurationAsync(RoomConfiguration roomConfig, bool create = false);
+        Task<(bool Committed, RoomConfiguration RoomConfig)> WriteConfigurationAsync(RoomConfiguration roomConfig);
 
         /// <summary>
         /// Returns an optimistic indicator for the existence of the room.
         /// </summary>
         /// <param name="room">The room to check for the existence of.</param>
-        /// <returns>An indicator</returns>
+        /// <returns>A boolean representing if the room exists or not.</returns>
         Task<bool> RoomExists(string room);
 
         /// <summary>
         /// Lists all the rooms in the datastore.
         /// </summary>
         /// <returns>A list of strings identifying each room.</returns>
-        Task<IEnumerable<string>> GetRoomsAsync();
+        Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync();
     }
 }
