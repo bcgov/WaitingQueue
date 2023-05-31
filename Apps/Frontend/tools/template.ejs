@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= data.locale %>">
+<html lang="en-CA">
   <head>
     <title><%= _.title %> - <%= _.appName %></title>
     <meta charset="UTF-8" />
@@ -23,6 +23,9 @@
     <% if (data.legacyBrowser) { %>
     <script nomodule src="/legacy.js?v=<%= data.hash %>"></script>
     <% } %>
+    <script type="application/json" id="locales">
+        <%- data.locales %>
+    </script>
   </head>
   <body>
     <header class="bc-header">
@@ -69,13 +72,13 @@
           />
           <rect x="116.9" y="36.6" class="st3" width="0.6" height="0.6" />
         </svg>
-        <h2 class="bc-header__title"><%= _.title %></h2>
+        <h2 class="bc-header__title" data-lang="title"><%= _.title %></h2>
         </hgroup>
         <hgroup>
           <select name="lang-dropdown" id="lang-dropdown" class="bc-gov-dropdown">
             <% data.languageOptions.forEach(function(l) { %>
               <option
-                value="/<%= l.url %>"
+                value="<%= l.lang %>"
                 lang="<%= l.lang %>"
               >
                 <%= l.name %>
@@ -89,6 +92,7 @@
         <noscript><%= _.componentFallbackText %></noscript>
         <queue-poller
           id="poller"
+          lang="en-CA"
           redirect-url="<%= data.redirectUrl %>"
           room="<%= data.room %>"
           poll-url="<%= data.pollUrl %>"
@@ -99,9 +103,15 @@
     </main>
     <template id="poller-template">
       <div class="container" role="status">
-        <h3><%= _.statusTitle %></h3>
+        <h3>
+          <bdi data-lang="statusTitle">
+            <%= _.statusTitle %>
+          </bdi>
+        </h3>
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
-          <%= _.statusPositionText %>
+          <bdi data-lang="statusPositionText">
+            <%= _.statusPositionText %>
+          </bdi>
         </p>
         <mark><loading-spinner></loading-spinner></mark>
       </div>
@@ -109,22 +119,32 @@
     <template id="redirect-template">
       <div role="alert" class="container">
         <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
-        <h4><%= _.redirectText %></h4>
+        <h4>
+          <bdi data-lang="redirectText">
+            <%= _.redirectText %>
+          </bdi>
+        </h4>
       </div>
     </template>
     <template id="error-template">
       <div role="alert" class="container">
-        <h3><%= _.errorTitle %></h3>
+        <h3>
+          <bdi data-lang="errorTitle">
+            <%= _.errorTitle %>
+          </bdi>
+        </h3>
         <button data-retry class="btn-secondary">
-          <%= _.errorRetryText %>
+          <bdi data-lang="errorRetryText"><%= _.errorRetryText %></bdi>
         </button>
       </div>
     </template>
     <template id="notice-template">
       <div role="alert" class="notice">
         <p>
-          <strong><%= _.incidentTitle %></strong>
-          <%= _.incidentText %>
+          <strong>
+            <bdi data-lang="incidentTitle"><%= _.incidentTitle %></bdi>
+          </strong>
+          <bdi data-lang="incidentText"><%= _.incidentText %></bdi>
         </p>
       </div>
     </template>

@@ -22,6 +22,9 @@ const noticeTemplate = document.querySelector("#notice-template");
  * @property {redirect-url} The location the requester should be redirected to upon success.
  */
 class QueuePoller extends HTMLElement {
+  static get observedAttributes() {
+    return ["lang"];
+  }
   /**
    * Sets the polling interval
    * @type number
@@ -60,6 +63,28 @@ class QueuePoller extends HTMLElement {
 
   disconnectedCallback() {
     this.cleanUp();
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} _
+   * @param {string} value
+   */
+  attributeChangedCallback(name, _, value) {
+    if (name === "lang") {
+      const localesJson = document.querySelector("#locales").textContent;
+      const locales = JSON.parse(localesJson);
+      const locale = locales[value];
+
+      if (locale) {
+        Object.entries(locale).forEach(([key, value]) => {
+          const node = document.querySelector(`[data-lang="${key}"]`);
+          if (node) {
+            node.textContent = value;
+          }
+        });
+      }
+    }
   }
 
   /** @param {boolean} value */

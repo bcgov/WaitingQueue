@@ -46,8 +46,11 @@ export function checkLanguage() {
  * @param {Event & { target: HTMLSelectElement}} event
  */
 function handleLangChange(event) {
-  const url = event.target.value;
-  utils.open(url);
+  const lang = event.target.value;
+  document.querySelector("html").setAttribute("lang", lang);
+  document.querySelectorAll("queue-poller").forEach((el) => {
+    el.setAttribute("lang", lang);
+  });
 }
 
 export function updateLanguageSelect() {

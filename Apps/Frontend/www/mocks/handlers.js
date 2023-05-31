@@ -1,7 +1,7 @@
 const { rest, setupWorker } = MockServiceWorker;
 const DB_STORAGE_KEY = "WaitingQueue.mockdb";
 // Normal interval should be around 120
-const TICKET_INTERVAL = 10;
+const TICKET_INTERVAL = 1000;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 

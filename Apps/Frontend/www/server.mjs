@@ -14,15 +14,14 @@ async function renderTemplate(config, lang) {
     return {
       lang,
       name: languages[lang],
-      url: lang === "en-CA" ? "" : lang.toLowerCase(),
     };
   });
   const data = {
-    _: config.locales[lang],
+    _: config.locales["en-CA"],
     data: {
       ...config.settings,
+      locales: JSON.stringify(config.locales),
       env: "local",
-      locale: lang,
       hash: "",
       supportedLanguages: supportedLanguages.map((l) => `"${l}"`),
       languageOptions,
@@ -50,17 +49,19 @@ let { host, port } = await ctx.serve({ servedir: "./www" });
  * @param {string} url
  * @returns {string?}
  */
-function getLanguage(url, config) {
-  if (url === "/") {
-    return "en-CA";
-  }
-  const start = url.split("/").filter(Boolean)[0];
-  const lang = /\w{2}(-\w{2,3})?/i.exec(start)[0] ?? [];
-  if (config.locales[lang]) {
-    return lang;
-  }
-  return undefined;
-}
+// function getLanguage(url, config) {
+//   if (url === "/") {
+//     return "en-CA";
+//   }
+//   const start = url.split("/").filter(Boolean)[0];
+//   const lang = /\w{2}(-\w{2,3})?/i.exec(start);
+//   if (lang) {
+//     if (config.locales[lang[0]]) {
+//       return lang;
+//     }
+//   }
+//   return undefined;
+// }
 
 // Start proxy server
 http
@@ -74,10 +75,9 @@ http
       method: req.method,
       headers: req.headers,
     };
-    const language = getLanguage(req.url, config);
 
-    if (language) {
-      const html = await renderTemplate(config, language);
+    if (req.url === "/") {
+      const html = await renderTemplate(config);
       res.writeHead(200, { "Content-Type": "text/html" });
       res.end(html);
       return;
@@ -99,4 +99,4 @@ http
     // esbuild result
     req.pipe(proxyReq, { end: true });
   })
-  .listen(8000);
+  .listen(8001);
