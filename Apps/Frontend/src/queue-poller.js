@@ -80,7 +80,7 @@ class QueuePoller extends HTMLElement {
         Object.entries(locale).forEach(([key, value]) => {
           const node = document.querySelector(`[data-lang="${key}"]`);
           if (node) {
-            node.textContent = value;
+            node.innerHTML = value;
           }
         });
       }
