@@ -18,362 +18,338 @@ ard:
       redirectUrl: https://bcstats.apps.gov.bc.ca/i
       pollUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket
       refreshUrl: https://bcstats-waitroom.api.gov.bc.ca/Ticket/check-in
+
   locales:
     ar:
-      appName: "&#1594;&#1585;&#1601;&#1577; &#1575;&#1604;&#1575;&#1606;&#1578;&#1592;&#1575;&#1585"
-      componentFallbackText:
-        "&#1578;&#1581;&#1578;&#1575;&#1580; &#1573;&#1604;&#1609;
-        &#1578;&#1605;&#1603;&#1610;&#1606; &#1580;&#1575;&#1601;&#1575; &#1587;&#1603;&#1585;&#1610;&#1576;&#1578;
-        &#1604;&#1578;&#1615;&#1588;&#1594;&#1617;&#1616;&#1604; &#1607;&#1584;&#1575;
-        &#1575;&#1604;&#1605;&#1615;&#1603;&#1614;&#1608;&#1606"
-      errorRetryText: "&#1571;&#1593;&#1583; &#1575;&#1604;&#1605;&#1581;&#1575;&#1608;&#1604;&#1577"
-      errorText: "&#1581;&#1583;&#1579; &#1582;&#1591;&#1571; &#1605;&#1575"
-      errorTitle:
-        "&#1578;&#1608;&#1575;&#1580;&#1607; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577;
-        &#1575;&#1604;&#1575;&#1587;&#1578;&#1602;&#1589;&#1575;&#1574;&#1610;&#1577;
-        &#1604;&#1583;&#1610;&#1605;&#1608;&#1594;&#1585;&#1575;&#1601;&#1610;&#1577;
-        &#1576;&#1585;&#1610;&#1578;&#1588; &#1603;&#1608;&#1604;&#1608;&#1605;&#1576;&#1610;&#1575;
-        &#1591;&#1604;&#1576;&#1611;&#1575; &#1593;&#1575;&#1604;&#1610;&#1611;&#1575;
-        &#1605;&#1605;&#1575; &#1610;&#1578;&#1587;&#1576;&#1576; &#1576;&#1575;&#1604;&#1578;&#1571;&#1582;&#1610;&#1585;."
+      appName: "\u063A\u0631\u0641\u0629 \u0627\u0644\u0627\u0646\u062A\u0638\u0627\u0631"
+      componentFallbackText: "\u062A\u062D\u062A\u0627\u062C \u0625\u0644\u0649 \u062A\
+        \u0645\u0643\u064A\u0646 \u062C\u0627\u0641\u0627 \u0633\u0643\u0631\u064A\u0628\
+        \u062A \u0644\u062A\u064F\u0634\u063A\u0651\u0650\u0644 \u0647\u0630\u0627 \u0627\
+        \u0644\u0645\u064F\u0643\u064E\u0648\u0646"
+      errorRetryText: "\u0623\u0639\u062F \u0627\u0644\u0645\u062D\u0627\u0648\u0644\
+        \u0629"
+      errorText: "\u062D\u062F\u062B \u062E\u0637\u0623 \u0645\u0627"
+      errorTitle: "\u062A\u0648\u0627\u062C\u0647 \u0627\u0644\u062F\u0631\u0627\u0633\
+        \u0629 \u0627\u0644\u0627\u0633\u062A\u0642\u0635\u0627\u0626\u064A\u0629 \u0644\
+        \u062F\u064A\u0645\u0648\u063A\u0631\u0627\u0641\u064A\u0629 \u0628\u0631\u064A\
+        \u062A\u0634 \u0643\u0648\u0644\u0648\u0645\u0628\u064A\u0627 \u0637\u0644\u0628\
+        \u064B\u0627 \u0639\u0627\u0644\u064A\u064B\u0627 \u0645\u0645\u0627 \u064A\u062A\
+        \u0633\u0628\u0628 \u0628\u0627\u0644\u062A\u0623\u062E\u064A\u0631."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#1571;&#1606;&#1578; &#1580;&#1575;&#1607;&#1586;&#1548; &#1578;&#1580;&#1585;&#1610;
-        &#1573;&#1593;&#1575;&#1583;&#1577; &#1575;&#1604;&#1578;&#1608;&#1580;&#1610;&#1607;..."
-      statusPositionText:
-        '&#1605;&#1608;&#1602;&#1593;&#1603; &#1575;&#1604;&#1581;&#1575;&#1604;&#1610;
-        &#1601;&#1610; &#1604;&#1575;&#1574;&#1581;&#1577; &#1575;&#1604;&#1575;&#1606;&#1578;&#1592;&#1575;&#1585;
-        &#1607;&#1608;'
-      statusTitle:
-        "&#1610;&#1608;&#1575;&#1580;&#1607; &#1606;&#1592;&#1575;&#1605;
-        &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1575;&#1604;&#1575;&#1587;&#1578;&#1602;&#1589;&#1575;&#1574;&#1610;&#1577;
-        &#1591;&#1604;&#1576;&#1611;&#1575; &#1593;&#1575;&#1604;&#1610;&#1611;&#1575;
-        &#1581;&#1575;&#1604;&#1610;&#1611;&#1575; &#1608;&#1602;&#1583; &#1608;&#1590;&#1593;&#1603;
-        &#1601;&#1610; &#1602;&#1575;&#1574;&#1605;&#1577; &#1575;&#1606;&#1578;&#1592;&#1575;&#1585;."
-      title: BC&nbsp;Demographic&nbsp;Survey
+      redirectText: "\u0623\u0646\u062A \u062C\u0627\u0647\u0632\u060C \u062A\u062C\u0631\
+        \u064A \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u062A\u0648\u062C\u064A\u0647\
+        ..."
+      statusPositionText: "\u0645\u0648\u0642\u0639\u0643 \u0627\u0644\u062D\u0627\
+        \u0644\u064A \u0641\u064A \u0644\u0627\u0626\u062D\u0629 \u0627\u0644\u0627\u0646\
+        \u062A\u0638\u0627\u0631 \u0647\u0648"
+      statusTitle: "\u064A\u0648\u0627\u062C\u0647 \u0646\u0638\u0627\u0645 \u0627\u0644\
+        \u062F\u0631\u0627\u0633\u0629 \u0627\u0644\u0627\u0633\u062A\u0642\u0635\u0627\
+        \u0626\u064A\u0629 \u0637\u0644\u0628\u064B\u0627 \u0639\u0627\u0644\u064A\u064B\
+        \u0627 \u062D\u0627\u0644\u064A\u064B\u0627 \u0648\u0642\u062F \u0648\u0636\u0639\
+        \u0643 \u0641\u064A \u0642\u0627\u0626\u0645\u0629 \u0627\u0646\u062A\u0638\u0627\
+        \u0631."
+      title: "BC\_Demographic\_Survey"
     en-CA:
       appName: Waiting Room
       componentFallbackText: You need JavaScript enabled to run this component
       errorRetryText: Retry
       errorText: Something went wrong
-      errorTitle:
-        BC Demographic Survey is currently experiencing high demand which
+      errorTitle: BC Demographic Survey is currently experiencing high demand which
         is causing delays.
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: You're all set, redirecting...
       statusPositionText: 'Your current position in the queue is'
-      statusTitle:
-        The Survey System is currently experiencing high demand and has placed
+      statusTitle: The Survey System is currently experiencing high demand and has placed
         you in a queue.
-      title: BC&nbsp;Demographic&nbsp;Survey
+      title: "BC\_Demographic\_Survey"
     es:
       appName: Sala de espera
       componentFallbackText: Para ejecutar este componente, debe activar JavaScript
       errorRetryText: Volver a intentar
-      errorText: Algo sali&#243; mal
-      errorTitle:
-        Actualmente, la encuesta demogr&#225;fica de BC est&#225; experimentando
-        una gran demanda y esto est&#225; provocando demoras.
+      errorText: "Algo sali\xF3 mal"
+      errorTitle: "Actualmente, la encuesta demogr\xE1fica de BC est\xE1 experimentando\
+        \ una gran demanda y esto est\xE1 provocando demoras."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText: Ya est&#225; todo listo, redirigiendo&#8230
-      statusPositionText: 'Su posici&#243;n actual en la fila es'
-      statusTitle:
-        El sistema de encuestas est&#225; experimentando actualmente una
-        gran demanda y le ha situado en una fila de espera.
-      title: Encuesta demogr&#225;fica de BC
+      redirectText: "Ya est\xE1 todo listo, redirigiendo\u2026"
+      statusPositionText: "Su posici\xF3n actual en la fila es"
+      statusTitle: "El sistema de encuestas est\xE1 experimentando actualmente una gran\
+        \ demanda y le ha situado en una fila de espera."
+      title: "Encuesta demogr\xE1fica de BC"
     fa:
-      appName: "&#1575;&#1578;&#1575;&#1602; &#1575;&#1606;&#1578;&#1592;&#1575;&#1585"
-      componentFallbackText:
-        "&#1576;&#1585;&#1575;&#1740; &#1575;&#1580;&#1585;&#1575;&#1740;
-        &#1575;&#1740;&#1606; &#1602;&#1587;&#1605;&#1578;&#1548; &#1588;&#1605;&#1575;
-        &#1576;&#1607; JavaScript &#1606;&#1740;&#1575;&#1586; &#1583;&#1575;&#1585;&#1740;&#1583;."
-      errorRetryText:
-        "&#1583;&#1608;&#1576;&#1575;&#1585;&#1607; &#1587;&#1593;&#1740;
-        &#1705;&#1606;&#1740;&#1583"
-      errorText: "&#1582;&#1591;&#1575;&#1740;&#1740; &#1585;&#1608;&#1740; &#1583;&#1575;&#1583"
-      errorTitle:
-        "&#1583;&#1585; &#1581;&#1575;&#1604; &#1581;&#1575;&#1590;&#1585;&#1548;
-        &#1606;&#1592;&#1585;&#1587;&#1606;&#1580;&#1740; &#1580;&#1605;&#1593;&#1740;&#1578;&#8204;&#1588;&#1606;&#1575;&#1582;&#1578;&#1740;
-        BC &#1576;&#1575; &#1578;&#1602;&#1575;&#1590;&#1575;&#1740; &#1576;&#1575;&#1604;&#1575;&#1740;&#1740;
-        &#1585;&#1608;&#1576;&#1607;&#8204;&#1585;&#1608; &#1575;&#1587;&#1578; &#1705;&#1607;
-        &#1576;&#1575;&#1593;&#1579; &#1578;&#1575;&#1582;&#1740;&#1585; &#1588;&#1583;&#1607;
-        &#1575;&#1587;&#1578;."
+      appName: "\u0627\u062A\u0627\u0642 \u0627\u0646\u062A\u0638\u0627\u0631"
+      componentFallbackText: "\u0628\u0631\u0627\u06CC \u0627\u062C\u0631\u0627\u06CC\
+        \ \u0627\u06CC\u0646 \u0642\u0633\u0645\u062A\u060C \u0634\u0645\u0627 \u0628\
+        \u0647 JavaScript \u0646\u06CC\u0627\u0632 \u062F\u0627\u0631\u06CC\u062F."
+      errorRetryText: "\u062F\u0648\u0628\u0627\u0631\u0647 \u0633\u0639\u06CC \u06A9\
+        \u0646\u06CC\u062F"
+      errorText: "\u062E\u0637\u0627\u06CC\u06CC \u0631\u0648\u06CC \u062F\u0627\u062F"
+      errorTitle: "\u062F\u0631 \u062D\u0627\u0644 \u062D\u0627\u0636\u0631\u060C \u0646\
+        \u0638\u0631\u0633\u0646\u062C\u06CC \u062C\u0645\u0639\u06CC\u062A\u200C\u0634\
+        \u0646\u0627\u062E\u062A\u06CC BC \u0628\u0627 \u062A\u0642\u0627\u0636\u0627\
+        \u06CC \u0628\u0627\u0644\u0627\u06CC\u06CC \u0631\u0648\u0628\u0647\u200C\u0631\
+        \u0648 \u0627\u0633\u062A \u06A9\u0647 \u0628\u0627\u0639\u062B \u062A\u0627\
+        \u062E\u06CC\u0631 \u0634\u062F\u0647 \u0627\u0633\u062A."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#1705;&#1575;&#1585; &#1588;&#1605;&#1575; &#1578;&#1705;&#1605;&#1740;&#1604;
-        &#1588;&#1583;&#1548; &#1583;&#1585; &#1581;&#1575;&#1604; &#1575;&#1606;&#1578;&#1602;&#1575;&#1604;..."
-      statusPositionText:
-        "&#171;&#1605;&#1608;&#1602;&#1593;&#1740;&#1578; &#1601;&#1593;&#1604;&#1740;
-        &#1588;&#1605;&#1575; &#1583;&#1585; &#1589;&#1601;"
-      statusTitle:
-        "&#1583;&#1585; &#1581;&#1575;&#1604; &#1581;&#1575;&#1590;&#1585;&#1548;
-        &#1587;&#1740;&#1587;&#1578;&#1605; &#1606;&#1592;&#1585;&#1587;&#1606;&#1580;&#1740;
-        &#1576;&#1575; &#1578;&#1602;&#1575;&#1590;&#1575;&#1740; &#1576;&#1575;&#1604;&#1575;&#1740;&#1740;
-        &#1585;&#1608;&#1576;&#1607;&#8204;&#1585;&#1608; &#1575;&#1587;&#1578; &#1608;
-        &#1588;&#1605;&#1575; &#1585;&#1575; &#1583;&#1585; &#1589;&#1601; &#1602;&#1585;&#1575;&#1585;
-        &#1583;&#1575;&#1583;&#1607; &#1575;&#1587;&#1578;."
-      title:
-        "&#1606;&#1592;&#1585;&#1587;&#1606;&#1580;&#1740;&nbsp;&#1580;&#1605;&#1593;&#1740;&#1578;&#8204;&#1588;&#1606;&#1575;&#1582;&#1578;&#1740;&nbsp;&#1576;&#1585;&#1740;&#1578;&#1740;&#1588;
-        &#1705;&#1604;&#1605;&#1576;&#1740;&#1575"
+      redirectText: "\u06A9\u0627\u0631 \u0634\u0645\u0627 \u062A\u06A9\u0645\u06CC\u0644\
+        \ \u0634\u062F\u060C \u062F\u0631 \u062D\u0627\u0644 \u0627\u0646\u062A\u0642\
+        \u0627\u0644..."
+      statusPositionText: "\xAB\u0645\u0648\u0642\u0639\u06CC\u062A \u0641\u0639\u0644\
+        \u06CC \u0634\u0645\u0627 \u062F\u0631 \u0635\u0641"
+      statusTitle: "\u062F\u0631 \u062D\u0627\u0644 \u062D\u0627\u0636\u0631\u060C \u0633\
+        \u06CC\u0633\u062A\u0645 \u0646\u0638\u0631\u0633\u0646\u062C\u06CC \u0628\u0627\
+        \ \u062A\u0642\u0627\u0636\u0627\u06CC \u0628\u0627\u0644\u0627\u06CC\u06CC\
+        \ \u0631\u0648\u0628\u0647\u200C\u0631\u0648 \u0627\u0633\u062A \u0648 \u0634\
+        \u0645\u0627 \u0631\u0627 \u062F\u0631 \u0635\u0641 \u0642\u0631\u0627\u0631\
+        \ \u062F\u0627\u062F\u0647 \u0627\u0633\u062A."
+      title: "\u0646\u0638\u0631\u0633\u0646\u062C\u06CC\_\u062C\u0645\u0639\u06CC\u062A\
+        \u200C\u0634\u0646\u0627\u062E\u062A\u06CC\_\u0628\u0631\u06CC\u062A\u06CC\u0634\
+        \ \u06A9\u0644\u0645\u0628\u06CC\u0627"
     fr:
-      appName: Salle d&#8217;attente
-      componentFallbackText: Vous devez activer JavaScript pour ex&#233;cuter ce composant.
-      errorRetryText: R&#233;essayer
-      errorText: Quelque chose n&#8217;a pas fonctionn&#233
-      errorTitle:
-        L&#8217;enqu&#234;te d&#233;mographique de la Colombie-Britannique
-        fait actuellement l&#8217;objet d&#8217;une forte demande, ce qui entra&#238;ne
-        des retards.
+      appName: "Salle d\u2019attente"
+      componentFallbackText: "Vous devez activer JavaScript pour ex\xE9cuter ce composant."
+      errorRetryText: "R\xE9essayer"
+      errorText: "Quelque chose n\u2019a pas fonctionn\xE9"
+      errorTitle: "L\u2019enqu\xEAte d\xE9mographique de la Colombie-Britannique fait\
+        \ actuellement l\u2019objet d\u2019une forte demande, ce qui entra\xEEne des\
+        \ retards."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        Vous &#234;tes pr&#234;t(e), vous &#234;tes en train d&#8217;&#234;tre
-        redirig&#233;(e)&#8230
-      statusPositionText:
-        "&#171;&#160;Votre position actuelle dans la file d&#8217;attente
-        est&#160;"
-      statusTitle:
-        Le syst&#232;me d&#8217;enqu&#234;te conna&#238;t actuellement une
-        forte demande et vous a plac&#233; dans une file d&#8217;attente.
-      title: Enqu&#234;te d&#233;mographique de la Colombie-Britannique
+      redirectText: "Vous \xEAtes pr\xEAt(e), vous \xEAtes en train d\u2019\xEAtre redirig\xE9\
+        (e)\u2026"
+      statusPositionText: "\xAB\_Votre position actuelle dans la file d\u2019attente\
+        \ est\_"
+      statusTitle: "Le syst\xE8me d\u2019enqu\xEAte conna\xEEt actuellement une forte\
+        \ demande et vous a plac\xE9 dans une file d\u2019attente."
+      title: "Enqu\xEAte d\xE9mographique de la Colombie-Britannique"
     hi:
-      appName: "&#2357;&#2375;&#2335;&#2367;&#2306;&#2327; &#2352;&#2370;&#2350"
-      componentFallbackText:
-        "&#2311;&#2360; &#2328;&#2335;&#2325; &#2325;&#2379; &#2330;&#2354;&#2366;&#2344;&#2375;
-        &#2325;&#2375; &#2354;&#2367;&#2319; &#2310;&#2346;&#2325;&#2379; &#2332;&#2366;&#2357;&#2366;&#2360;&#2381;&#2325;&#2381;&#2352;&#2367;&#2346;&#2381;&#2335;
-        &#2360;&#2325;&#2381;&#2359;&#2350; &#2325;&#2352;&#2344;&#2375; &#2325;&#2368;
-        &#2310;&#2357;&#2358;&#2381;&#2351;&#2325;&#2340;&#2366; &#2361;&#2376"
-      errorRetryText: "&#2346;&#2369;&#2344;"
-      errorText:
-        "&#2325;&#2369;&#2331; &#2327;&#2354;&#2340; &#2361;&#2379; &#2327;&#2351;&#2366;
-        &#2361;&#2376;"
-      errorTitle:
-        "&#2348;&#2368;&#2360;&#2368; &#2332;&#2344;&#2360;&#2366;&#2306;&#2326;&#2381;&#2351;&#2367;&#2325;&#2368;&#2351;
-        &#2360;&#2352;&#2381;&#2357;&#2375;&#2325;&#2381;&#2359;&#2339; &#2357;&#2352;&#2381;&#2340;&#2350;&#2366;&#2344;
-        &#2350;&#2375;&#2306; &#2313;&#2330;&#2381;&#2330; &#2350;&#2366;&#2306;&#2327;
-        &#2325;&#2366; &#2360;&#2366;&#2350;&#2344;&#2366; &#2325;&#2352; &#2352;&#2361;&#2366;
-        &#2361;&#2376; &#2332;&#2367;&#2360;&#2325;&#2375; &#2325;&#2366;&#2352;&#2339;
-        &#2357;&#2367;&#2354;&#2306;&#2348; &#2361;&#2379; &#2352;&#2361;&#2366; &#2361;&#2376;&#2404"
+      appName: "\u0935\u0947\u091F\u093F\u0902\u0917 \u0930\u0942\u092E"
+      componentFallbackText: "\u0907\u0938 \u0918\u091F\u0915 \u0915\u094B \u091A\u0932\
+        \u093E\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0906\u092A\u0915\u094B\
+        \ \u091C\u093E\u0935\u093E\u0938\u094D\u0915\u094D\u0930\u093F\u092A\u094D\u091F\
+        \ \u0938\u0915\u094D\u0937\u092E \u0915\u0930\u0928\u0947 \u0915\u0940 \u0906\
+        \u0935\u0936\u094D\u092F\u0915\u0924\u093E \u0939\u0948"
+      errorRetryText: "\u092A\u0941\u0928"
+      errorText: "\u0915\u0941\u091B \u0917\u0932\u0924 \u0939\u094B \u0917\u092F\u093E\
+        \ \u0939\u0948"
+      errorTitle: "\u092C\u0940\u0938\u0940 \u091C\u0928\u0938\u093E\u0902\u0916\u094D\
+        \u092F\u093F\u0915\u0940\u092F \u0938\u0930\u094D\u0935\u0947\u0915\u094D\u0937\
+        \u0923 \u0935\u0930\u094D\u0924\u092E\u093E\u0928 \u092E\u0947\u0902 \u0909\u091A\
+        \u094D\u091A \u092E\u093E\u0902\u0917 \u0915\u093E \u0938\u093E\u092E\u0928\u093E\
+        \ \u0915\u0930 \u0930\u0939\u093E \u0939\u0948 \u091C\u093F\u0938\u0915\u0947\
+        \ \u0915\u093E\u0930\u0923 \u0935\u093F\u0932\u0902\u092C \u0939\u094B \u0930\
+        \u0939\u093E \u0939\u0948\u0964"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#2310;&#2346; &#2346;&#2370;&#2352;&#2368; &#2340;&#2352;&#2361;
-        &#2340;&#2376;&#2351;&#2366;&#2352; &#2361;&#2376;&#2306;, &#2352;&#2368;&#2337;&#2366;&#2351;&#2352;&#2375;&#2325;&#2381;&#2335;
-        &#2325;&#2352; &#2352;&#2361;&#2375; &#2361;&#2376;&#2306;..."
-      statusPositionText:
-        "&#2325;&#2340;&#2366;&#2352; &#2350;&#2375;&#2306; &#2310;&#2346;&#2325;&#2368;
-        &#2357;&#2352;&#2381;&#2340;&#2350;&#2366;&#2344; &#2360;&#2381;&#2341;&#2367;&#2340;&#2367;
-        &#2361;&#2376;"
-      statusTitle:
-        "&#2360;&#2352;&#2381;&#2357;&#2375;&#2325;&#2381;&#2359;&#2339;
-        &#2346;&#2381;&#2352;&#2339;&#2366;&#2354;&#2368; &#2357;&#2352;&#2381;&#2340;&#2350;&#2366;&#2344;
-        &#2350;&#2375;&#2306; &#2313;&#2330;&#2381;&#2330; &#2350;&#2366;&#2306;&#2327;
-        &#2325;&#2366; &#2309;&#2344;&#2369;&#2349;&#2357; &#2325;&#2352; &#2352;&#2361;&#2368;
-        &#2361;&#2376; &#2324;&#2352; &#2311;&#2360;&#2344;&#2375; &#2310;&#2346;&#2325;&#2379;
-        &#2325;&#2340;&#2366;&#2352; &#2350;&#2375;&#2306; &#2337;&#2366;&#2354; &#2342;&#2367;&#2351;&#2366;
-        &#2361;&#2376;&#2404"
-      title: "&#2348;&#2368;&#2360;&#2368;&nbsp;&#2332;&#2344;&#2360;&#2366;&#2306;&#2326;&#2381;&#2351;&#2367;&#2325;&#2368;&#2351;&nbsp;&#2360;&#2352;&#2381;&#2357;&#2375;&#2325;&#2381;&#2359;&#2339"
+      redirectText: "\u0906\u092A \u092A\u0942\u0930\u0940 \u0924\u0930\u0939 \u0924\
+        \u0948\u092F\u093E\u0930 \u0939\u0948\u0902, \u0930\u0940\u0921\u093E\u092F\u0930\
+        \u0947\u0915\u094D\u091F \u0915\u0930 \u0930\u0939\u0947 \u0939\u0948\u0902\
+        ..."
+      statusPositionText: "\u0915\u0924\u093E\u0930 \u092E\u0947\u0902 \u0906\u092A\u0915\
+        \u0940 \u0935\u0930\u094D\u0924\u092E\u093E\u0928 \u0938\u094D\u0925\u093F\u0924\
+        \u093F \u0939\u0948"
+      statusTitle: "\u0938\u0930\u094D\u0935\u0947\u0915\u094D\u0937\u0923 \u092A\u094D\
+        \u0930\u0923\u093E\u0932\u0940 \u0935\u0930\u094D\u0924\u092E\u093E\u0928 \u092E\
+        \u0947\u0902 \u0909\u091A\u094D\u091A \u092E\u093E\u0902\u0917 \u0915\u093E\
+        \ \u0905\u0928\u0941\u092D\u0935 \u0915\u0930 \u0930\u0939\u0940 \u0939\u0948\
+        \ \u0914\u0930 \u0907\u0938\u0928\u0947 \u0906\u092A\u0915\u094B \u0915\u0924\
+        \u093E\u0930 \u092E\u0947\u0902 \u0921\u093E\u0932 \u0926\u093F\u092F\u093E\
+        \ \u0939\u0948\u0964"
+      title: "\u092C\u0940\u0938\u0940\_\u091C\u0928\u0938\u093E\u0902\u0916\u094D\u092F\
+        \u093F\u0915\u0940\u092F\_\u0938\u0930\u094D\u0935\u0947\u0915\u094D\u0937\u0923"
     ja:
-      appName: "&#24453;&#21512;&#23460"
-      componentFallbackText: "&#12371;&#12398;&#12467;&#12531;&#12509;&#12540;&#12493;&#12531;&#12488;&#12434;&#23455;&#34892;&#12377;&#12427;&#12395;&#12399;&#12289;JavaScript&#12434;&#26377;&#21177;&#12395;&#12377;&#12427;&#24517;&#35201;&#12364;&#12354;&#12426;&#12414;&#12377"
-      errorRetryText: "&#20877;&#35430;&#34892"
-      errorText: "&#12456;&#12521;&#12540;&#12364;&#30330;&#29983;&#12375;&#12414;&#12375;&#12383"
-      errorTitle: BC&#24030;&#20154;&#21475;&#32113;&#35336;&#35519;&#26619;&#12399;&#29694;&#22312;&#12289;&#12450;&#12463;&#12475;&#12473;&#37327;&#12364;&#22810;&#12367;&#12289;&#36933;&#24310;&#12364;&#30330;&#29983;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290
+      appName: "\u5F85\u5408\u5BA4"
+      componentFallbackText: "\u3053\u306E\u30B3\u30F3\u30DD\u30FC\u30CD\u30F3\u30C8\
+        \u3092\u5B9F\u884C\u3059\u308B\u306B\u306F\u3001JavaScript\u3092\u6709\u52B9\
+        \u306B\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059"
+      errorRetryText: "\u518D\u8A66\u884C"
+      errorText: "\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F"
+      errorTitle: "BC\u5DDE\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67FB\u306F\u73FE\u5728\u3001\
+        \u30A2\u30AF\u30BB\u30B9\u91CF\u304C\u591A\u304F\u3001\u9045\u5EF6\u304C\u767A\
+        \u751F\u3057\u3066\u3044\u307E\u3059\u3002"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText: "&#35373;&#23450;&#12364;&#23436;&#20102;&#12375;&#12414;&#12375;&#12383;&#12290;&#12522;&#12480;&#12452;&#12524;&#12463;&#12488;&#20013;&#12290"
-      statusPositionText: "&#29694;&#22312;&#12354;&#12394;&#12383;&#12398;&#38918;&#30058;&#12399;"
-      statusTitle: "&#35519;&#26619;&#12471;&#12473;&#12486;&#12512;&#12399;&#29694;&#22312;&#12289;&#12450;&#12463;&#12475;&#12473;&#37327;&#12364;&#22810;&#12367;&#12289;&#12354;&#12394;&#12383;&#12399;&#12289;&#12461;&#12517;&#12540;&#12395;&#20006;&#12435;&#12391;&#12356;&#12414;&#12377;&#12290"
-      title: BC&#24030;&nbsp;&#20154;&#21475;&#32113;&#35336;&nbsp;&#35519;&#26619
+      redirectText: "\u8A2D\u5B9A\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002\u30EA\
+        \u30C0\u30A4\u30EC\u30AF\u30C8\u4E2D\u3002"
+      statusPositionText: "\u73FE\u5728\u3042\u306A\u305F\u306E\u9806\u756A\u306F"
+      statusTitle: "\u8ABF\u67FB\u30B7\u30B9\u30C6\u30E0\u306F\u73FE\u5728\u3001\u30A2\
+        \u30AF\u30BB\u30B9\u91CF\u304C\u591A\u304F\u3001\u3042\u306A\u305F\u306F\u3001\
+        \u30AD\u30E5\u30FC\u306B\u4E26\u3093\u3067\u3044\u307E\u3059\u3002"
+      title: "BC\u5DDE\_\u4EBA\u53E3\u7D71\u8A08\_\u8ABF\u67FB"
     ko:
-      appName: "&#45824;&#44592;&#49892"
-      componentFallbackText:
-        "&#51060; &#48512;&#48516;&#51012; &#49892;&#54665;&#54616;&#47140;&#47732;
-        &#51088;&#48148; &#49828;&#53356;&#47549;&#51012; &#54876;&#49457;&#54868;&#54644;&#50556;
-        &#54633;&#45768;&#45796"
-      errorRetryText: "&#51116;&#49884;&#46020; &#54616;&#49901;&#49884;&#50724"
-      errorText: "&#47956;&#44032; &#51096;&#47803;&#46104;&#50632;&#49845;&#45768;&#45796;."
-      errorTitle:
-        "&#48708;&#50472;&#51452; &#51064;&#44396;&#53685;&#44228; &#51312;&#49324;&#50640;
-        &#54788;&#51116; &#49688;&#50836;&#44032; &#45458;&#50500;&#51256;, &#51648;&#50672;&#51060;
-        &#46104;&#44256; &#51080;&#49845;&#45768;&#45796;."
+      appName: "\uB300\uAE30\uC2E4"
+      componentFallbackText: "\uC774 \uBD80\uBD84\uC744 \uC2E4\uD589\uD558\uB824\uBA74\
+        \ \uC790\uBC14 \uC2A4\uD06C\uB9BD\uC744 \uD65C\uC131\uD654\uD574\uC57C \uD569\
+        \uB2C8\uB2E4"
+      errorRetryText: "\uC7AC\uC2DC\uB3C4 \uD558\uC2ED\uC2DC\uC624"
+      errorText: "\uBB54\uAC00 \uC798\uBABB\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+      errorTitle: "\uBE44\uC528\uC8FC \uC778\uAD6C\uD1B5\uACC4 \uC870\uC0AC\uC5D0 \uD604\
+        \uC7AC \uC218\uC694\uAC00 \uB192\uC544\uC838, \uC9C0\uC5F0\uC774 \uB418\uACE0\
+        \ \uC788\uC2B5\uB2C8\uB2E4."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#47784;&#46160; &#51456;&#48708;&#46104;&#50632;&#49845;&#45768;&#45796;.
-        &#51060;&#46041; &#51473;..."
-      statusPositionText: '&#44480;&#54616;&#51032; &#45824;&#44592;&#50676; &#49692;&#48264;&#51008;'
-      statusTitle:
-        "&#54788;&#51116; &#49444;&#47928; &#51312;&#49324; &#49884;&#49828;&#53596;&#49345;
-        &#49688;&#50836;&#44032; &#45458;&#50500;&#51256; &#44480;&#54616;&#47484; &#45824;&#44592;&#50676;&#47196;
-        &#51648;&#51221;&#54664;&#49845;&#45768;&#45796;."
-      title: "&#48708;&#50472;&#51452;&nbsp;&#51064;&#44396;&#53685;&#44228;&nbsp;&#49444;&#47928;&#51312;&#49324"
+      redirectText: "\uBAA8\uB450 \uC900\uBE44\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC774\
+        \uB3D9 \uC911..."
+      statusPositionText: "\uADC0\uD558\uC758 \uB300\uAE30\uC5F4 \uC21C\uBC88\uC740"
+      statusTitle: "\uD604\uC7AC \uC124\uBB38 \uC870\uC0AC \uC2DC\uC2A4\uD15C\uC0C1\
+        \ \uC218\uC694\uAC00 \uB192\uC544\uC838 \uADC0\uD558\uB97C \uB300\uAE30\uC5F4\
+        \uB85C \uC9C0\uC815\uD588\uC2B5\uB2C8\uB2E4."
+      title: "\uBE44\uC528\uC8FC\_\uC778\uAD6C\uD1B5\uACC4\_\uC124\uBB38\uC870\uC0AC"
     pa:
-      appName: "&#2613;&#2631;&#2591;&#2623;&#2672;&#2583; &#2608;&#2626;&#2606"
-      componentFallbackText:
-        "&#2567;&#2616; &#2581;&#2672;&#2602;&#2635;&#2600;&#2632;&#2562;&#2591;
-        &#2600;&#2626;&#2672; &#2586;&#2610;&#2622;&#2569;&#2595; &#2610;&#2568; &#2596;&#2625;&#2617;&#2622;&#2600;&#2626;&#2672;
-        &#2588;&#2622;&#2613;&#2622; &#2616;&#2581;&#2637;&#2608;&#2623;&#2602;&#2591;
-        &#2616;&#2606;&#2608;&#2597;&#2623;&#2596; &#2581;&#2608;&#2600; &#2598;&#2624;
-        &#2610;&#2635;&#2652; &#2617;&#2632"
-      errorRetryText:
-        "&#2598;&#2625;&#2604;&#2622;&#2608;&#2622; &#2581;&#2635;&#2616;&#2620;&#2623;&#2616;&#2620;
-        &#2581;&#2608;&#2635"
-      errorText:
-        "&#2581;&#2625;&#2589; &#2583;&#2610;&#2596; &#2617;&#2635; &#2583;&#2623;&#2566;
-        &#2617;&#2632;"
-      errorTitle:
-        "&#2604;&#2624;&#2616;&#2624; &#2588;&#2600;&#2616;&#2672;&#2582;&#2623;&#2566;
-        &#2616;&#2608;&#2613;&#2631;&#2582;&#2595; &#2613;&#2608;&#2596;&#2606;&#2622;&#2600;
-        &#2613;&#2623;&#2673;&#2586; &#2569;&#2673;&#2586; &#2606;&#2672;&#2583; &#2598;&#2622;
-        &#2565;&#2600;&#2625;&#2605;&#2613; &#2581;&#2608; &#2608;&#2623;&#2617;&#2622;
-        &#2617;&#2632; &#2588;&#2623;&#2616; &#2581;&#2622;&#2608;&#2600; &#2598;&#2631;&#2608;&#2624;
-        &#2617;&#2635; &#2608;&#2617;&#2624; &#2617;&#2632;&#2404"
+      appName: "\u0A35\u0A47\u0A1F\u0A3F\u0A70\u0A17 \u0A30\u0A42\u0A2E"
+      componentFallbackText: "\u0A07\u0A38 \u0A15\u0A70\u0A2A\u0A4B\u0A28\u0A48\u0A02\
+        \u0A1F \u0A28\u0A42\u0A70 \u0A1A\u0A32\u0A3E\u0A09\u0A23 \u0A32\u0A08 \u0A24\
+        \u0A41\u0A39\u0A3E\u0A28\u0A42\u0A70 \u0A1C\u0A3E\u0A35\u0A3E \u0A38\u0A15\u0A4D\
+        \u0A30\u0A3F\u0A2A\u0A1F \u0A38\u0A2E\u0A30\u0A25\u0A3F\u0A24 \u0A15\u0A30\u0A28\
+        \ \u0A26\u0A40 \u0A32\u0A4B\u0A5C \u0A39\u0A48"
+      errorRetryText: "\u0A26\u0A41\u0A2C\u0A3E\u0A30\u0A3E \u0A15\u0A4B\u0A38\u0A3C\
+        \u0A3F\u0A38\u0A3C \u0A15\u0A30\u0A4B"
+      errorText: "\u0A15\u0A41\u0A1D \u0A17\u0A32\u0A24 \u0A39\u0A4B \u0A17\u0A3F\u0A06\
+        \ \u0A39\u0A48"
+      errorTitle: "\u0A2C\u0A40\u0A38\u0A40 \u0A1C\u0A28\u0A38\u0A70\u0A16\u0A3F\u0A06\
+        \ \u0A38\u0A30\u0A35\u0A47\u0A16\u0A23 \u0A35\u0A30\u0A24\u0A2E\u0A3E\u0A28\
+        \ \u0A35\u0A3F\u0A71\u0A1A \u0A09\u0A71\u0A1A \u0A2E\u0A70\u0A17 \u0A26\u0A3E\
+        \ \u0A05\u0A28\u0A41\u0A2D\u0A35 \u0A15\u0A30 \u0A30\u0A3F\u0A39\u0A3E \u0A39\
+        \u0A48 \u0A1C\u0A3F\u0A38 \u0A15\u0A3E\u0A30\u0A28 \u0A26\u0A47\u0A30\u0A40\
+        \ \u0A39\u0A4B \u0A30\u0A39\u0A40 \u0A39\u0A48\u0964"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#2596;&#2625;&#2616;&#2624;&#2562; &#2602;&#2626;&#2608;&#2624;
-        &#2596;&#2608;&#2637;&#2617;&#2622;&#2562; &#2596;&#2623;&#2566;&#2608; &#2617;&#2635;,
-        &#2608;&#2624;&#2593;&#2622;&#2567;&#2608;&#2632;&#2581;&#2591; &#2581;&#2624;&#2596;&#2622;
-        &#2588;&#2622; &#2608;&#2623;&#2617;&#2622; &#2617;&#2632;..."
-      statusPositionText:
-        "&#2581;&#2596;&#2622;&#2608; &#2613;&#2623;&#2673;&#2586;
-        &#2596;&#2625;&#2617;&#2622;&#2593;&#2624; &#2606;&#2636;&#2588;&#2626;&#2598;&#2622;
-        &#2616;&#2597;&#2623;&#2596;&#2624; &#2567;&#2617; &#2617;&#2632;"
-      statusTitle:
-        "&#2616;&#2608;&#2613;&#2631;&#2582;&#2595; &#2602;&#2637;&#2608;&#2595;&#2622;&#2610;&#2624;
-        &#2613;&#2608;&#2596;&#2606;&#2622;&#2600; &#2613;&#2623;&#2673;&#2586; &#2569;&#2673;&#2586;
-        &#2606;&#2672;&#2583; &#2598;&#2622; &#2565;&#2600;&#2625;&#2605;&#2613; &#2581;&#2608;
-        &#2608;&#2617;&#2624; &#2617;&#2632; &#2565;&#2596;&#2631; &#2596;&#2625;&#2617;&#2622;&#2600;&#2626;&#2672;
-        &#2567;&#2673;&#2581; &#2581;&#2596;&#2622;&#2608; &#2613;&#2623;&#2673;&#2586;
-        &#2608;&#2673;&#2582;&#2623;&#2566; &#2583;&#2623;&#2566; &#2617;&#2632;&#2404"
-      title:
-        "&#2604;&#2624; &#2616;&#2624; &#2588;&#2600;&#2616;&#2672;&#2582;&#2623;&#2566;
-        &#2616;&#2608;&#2613;&#2631;&#2582;&#2595"
+      redirectText: "\u0A24\u0A41\u0A38\u0A40\u0A02 \u0A2A\u0A42\u0A30\u0A40 \u0A24\u0A30\
+        \u0A4D\u0A39\u0A3E\u0A02 \u0A24\u0A3F\u0A06\u0A30 \u0A39\u0A4B, \u0A30\u0A40\
+        \u0A21\u0A3E\u0A07\u0A30\u0A48\u0A15\u0A1F \u0A15\u0A40\u0A24\u0A3E \u0A1C\u0A3E\
+        \ \u0A30\u0A3F\u0A39\u0A3E \u0A39\u0A48..."
+      statusPositionText: "\u0A15\u0A24\u0A3E\u0A30 \u0A35\u0A3F\u0A71\u0A1A \u0A24\u0A41\
+        \u0A39\u0A3E\u0A21\u0A40 \u0A2E\u0A4C\u0A1C\u0A42\u0A26\u0A3E \u0A38\u0A25\u0A3F\
+        \u0A24\u0A40 \u0A07\u0A39 \u0A39\u0A48"
+      statusTitle: "\u0A38\u0A30\u0A35\u0A47\u0A16\u0A23 \u0A2A\u0A4D\u0A30\u0A23\u0A3E\
+        \u0A32\u0A40 \u0A35\u0A30\u0A24\u0A2E\u0A3E\u0A28 \u0A35\u0A3F\u0A71\u0A1A \u0A09\
+        \u0A71\u0A1A \u0A2E\u0A70\u0A17 \u0A26\u0A3E \u0A05\u0A28\u0A41\u0A2D\u0A35\
+        \ \u0A15\u0A30 \u0A30\u0A39\u0A40 \u0A39\u0A48 \u0A05\u0A24\u0A47 \u0A24\u0A41\
+        \u0A39\u0A3E\u0A28\u0A42\u0A70 \u0A07\u0A71\u0A15 \u0A15\u0A24\u0A3E\u0A30 \u0A35\
+        \u0A3F\u0A71\u0A1A \u0A30\u0A71\u0A16\u0A3F\u0A06 \u0A17\u0A3F\u0A06 \u0A39\u0A48\
+        \u0964"
+      title: "\u0A2C\u0A40 \u0A38\u0A40 \u0A1C\u0A28\u0A38\u0A70\u0A16\u0A3F\u0A06 \u0A38\
+        \u0A30\u0A35\u0A47\u0A16\u0A23"
     pt:
       appName: Sala de espera
       componentFallbackText: Necessita de ativar o JavaScript para executar este componente
       errorRetryText: Tentar novamente
       errorText: Ocorreu um erro
-      errorTitle:
-        O Inqu&#233;rito Demogr&#225;fico de BC est&#225; a registar uma procura
-        elevada, o que est&#225; a provocar atrasos.
+      errorTitle: "O Inqu\xE9rito Demogr\xE1fico de BC est\xE1 a registar uma procura\
+        \ elevada, o que est\xE1 a provocar atrasos."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText: Tudo pronto. A redirecionar&#8230
-      statusPositionText: 'A sua posi&#231;&#227;o atual na fila de espera &#233;'
-      statusTitle:
-        O sistema de inqu&#233;ritos est&#225; a registar uma procura elevada
-        e colocou-o em fila de espera.
-      title: Inqu&#233;rito Demogr&#225;fico de BC
+      redirectText: "Tudo pronto. A redirecionar\u2026"
+      statusPositionText: "A sua posi\xE7\xE3o atual na fila de espera \xE9"
+      statusTitle: "O sistema de inqu\xE9ritos est\xE1 a registar uma procura elevada\
+        \ e colocou-o em fila de espera."
+      title: "Inqu\xE9rito Demogr\xE1fico de BC"
     tl:
       appName: Silid Hintayan
-      componentFallbackText:
-        Kailangan mong paganahin ang JavaScript upang patakbuhin
+      componentFallbackText: Kailangan mong paganahin ang JavaScript upang patakbuhin
         ang bahaging ito
       errorRetryText: Subukan muli
       errorText: May nangyaring mali
-      errorTitle:
-        Ang Pagsisiyasat sa Demograpiko ng BC ay kasalukuyang nakakaranas
+      errorTitle: Ang Pagsisiyasat sa Demograpiko ng BC ay kasalukuyang nakakaranas
         ng mataas na pangangailangan na nagdudulot ng mga pagkaantala.
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: Handa ka na, pagbabago ng direksyon...
       statusPositionText: 'Ang iyong kasalukuyang posisyon sa pila ay'
-      statusTitle:
-        Ang Sistema ng Pagsisiyasat ay kasalukuyang nakakaranas ng mataas
+      statusTitle: Ang Sistema ng Pagsisiyasat ay kasalukuyang nakakaranas ng mataas
         na pangangailangan at inilagay ka sa isang pila.
-      title: BC&nbsp;Demographic&nbsp;Survey
+      title: "BC\_Demographic\_Survey"
     ur:
-      appName: "&#1575;&#1606;&#1578;&#1592;&#1575;&#1585; &#1711;&#1575;&#1729"
-      componentFallbackText:
-        "&#1575;&#1587; &#1580;&#1586;&#1608; &#1705;&#1608; &#1670;&#1604;&#1575;&#1606;&#1746;
-        &#1705;&#1746; &#1604;&#1740;&#1746; &#1570;&#1662; &#1705;&#1746;  &#1580;&#1575;&#1608;&#1575;
-        &#1575;&#1587;&#1705;&#1585;&#1662;&#1657;(Javascript) &#1705;&#1575; &#1601;&#1593;&#1575;&#1604;
-        &#1729;&#1608;&#1606;&#1575; &#1590;&#1585;&#1608;&#1585;&#1740; &#1729;&#1746"
-      errorRetryText:
-        "&#1583;&#1608;&#1576;&#1575;&#1585;&#1729; &#1705;&#1608;&#1588;&#1588;
-        &#1705;&#1585;&#1740;&#1722"
-      errorText: "&#1705;&#1670;&#1726; &#1594;&#1604;&#1591; &#1729;&#1608; &#1711;&#1740;&#1575"
-      errorTitle:
-        "&#1576;&#1740; &#1587;&#1740; &#1672;&#1740;&#1605;&#1608;&#1711;&#1585;&#1575;&#1601;&#1705;
-        &#1587;&#1585;&#1608;&#1746; (BC Bemographic Survey) &#1601;&#1740; &#1575;&#1604;&#1581;&#1575;&#1604;
-        &#1576;&#1729;&#1578; &#1586;&#1740;&#1575;&#1583;&#1729; &#1605;&#1575;&#1606;&#1711;
-        &#1705;&#1575; &#1587;&#1575;&#1605;&#1606;&#1575; &#1705;&#1585; &#1585;&#1729;&#1575;
-        &#1729;&#1746; &#1580;&#1587; &#1705;&#1740; &#1608;&#1580;&#1729; &#1587;&#1746;
-        &#1578;&#1575;&#1582;&#1740;&#1585; &#1729;&#1608; &#1585;&#1729;&#1740; &#1729;&#1746;&#1748"
+      appName: "\u0627\u0646\u062A\u0638\u0627\u0631 \u06AF\u0627\u06C1"
+      componentFallbackText: "\u0627\u0633 \u062C\u0632\u0648 \u06A9\u0648 \u0686\u0644\
+        \u0627\u0646\u06D2 \u06A9\u06D2 \u0644\u06CC\u06D2 \u0622\u067E \u06A9\u06D2\
+        \  \u062C\u0627\u0648\u0627 \u0627\u0633\u06A9\u0631\u067E\u0679(Javascript)\
+        \ \u06A9\u0627 \u0641\u0639\u0627\u0644 \u06C1\u0648\u0646\u0627 \u0636\u0631\
+        \u0648\u0631\u06CC \u06C1\u06D2"
+      errorRetryText: "\u062F\u0648\u0628\u0627\u0631\u06C1 \u06A9\u0648\u0634\u0634\
+        \ \u06A9\u0631\u06CC\u06BA"
+      errorText: "\u06A9\u0686\u06BE \u063A\u0644\u0637 \u06C1\u0648 \u06AF\u06CC\u0627"
+      errorTitle: "\u0628\u06CC \u0633\u06CC \u0688\u06CC\u0645\u0648\u06AF\u0631\u0627\
+        \u0641\u06A9 \u0633\u0631\u0648\u06D2 (BC Bemographic Survey) \u0641\u06CC \u0627\
+        \u0644\u062D\u0627\u0644 \u0628\u06C1\u062A \u0632\u06CC\u0627\u062F\u06C1 \u0645\
+        \u0627\u0646\u06AF \u06A9\u0627 \u0633\u0627\u0645\u0646\u0627 \u06A9\u0631\
+        \ \u0631\u06C1\u0627 \u06C1\u06D2 \u062C\u0633 \u06A9\u06CC \u0648\u062C\u06C1\
+        \ \u0633\u06D2 \u062A\u0627\u062E\u06CC\u0631 \u06C1\u0648 \u0631\u06C1\u06CC\
+        \ \u06C1\u06D2\u06D4"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        "&#1570;&#1662; &#1576;&#1575;&#1604;&#1705;&#1604; &#1578;&#1740;&#1575;&#1585;
-        &#1729;&#1740;&#1722;&#1548; &#1729;&#1605;  &#1606;&#1574;&#1740; &#1729;&#1583;&#1575;&#1740;&#1575;&#1578;
-        &#1705;&#1740; &#1591;&#1585;&#1601; &#1604;&#1746; &#1580;&#1575; &#1585;&#1729;&#1746;
-        &#1729;&#1740;&#1722; (&#1585;&#1740; &#1672;&#1575;&#1574;&#1585;&#1740;&#1705;&#1657;
-        &#1705;&#1585; &#1585;&#1729;&#1746; &#1729;&#1740;&#1722;)..."
-      statusPositionText:
-        '&#1602;&#1591;&#1575;&#1585; &#1605;&#1740;&#1722; &#1570;&#1662;
-        &#1705;&#1740; &#1605;&#1608;&#1580;&#1608;&#1583;&#1729; &#1662;&#1608;&#1586;&#1740;&#1588;&#1606;
-        &#1740;&#1729; &#1729;&#1746;'
-      statusTitle:
-        "&#1587;&#1585;&#1608;&#1746; &#1587;&#1587;&#1657;&#1605; &#1601;&#1740;
-        &#1575;&#1604;&#1581;&#1575;&#1604; &#1576;&#1729;&#1578; &#1586;&#1740;&#1575;&#1583;&#1729;
-        &#1605;&#1575;&#1606;&#1711; &#1705;&#1575; &#1587;&#1575;&#1605;&#1606;&#1575;
-        &#1705;&#1585; &#1585;&#1729;&#1575; &#1729;&#1746; &#1575;&#1608;&#1585; &#1575;&#1587;
-        &#1606;&#1746; &#1570;&#1662; &#1705;&#1608; &#1575;&#1606;&#1578;&#1592;&#1575;&#1585;
-        &#1705;&#1740;  &#1575;&#1740;&#1705; &#1602;&#1591;&#1575;&#1585; &#1605;&#1740;&#1722;
-        &#1585;&#1705;&#1726;  &#1583;&#1740;&#1575; &#1729;&#1746;&#1748"
-      title: BC&nbsp;&#1672;&#1740;&#1605;&#1608;&#1711;&#1585;&#1575;&#1601;&#1705;&nbsp;&#1587;&#1585;&#1608;&#1746
+      redirectText: "\u0622\u067E \u0628\u0627\u0644\u06A9\u0644 \u062A\u06CC\u0627\u0631\
+        \ \u06C1\u06CC\u06BA\u060C \u06C1\u0645  \u0646\u0626\u06CC \u06C1\u062F\u0627\
+        \u06CC\u0627\u062A \u06A9\u06CC \u0637\u0631\u0641 \u0644\u06D2 \u062C\u0627\
+        \ \u0631\u06C1\u06D2 \u06C1\u06CC\u06BA (\u0631\u06CC \u0688\u0627\u0626\u0631\
+        \u06CC\u06A9\u0679 \u06A9\u0631 \u0631\u06C1\u06D2 \u06C1\u06CC\u06BA)..."
+      statusPositionText: "\u0642\u0637\u0627\u0631 \u0645\u06CC\u06BA \u0622\u067E\
+        \ \u06A9\u06CC \u0645\u0648\u062C\u0648\u062F\u06C1 \u067E\u0648\u0632\u06CC\
+        \u0634\u0646 \u06CC\u06C1 \u06C1\u06D2"
+      statusTitle: "\u0633\u0631\u0648\u06D2 \u0633\u0633\u0679\u0645 \u0641\u06CC \u0627\
+        \u0644\u062D\u0627\u0644 \u0628\u06C1\u062A \u0632\u06CC\u0627\u062F\u06C1 \u0645\
+        \u0627\u0646\u06AF \u06A9\u0627 \u0633\u0627\u0645\u0646\u0627 \u06A9\u0631\
+        \ \u0631\u06C1\u0627 \u06C1\u06D2 \u0627\u0648\u0631 \u0627\u0633 \u0646\u06D2\
+        \ \u0622\u067E \u06A9\u0648 \u0627\u0646\u062A\u0638\u0627\u0631 \u06A9\u06CC\
+        \  \u0627\u06CC\u06A9 \u0642\u0637\u0627\u0631 \u0645\u06CC\u06BA \u0631\u06A9\
+        \u06BE  \u062F\u06CC\u0627 \u06C1\u06D2\u06D4"
+      title: "BC\_\u0688\u06CC\u0645\u0648\u06AF\u0631\u0627\u0641\u06A9\_\u0633\u0631\
+        \u0648\u06D2"
     vi:
-      appName: Ph&#242;ng Ch&#7901
-      componentFallbackText:
-        B&#7841;n c&#7847;n b&#7853;t JavaScript &#273;&#7875;
-        ch&#7841;y ph&#7847;n n&#224;y
-      errorRetryText: Th&#7917; l&#7841;i
-      errorText: "&#272;&#227; x&#7843;y ra s&#7921; c&#7889"
-      errorTitle:
-        Kh&#7843;o s&#225;t Nh&#226;n kh&#7849;u h&#7885;c BC hi&#7879;n &#273;ang
-        c&#243; nhi&#7873;u ng&#432;&#7901;i truy c&#7853;p, g&#226;y ra s&#7921; ch&#7853;m
-        tr&#7877;.
+      appName: "Ph\xF2ng Ch\u1EDD"
+      componentFallbackText: "B\u1EA1n c\u1EA7n b\u1EADt JavaScript \u0111\u1EC3 ch\u1EA1\
+        y ph\u1EA7n n\xE0y"
+      errorRetryText: "Th\u1EED l\u1EA1i"
+      errorText: "\u0110\xE3 x\u1EA3y ra s\u1EF1 c\u1ED1"
+      errorTitle: "Kh\u1EA3o s\xE1t Nh\xE2n kh\u1EA9u h\u1ECDc BC hi\u1EC7n \u0111ang\
+        \ c\xF3 nhi\u1EC1u ng\u01B0\u1EDDi truy c\u1EADp, g\xE2y ra s\u1EF1 ch\u1EAD\
+        m tr\u1EC5."
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText:
-        B&#7841;n &#273;&#227; s&#7861;n s&#224;ng, &#273;ang chuy&#7875;n
-        h&#432;&#7899;ng...
-      statusPositionText:
-        'V&#7883; tr&#237; hi&#7879;n t&#7841;i c&#7911;a b&#7841;n
-        trong h&#224;ng &#273;&#7907;i l&#224;'
-      statusTitle:
-        H&#7879; th&#7889;ng Kh&#7843;o s&#225;t hi&#7879;n &#273;ang c&#243;
-        nhi&#7873;u ng&#432;&#7901;i truy c&#7853;p v&#224; &#273;&#227; x&#7871;p b&#7841;n
-        v&#224;o h&#224;ng &#273;&#7907;i.
-      title: Kh&#7843;o s&#225;t Nh&#226;n kh&#7849;u h&#7885;c&nbsp; BC
+      redirectText: "B\u1EA1n \u0111\xE3 s\u1EB5n s\xE0ng, \u0111ang chuy\u1EC3n h\u01B0\
+        \u1EDBng..."
+      statusPositionText: "V\u1ECB tr\xED hi\u1EC7n t\u1EA1i c\u1EE7a b\u1EA1n trong\
+        \ h\xE0ng \u0111\u1EE3i l\xE0"
+      statusTitle: "H\u1EC7 th\u1ED1ng Kh\u1EA3o s\xE1t hi\u1EC7n \u0111ang c\xF3 nhi\u1EC1\
+        u ng\u01B0\u1EDDi truy c\u1EADp v\xE0 \u0111\xE3 x\u1EBFp b\u1EA1n v\xE0o h\xE0\
+        ng \u0111\u1EE3i."
+      title: "Kh\u1EA3o s\xE1t Nh\xE2n kh\u1EA9u h\u1ECDc\_ BC"
     zh:
-      appName: "&#31561;&#20505;&#21312"
-      componentFallbackText: "&#35531;&#21855;&#29992;JavaScript&#20197;&#36939;&#34892;&#27492;&#37096;&#20214;&#12290"
-      errorRetryText: "&#37325;&#35430"
-      errorText: "&#30332;&#29983;&#37679;&#35492"
-      errorTitle: "&#21329;&#35433;&#30465;&#20154;&#21475;&#32113;&#35336;&#35519;&#26597;&#30070;&#21069;&#20351;&#29992;&#32773;&#36611;&#22810;&#65292;&#20197;&#33268;&#20986;&#29694;&#24310;&#36978;&#12290"
+      appName: "\u7B49\u5019\u5340"
+      componentFallbackText: "\u8ACB\u555F\u7528JavaScript\u4EE5\u904B\u884C\u6B64\u90E8\
+        \u4EF6\u3002"
+      errorRetryText: "\u91CD\u8A66"
+      errorText: "\u767C\u751F\u932F\u8AA4"
+      errorTitle: "\u5351\u8A69\u7701\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67E5\u7576\u524D\
+        \u4F7F\u7528\u8005\u8F03\u591A\uFF0C\u4EE5\u81F4\u51FA\u73FE\u5EF6\u9072\u3002"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText: "&#24050;&#23601;&#32210;&#65292;&#37325;&#26032;&#23450;&#21521;&#20013;&#8943;&#8943"
-      statusPositionText: "&#12300;&#24744;&#30340;&#25490;&#38538;&#20301;&#27425;&#26159;&#65306;&#12301"
-      statusTitle: "&#35519;&#26597;&#31995;&#32113;&#30070;&#21069;&#20351;&#29992;&#32773;&#36611;&#22810;&#65292;&#24744;&#24050;&#21152;&#20837;&#31561;&#20505;&#38538;&#21015;&#12290"
-      title: "&#21329;&#35433;&#30465;&#20154;&#21475;&#32113;&#35336;&#35519;&#26597"
+      redirectText: "\u5DF2\u5C31\u7DD2\uFF0C\u91CD\u65B0\u5B9A\u5411\u4E2D\u22EF\u22EF"
+      statusPositionText: "\u300C\u60A8\u7684\u6392\u968A\u4F4D\u6B21\u662F\uFF1A\u300D"
+      statusTitle: "\u8ABF\u67E5\u7CFB\u7D71\u7576\u524D\u4F7F\u7528\u8005\u8F03\u591A\
+        \uFF0C\u60A8\u5DF2\u52A0\u5165\u7B49\u5019\u968A\u5217\u3002"
+      title: "\u5351\u8A69\u7701\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67E5"
     zz:
-      appName: "&#31561;&#24453;&#23460"
-      componentFallbackText: "&#24744;&#38656;&#35201;&#21551;&#29992;JavaScript&#25165;&#33021;&#36816;&#34892;&#36825;&#20010;&#32452;&#20214"
-      errorRetryText: "&#37325;&#26032;&#23581;&#35797"
-      errorText: "&#20986;&#38169;&#20102"
-      errorTitle: "&#21329;&#35799;&#20154;&#21475;&#35843;&#26597;&#30446;&#21069;&#22240;&#27969;&#37327;&#36739;&#22823;&#20986;&#29616;&#24310;&#36831;&#12290"
+      appName: "\u7B49\u5F85\u5BA4"
+      componentFallbackText: "\u60A8\u9700\u8981\u542F\u7528JavaScript\u624D\u80FD\u8FD0\
+        \u884C\u8FD9\u4E2A\u7EC4\u4EF6"
+      errorRetryText: "\u91CD\u65B0\u5C1D\u8BD5"
+      errorText: "\u51FA\u9519\u4E86"
+      errorTitle: "\u5351\u8BD7\u4EBA\u53E3\u8C03\u67E5\u76EE\u524D\u56E0\u6D41\u91CF\
+        \u8F83\u5927\u51FA\u73B0\u5EF6\u8FDF\u3002"
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
-      redirectText: "&#24744;&#37117;&#20934;&#22791;&#22909;&#20102;&#65292;&#37325;&#26032;&#23450;&#21521;..."
-      statusPositionText: "&#8220;&#24744;&#30446;&#21069;&#22312;&#38431;&#21015;&#20013;&#30340;&#20301;&#32622;&#26159;&#65306;&#8221"
-      statusTitle: "&#35843;&#26597;&#31995;&#32479;&#30446;&#21069;&#27969;&#37327;&#24456;&#39640;&#65292;&#24050;&#23558;&#24744;&#25918;&#20837;&#38431;&#21015;&#20013;&#12290"
-      title: "&#21329;&#35799;&#20154;&#21475;&#35843;&#26597"
+      redirectText: "\u60A8\u90FD\u51C6\u5907\u597D\u4E86\uFF0C\u91CD\u65B0\u5B9A\u5411\
+        ..."
+      statusPositionText: "\u201C\u60A8\u76EE\u524D\u5728\u961F\u5217\u4E2D\u7684\u4F4D\
+        \u7F6E\u662F\uFF1A\u201D"
+      statusTitle: "\u8C03\u67E5\u7CFB\u7EDF\u76EE\u524D\u6D41\u91CF\u5F88\u9AD8\uFF0C\
+        \u5DF2\u5C06\u60A8\u653E\u5165\u961F\u5217\u4E2D\u3002"
+      title: "\u5351\u8BD7\u4EBA\u53E3\u8C03\u67E5"
+
 
 sample:
   environments:

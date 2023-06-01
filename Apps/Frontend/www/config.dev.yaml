@@ -7,17 +7,24 @@ settings:
 
 locales:
   ja:
-    appName: "&#24453;&#21512;&#23460"
-    componentFallbackText: "&#12371;&#12398;&#12467;&#12531;&#12509;&#12540;&#12493;&#12531;&#12488;&#12434;&#23455;&#34892;&#12377;&#12427;&#12395;&#12399;&#12289;JavaScript&#12434;&#26377;&#21177;&#12395;&#12377;&#12427;&#24517;&#35201;&#12364;&#12354;&#12426;&#12414;&#12377"
-    errorRetryText: "&#20877;&#35430;&#34892"
-    errorText: "&#12456;&#12521;&#12540;&#12364;&#30330;&#29983;&#12375;&#12414;&#12375;&#12383"
-    errorTitle: BC&#24030;&#20154;&#21475;&#32113;&#35336;&#35519;&#26619;&#12399;&#29694;&#22312;&#12289;&#12450;&#12463;&#12475;&#12473;&#37327;&#12364;&#22810;&#12367;&#12289;&#36933;&#24310;&#12364;&#30330;&#29983;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290
-    redirectText: "&#35373;&#23450;&#12364;&#23436;&#20102;&#12375;&#12414;&#12375;&#12383;&#12290;&#12522;&#12480;&#12452;&#12524;&#12463;&#12488;&#20013;&#12290"
-    statusPositionText: "&#29694;&#22312;&#12354;&#12394;&#12383;&#12398;&#38918;&#30058;&#12399;"
-    statusTitle: "&#35519;&#26619;&#12471;&#12473;&#12486;&#12512;&#12399;&#29694;&#22312;&#12289;&#12450;&#12463;&#12475;&#12473;&#37327;&#12364;&#22810;&#12367;&#12289;&#12354;&#12394;&#12383;&#12399;&#12289;&#12461;&#12517;&#12540;&#12395;&#20006;&#12435;&#12391;&#12356;&#12414;&#12377;&#12290"
-    title: BC Demographic Survey in Japanese
-    incidentTitle: "&#20877;&#35430;&#34892 (ja) The BC General Survey is currently unavailable."
-    incidentText: (ja) We are working to fix this as quickly as possible.
+    appName: "\u5F85\u5408\u5BA4"
+    componentFallbackText: "\u3053\u306E\u30B3\u30F3\u30DD\u30FC\u30CD\u30F3\u30C8\
+      \u3092\u5B9F\u884C\u3059\u308B\u306B\u306F\u3001JavaScript\u3092\u6709\u52B9\
+      \u306B\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059"
+    errorRetryText: "\u518D\u8A66\u884C"
+    errorText: "\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F"
+    errorTitle: "BC\u5DDE\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67FB\u306F\u73FE\u5728\u3001\
+      \u30A2\u30AF\u30BB\u30B9\u91CF\u304C\u591A\u304F\u3001\u9045\u5EF6\u304C\u767A\
+      \u751F\u3057\u3066\u3044\u307E\u3059\u3002"
+    incidentText: (\u5F85\u5408\u5BA4) JP We are working to fix this as quickly as possible.
+    incidentTitle: JP The BC Demographic Survey is currently unavailable.
+    redirectText: "\u8A2D\u5B9A\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002\u30EA\
+      \u30C0\u30A4\u30EC\u30AF\u30C8\u4E2D\u3002"
+    statusPositionText: "\u73FE\u5728\u3042\u306A\u305F\u306E\u9806\u756A\u306F"
+    statusTitle: "\u8ABF\u67FB\u30B7\u30B9\u30C6\u30E0\u306F\u73FE\u5728\u3001\u30A2\
+      \u30AF\u30BB\u30B9\u91CF\u304C\u591A\u304F\u3001\u3042\u306A\u305F\u306F\u3001\
+      \u30AD\u30E5\u30FC\u306B\u4E26\u3093\u3067\u3044\u307E\u3059\u3002"
+    title: "JP BC\u5DDE\_\u4EBA\u53E3\u7D71\u8A08\_\u8ABF\u67FB"
   en-CA:
     appName: Waiting Room
     title: BC General Survey

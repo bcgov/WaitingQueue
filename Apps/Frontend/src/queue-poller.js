@@ -66,7 +66,7 @@ class QueuePoller extends HTMLElement {
       this.render();
       this.#ticket = ticket;
     });
-    //this.observer.observe(this, { childList: true, subtree: true });
+    this.observer.observe(this, { childList: true, subtree: true });
   }
 
   disconnectedCallback() {
@@ -96,7 +96,7 @@ class QueuePoller extends HTMLElement {
       Object.entries(locale).forEach(([key, value]) => {
         const node = document.querySelector(`[data-lang="${key}"]`);
         if (node) {
-          node.innerHTML = value;
+          node.textContent = value;
         }
       });
     }
