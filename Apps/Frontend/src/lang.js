@@ -36,21 +36,26 @@ export function checkLanguage() {
   const currentLanguage = document.querySelector("html")?.getAttribute("lang");
 
   if (language && currentLanguage !== language) {
-    const languageRedirectUrl = new URL(`/${language}`, utils.getLocation());
-    utils.open(languageRedirectUrl);
+    document.querySelector("queue-poller")?.setAttribute("lang", language);
   }
   updateLanguageSelect();
+}
+
+/**
+ * @param {string} lang
+ */
+function changeLanguage(lang) {
+  document.querySelector("html").setAttribute("lang", lang);
+  document.querySelectorAll("queue-poller").forEach((el) => {
+    el.setAttribute("lang", lang);
+  });
 }
 
 /**
  * @param {Event & { target: HTMLSelectElement}} event
  */
 function handleLangChange(event) {
-  const lang = event.target.value;
-  document.querySelector("html").setAttribute("lang", lang);
-  document.querySelectorAll("queue-poller").forEach((el) => {
-    el.setAttribute("lang", lang);
-  });
+  changeLanguage(event.target.value);
 }
 
 export function updateLanguageSelect() {

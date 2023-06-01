@@ -1,4 +1,10 @@
-import { request, IncidentError, COOKIE_KEY, STORAGE_KEY } from "./request.js";
+import {
+  request,
+  IncidentError,
+  COOKIE_KEY,
+  STORAGE_KEY,
+  wait,
+} from "./request.js";
 
 /**
  * @typedef {import("./request.js").Ticket} Ticket
@@ -42,6 +48,7 @@ class QueuePoller extends HTMLElement {
 
   connectedCallback() {
     const cached = localStorage.getItem(STORAGE_KEY);
+    this.observer = new MutationObserver(this.onMutation);
 
     if (cached) {
       /** @type Ticket */
@@ -59,6 +66,7 @@ class QueuePoller extends HTMLElement {
       this.render();
       this.#ticket = ticket;
     });
+    this.observer.observe(this, { childList: true, subtree: true });
   }
 
   disconnectedCallback() {
@@ -71,21 +79,28 @@ class QueuePoller extends HTMLElement {
    * @param {string} value
    */
   attributeChangedCallback(name, _, value) {
-    if (name === "lang") {
-      const localesJson = document.querySelector("#locales").textContent;
-      const locales = JSON.parse(localesJson);
-      const locale = locales[value];
-
-      if (locale) {
-        Object.entries(locale).forEach(([key, value]) => {
-          const node = document.querySelector(`[data-lang="${key}"]`);
-          if (node) {
-            node.innerHTML = value;
-          }
-        });
-      }
+    if (name === "lang" && value) {
+      this.renderLocaleStrings(value);
     }
   }
+
+  /**
+   * @param {string} lang
+   */
+  renderLocaleStrings = (lang) => {
+    const localesJson = document.querySelector("#locales").textContent;
+    const locales = JSON.parse(localesJson);
+    const locale = locales[lang];
+
+    if (locale) {
+      Object.entries(locale).forEach(([key, value]) => {
+        const node = document.querySelector(`[data-lang="${key}"]`);
+        if (node) {
+          node.textContent = value;
+        }
+      });
+    }
+  };
 
   /** @param {boolean} value */
   set #incident(value) {
@@ -200,8 +215,9 @@ class QueuePoller extends HTMLElement {
       this.#ticket.token
     }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
-    this.cleanUp();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
+    await wait(1);
+    this.cleanUp();
     location.assign(redirectUrl);
   };
 
@@ -280,6 +296,11 @@ class QueuePoller extends HTMLElement {
     }
   };
 
+  onMutation = () => {
+    const lang = this.getAttribute("lang");
+    this.renderLocaleStrings(lang);
+  };
+
   render() {
     this.replaceChildren(pollTemplate.content.cloneNode(true));
 
@@ -306,6 +327,7 @@ class QueuePoller extends HTMLElement {
   }
 
   cleanUp() {
+    this.observer.disconnect();
     clearInterval(this.#timer);
     this.#timer = null;
   }

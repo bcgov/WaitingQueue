@@ -27,7 +27,7 @@ function updatePosition(json) {
     mark.innerText = json.queuePosition?.toString();
   }
 
-  wait(timeout).then(function() {
+  wait(timeout).then(function () {
     return refreshTicket(json);
   });
 }
@@ -51,7 +51,7 @@ function refreshTicket(json) {
       body,
       headers: { "Content-Type": "application/json" },
     },
-  }).then(function(json) {
+  }).then(function (json) {
     document.cookie = COOKIE_KEY + "=" + json.token;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
     if (json.queuePosition === 0) {
@@ -65,6 +65,20 @@ function refreshTicket(json) {
 
 window.handleTokenRefresh = handleTokenRefresh;
 
+let locales = null;
+let lang = "en-CA";
+function handleLangChange(event) {
+  lang = event.target.value;
+  document.querySelector("html").setAttribute("lang", lang);
+  const els = document.getElementsByTagName("bdi");
+
+  for (var el in els) {
+    const key = els[el].getAttribute("data-lang");
+    const content = locales[lang][key];
+    els[el].textContent = content;
+  }
+}
+
 function init() {
   document.body.className = "ie";
 
@@ -77,6 +91,12 @@ function init() {
     const content = document.getElementById("content");
     content.innerHTML = template.innerHTML;
 
+    const localesJson = document.getElementById("locales").textContent;
+    locales = JSON.parse(localesJson);
+    document
+      .getElementById("lang-dropdown")
+      .addEventListener("change", handleLangChange);
+
     request({
       url,
       params: {
@@ -84,11 +104,11 @@ function init() {
       },
     })
       .then(updatePosition)
-      .catch(function(err) {
+      .catch(function (err) {
         console.error(err);
         document.querySelector("button[data-retry]").addEventListener(
           "click",
-          function() {
+          function () {
             request({
               url,
               params: {

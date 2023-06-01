@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +18,7 @@
     <script type="module" src="/mocks/handlers.js"></script>
     <% } %>
     <script type="text/javascript">
-      window.supportedLanuages = [<%- data.supportedLanguages %>];
+      window.supportedLanguages = [<%- data.supportedLanguages %>];
     </script>
     <script type="module" src="/main.js?v=<%= data.hash %>"></script>
     <% if (data.legacyBrowser) { %>
@@ -72,7 +73,7 @@
           />
           <rect x="116.9" y="36.6" class="st3" width="0.6" height="0.6" />
         </svg>
-        <h2 class="bc-header__title" data-lang="title"><%- _.title %></h2>
+        <h2 class="bc-header__title"><bdi data-lang="title"><%= _.title %></bdi></h2>
         </hgroup>
         <hgroup>
           <select name="lang-dropdown" id="lang-dropdown" class="bc-gov-dropdown">
