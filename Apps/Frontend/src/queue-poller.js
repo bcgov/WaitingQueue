@@ -66,7 +66,7 @@ class QueuePoller extends HTMLElement {
       this.render();
       this.#ticket = ticket;
     });
-    this.observer.observe(this, { childList: true, subtree: true });
+    //this.observer.observe(this, { childList: true, subtree: true });
   }
 
   disconnectedCallback() {
