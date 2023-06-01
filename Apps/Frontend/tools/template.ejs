@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-CA">
   <head>
-    <title><%= _.title %> - <%= _.appName %></title>
+    <title><%- _.title %> - <%- _.appName %></title>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -72,16 +72,16 @@
           />
           <rect x="116.9" y="36.6" class="st3" width="0.6" height="0.6" />
         </svg>
-        <h2 class="bc-header__title" data-lang="title"><%= _.title %></h2>
+        <h2 class="bc-header__title" data-lang="title"><%- _.title %></h2>
         </hgroup>
         <hgroup>
           <select name="lang-dropdown" id="lang-dropdown" class="bc-gov-dropdown">
             <% data.languageOptions.forEach(function(l) { %>
               <option
-                value="<%= l.lang %>"
-                lang="<%= l.lang %>"
+                value="<%- l.lang %>"
+                lang="<%- l.lang %>"
               >
-                <%= l.name %>
+                <%- l.name %>
               </option>
             <% }); %>
           </select>
@@ -89,14 +89,14 @@
     </header>
     <main class="main">
       <div id="content" class="content">
-        <noscript><%= _.componentFallbackText %></noscript>
+        <noscript><%- _.componentFallbackText %></noscript>
         <queue-poller
           id="poller"
           lang="en-CA"
-          redirect-url="<%= data.redirectUrl %>"
-          room="<%= data.room %>"
-          poll-url="<%= data.pollUrl %>"
-          refresh-url="<%= data.refreshUrl %>"
+          redirect-url="<%- data.redirectUrl %>"
+          room="<%- data.room %>"
+          poll-url="<%- data.pollUrl %>"
+          refresh-url="<%- data.refreshUrl %>"
           ></queue-poller
         >
       </div>
@@ -105,12 +105,12 @@
       <div class="container" role="status">
         <h3>
           <bdi data-lang="statusTitle">
-            <%= _.statusTitle %>
+            <%- _.statusTitle %>
           </bdi>
         </h3>
         <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
           <bdi data-lang="statusPositionText">
-            <%= _.statusPositionText %>
+            <%- _.statusPositionText %>
           </bdi>
         </p>
         <mark><loading-spinner></loading-spinner></mark>
@@ -121,7 +121,7 @@
         <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
         <h4>
           <bdi data-lang="redirectText">
-            <%= _.redirectText %>
+            <%- _.redirectText %>
           </bdi>
         </h4>
       </div>
@@ -130,11 +130,11 @@
       <div role="alert" class="container">
         <h3>
           <bdi data-lang="errorTitle">
-            <%= _.errorTitle %>
+            <%- _.errorTitle %>
           </bdi>
         </h3>
         <button data-retry class="btn-secondary">
-          <bdi data-lang="errorRetryText"><%= _.errorRetryText %></bdi>
+          <bdi data-lang="errorRetryText"><%- _.errorRetryText %></bdi>
         </button>
       </div>
     </template>
