@@ -41,7 +41,7 @@ ard:
         "&#1571;&#1606;&#1578; &#1580;&#1575;&#1607;&#1586;&#1548; &#1578;&#1580;&#1585;&#1610;
         &#1573;&#1593;&#1575;&#1583;&#1577; &#1575;&#1604;&#1578;&#1608;&#1580;&#1610;&#1607;..."
       statusPositionText:
-        '"&#1605;&#1608;&#1602;&#1593;&#1603; &#1575;&#1604;&#1581;&#1575;&#1604;&#1610;
+        '&#1605;&#1608;&#1602;&#1593;&#1603; &#1575;&#1604;&#1581;&#1575;&#1604;&#1610;
         &#1601;&#1610; &#1604;&#1575;&#1574;&#1581;&#1577; &#1575;&#1604;&#1575;&#1606;&#1578;&#1592;&#1575;&#1585;
         &#1607;&#1608;'
       statusTitle:
@@ -62,7 +62,7 @@ ard:
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: You're all set, redirecting...
-      statusPositionText: '"Your current position in the queue is'
+      statusPositionText: 'Your current position in the queue is'
       statusTitle:
         The Survey System is currently experiencing high demand and has placed
         you in a queue.
@@ -78,7 +78,7 @@ ard:
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: Ya est&#225; todo listo, redirigiendo&#8230
-      statusPositionText: '"Su posici&#243;n actual en la fila es'
+      statusPositionText: 'Su posici&#243;n actual en la fila es'
       statusTitle:
         El sistema de encuestas est&#225; experimentando actualmente una
         gran demanda y le ha situado en una fila de espera.
@@ -205,7 +205,7 @@ ard:
       redirectText:
         "&#47784;&#46160; &#51456;&#48708;&#46104;&#50632;&#49845;&#45768;&#45796;.
         &#51060;&#46041; &#51473;..."
-      statusPositionText: '"&#44480;&#54616;&#51032; &#45824;&#44592;&#50676; &#49692;&#48264;&#51008;'
+      statusPositionText: '&#44480;&#54616;&#51032; &#45824;&#44592;&#50676; &#49692;&#48264;&#51008;'
       statusTitle:
         "&#54788;&#51116; &#49444;&#47928; &#51312;&#49324; &#49884;&#49828;&#53596;&#49345;
         &#49688;&#50836;&#44032; &#45458;&#50500;&#51256; &#44480;&#54616;&#47484; &#45824;&#44592;&#50676;&#47196;
@@ -264,7 +264,7 @@ ard:
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: Tudo pronto. A redirecionar&#8230
-      statusPositionText: '"A sua posi&#231;&#227;o atual na fila de espera &#233;'
+      statusPositionText: 'A sua posi&#231;&#227;o atual na fila de espera &#233;'
       statusTitle:
         O sistema de inqu&#233;ritos est&#225; a registar uma procura elevada
         e colocou-o em fila de espera.
@@ -282,7 +282,7 @@ ard:
       incidentText: We are working to fix this as quickly as possible.
       incidentTitle: The BC Demographic Survey is currently unavailable.
       redirectText: Handa ka na, pagbabago ng direksyon...
-      statusPositionText: '"Ang iyong kasalukuyang posisyon sa pila ay'
+      statusPositionText: 'Ang iyong kasalukuyang posisyon sa pila ay'
       statusTitle:
         Ang Sistema ng Pagsisiyasat ay kasalukuyang nakakaranas ng mataas
         na pangangailangan at inilagay ka sa isang pila.
@@ -314,7 +314,7 @@ ard:
         &#1729;&#1740;&#1722; (&#1585;&#1740; &#1672;&#1575;&#1574;&#1585;&#1740;&#1705;&#1657;
         &#1705;&#1585; &#1585;&#1729;&#1746; &#1729;&#1740;&#1722;)..."
       statusPositionText:
-        '"&#1602;&#1591;&#1575;&#1585; &#1605;&#1740;&#1722; &#1570;&#1662;
+        '&#1602;&#1591;&#1575;&#1585; &#1605;&#1740;&#1722; &#1570;&#1662;
         &#1705;&#1740; &#1605;&#1608;&#1580;&#1608;&#1583;&#1729; &#1662;&#1608;&#1586;&#1740;&#1588;&#1606;
         &#1740;&#1729; &#1729;&#1746;'
       statusTitle:
@@ -343,7 +343,7 @@ ard:
         B&#7841;n &#273;&#227; s&#7861;n s&#224;ng, &#273;ang chuy&#7875;n
         h&#432;&#7899;ng...
       statusPositionText:
-        '"V&#7883; tr&#237; hi&#7879;n t&#7841;i c&#7911;a b&#7841;n
+        'V&#7883; tr&#237; hi&#7879;n t&#7841;i c&#7911;a b&#7841;n
         trong h&#224;ng &#273;&#7907;i l&#224;'
       statusTitle:
         H&#7879; th&#7889;ng Kh&#7843;o s&#225;t hi&#7879;n &#273;ang c&#243;
