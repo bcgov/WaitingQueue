@@ -15,15 +15,14 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.TicketManagement.Services
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.Json;
-    using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using StackExchange.Redis;
+    using System.Collections.Generic;
+    using System.Text.Json;
+    using System.Threading.Tasks;
 
     /// <inheritdoc />
     public class RedisRoomService : IRoomService
@@ -123,7 +122,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
         private static string GetRoomConfigKey(string room)
         {
-            return $"Configuration:{{{room}}}";
+            return $"Configuration:{{{room.ToLowerInvariant()}}}";
         }
     }
 }
