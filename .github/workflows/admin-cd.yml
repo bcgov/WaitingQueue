@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - Apps/Admin/**
+      - Apps/TicketManagement/**
       - .github/workflows/admin-cd.yml
       - .github/workflows/cd-template.yml
 

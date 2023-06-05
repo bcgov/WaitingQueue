@@ -5,6 +5,7 @@ on:
     types: [opened, reopened, edited, synchronize]
     paths:
       - Apps/Admin/**
+      - Apps/TicketManagement/**
       - .github/workflows/admin-ci.yml
       - .github/workflows/ci-template.yml
 
