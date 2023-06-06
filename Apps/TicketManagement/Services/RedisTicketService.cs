@@ -95,15 +95,15 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <inheritdoc />
         public async Task<Ticket> RequestTicketAsync(string room)
         {
+            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(room);
+            Request.ValidateRoomConfig(roomConfig);
             Ticket ticket = new()
             {
                 Id = Guid.NewGuid(),
-                Room = room,
+                Room = roomConfig!.Name,
                 Status = TicketStatus.Processed,
                 CreatedTime = this.dateTimeDelegate.UtcUnixTime,
             };
-            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(room);
-            Request.ValidateRoomConfig(roomConfig);
 
             Stopwatch stopwatch = new();
             stopwatch.Start();

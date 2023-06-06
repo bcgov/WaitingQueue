@@ -164,7 +164,7 @@ dotnet_diagnostic.ca1305.severity = warning
 dotnet_diagnostic.ca1307.severity = warning
 
 # CA1308: Normalize strings to uppercase
-dotnet_diagnostic.ca1308.severity = none
+dotnet_diagnostic.ca1308.severity = warning
 
 # CA1309: Use ordinal stringcomparison
 dotnet_diagnostic.ca1309.severity = warning

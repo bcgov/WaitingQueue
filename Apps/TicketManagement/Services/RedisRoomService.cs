@@ -15,14 +15,14 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.TicketManagement.Services
 {
+    using System.Collections.Generic;
+    using System.Text.Json;
+    using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using StackExchange.Redis;
-    using System.Collections.Generic;
-    using System.Text.Json;
-    using System.Threading.Tasks;
 
     /// <inheritdoc />
     public class RedisRoomService : IRoomService
@@ -87,7 +87,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             if (committed)
             {
                 // Add to index to query for all rooms
-                await db.HashSetAsync(IndexKey, roomConfig.Name, string.Empty);
+                await db.HashSetAsync(IndexKey, roomConfig.Name.ToUpperInvariant(), string.Empty);
             }
 
             return (committed, roomConfig);
@@ -122,7 +122,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 
         private static string GetRoomConfigKey(string room)
         {
-            return $"Configuration:{{{room.ToLowerInvariant()}}}";
+            return $"Configuration:{{{room.ToUpperInvariant()}}}";
         }
     }
 }
