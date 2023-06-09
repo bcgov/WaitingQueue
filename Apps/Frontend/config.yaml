@@ -35,12 +35,21 @@ ard:
         \u062A\u0634 \u0643\u0648\u0644\u0648\u0645\u0628\u064A\u0627 \u0637\u0644\u0628\
         \u064B\u0627 \u0639\u0627\u0644\u064A\u064B\u0627 \u0645\u0645\u0627 \u064A\u062A\
         \u0633\u0628\u0628 \u0628\u0627\u0644\u062A\u0623\u062E\u064A\u0631."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u064A\u0639\u0645\u0644 \u0641\u0631\u064A\u0642\u0646\u0627 \u0639\
+        \u0644\u0649 \u0627\u0633\u062A\u0639\u0627\u062F\u0629 \u0627\u0644\u062F\u0631\
+        \u0627\u0633\u0629 \u0641\u064A \u0623\u0642\u0631\u0628 \u0648\u0642\u062A\
+        \ \u0645\u0645\u0643\u0646. \u064A\u064F\u0631\u062C\u0649 \u0627\u0644\u062A\
+        \u062D\u0642\u0642 \u0641\u064A \u0648\u0642\u062A \u0644\u0627\u062D\u0642."
+      incidentTitle: "\u0646\u0648\u0627\u062C\u0647 \u0645\u0634\u0643\u0644\u0629\
+        \ \u062A\u0642\u0646\u064A\u0629 \u0628\u0634\u0623\u0646 \u0627\u0644\u062F\
+        \u0631\u0627\u0633\u0629 \u0627\u0644\u0627\u0633\u062A\u0642\u0635\u0627\u0626\
+        \u064A\u0629 \u0644\u062F\u064A\u0645\u0648\u063A\u0631\u0627\u0641\u064A\u0629\
+        \ \u0628\u0631\u064A\u062A\u0634 \u0643\u0648\u0644\u0648\u0645\u0628\u064A\u0627\
+        ."
       redirectText: "\u0623\u0646\u062A \u062C\u0627\u0647\u0632\u060C \u062A\u062C\u0631\
         \u064A \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u062A\u0648\u062C\u064A\u0647\
         ..."
-      statusPositionText: "\u0645\u0648\u0642\u0639\u0643 \u0627\u0644\u062D\u0627\
+      statusPositionText: "\"\u0645\u0648\u0642\u0639\u0643 \u0627\u0644\u062D\u0627\
         \u0644\u064A \u0641\u064A \u0644\u0627\u0626\u062D\u0629 \u0627\u0644\u0627\u0646\
         \u062A\u0638\u0627\u0631 \u0647\u0648"
       statusTitle: "\u064A\u0648\u0627\u062C\u0647 \u0646\u0638\u0627\u0645 \u0627\u0644\
@@ -50,17 +59,18 @@ ard:
         \u0643 \u0641\u064A \u0642\u0627\u0626\u0645\u0629 \u0627\u0646\u062A\u0638\u0627\
         \u0631."
       title: "BC\_Demographic\_Survey"
-    en-CA:
+    en:
       appName: Waiting Room
       componentFallbackText: You need JavaScript enabled to run this component
       errorRetryText: Retry
       errorText: Something went wrong
       errorTitle: BC Demographic Survey is currently experiencing high demand which
         is causing delays.
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: Our team is working to restore the survey as quickly as possible.
+        Please check back later.
+      incidentTitle: We?re experiencing a technical issue with the BC Demographic Survey.
       redirectText: You're all set, redirecting...
-      statusPositionText: 'Your current position in the queue is'
+      statusPositionText: '"Your current position in the queue is'
       statusTitle: The Survey System is currently experiencing high demand and has placed
         you in a queue.
       title: "BC\_Demographic\_Survey"
@@ -71,10 +81,12 @@ ard:
       errorText: "Algo sali\xF3 mal"
       errorTitle: "Actualmente, la encuesta demogr\xE1fica de BC est\xE1 experimentando\
         \ una gran demanda y esto est\xE1 provocando demoras."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "Nuestro equipo est\xE1 trabajando para restablecer la encuesta\
+        \ lo antes posible. Por favor, vuelva a comprobarlo m\xE1s tarde."
+      incidentTitle: "Estamos experimentando un problema t\xE9cnico con la Encuesta\
+        \ demogr\xE1fica de BC."
       redirectText: "Ya est\xE1 todo listo, redirigiendo\u2026"
-      statusPositionText: "Su posici\xF3n actual en la fila es"
+      statusPositionText: "\"Su posici\xF3n actual en la fila es"
       statusTitle: "El sistema de encuestas est\xE1 experimentando actualmente una gran\
         \ demanda y le ha situado en una fila de espera."
       title: "Encuesta demogr\xE1fica de BC"
@@ -92,8 +104,15 @@ ard:
         \u06CC \u0628\u0627\u0644\u0627\u06CC\u06CC \u0631\u0648\u0628\u0647\u200C\u0631\
         \u0648 \u0627\u0633\u062A \u06A9\u0647 \u0628\u0627\u0639\u062B \u062A\u0627\
         \u062E\u06CC\u0631 \u0634\u062F\u0647 \u0627\u0633\u062A."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u062A\u06CC\u0645 \u0645\u0627 \u062F\u0631 \u062D\u0627\u0644\
+        \ \u0628\u0627\u0632\u06CC\u0627\u0628\u06CC \u0633\u0631\u06CC\u0639 \u0646\
+        \u0638\u0631\u0633\u0646\u062C\u06CC \u0627\u0633\u062A. \u0644\u0637\u0641\u0627\
+        \ \u0628\u0639\u062F\u0627 \u0686\u06A9 \u06A9\u0646\u06CC\u062F."
+      incidentTitle: "\u0645\u0627 \u062F\u0631 \u0646\u0638\u0631\u0633\u0646\u062C\
+        \u06CC \u062C\u0645\u0639\u06CC\u062A\u200C\u0634\u0646\u0627\u062E\u062A\u06CC\
+        \ \u0628\u0631\u06CC\u062A\u06CC\u0634 \u06A9\u0644\u0645\u0628\u06CC\u0627\u060C\
+        \ \u06CC\u06A9 \u0645\u0634\u06A9\u0644 \u0641\u0646\u06CC \u062F\u0627\u0631\
+        \u06CC\u0645."
       redirectText: "\u06A9\u0627\u0631 \u0634\u0645\u0627 \u062A\u06A9\u0645\u06CC\u0644\
         \ \u0634\u062F\u060C \u062F\u0631 \u062D\u0627\u0644 \u0627\u0646\u062A\u0642\
         \u0627\u0644..."
@@ -116,8 +135,10 @@ ard:
       errorTitle: "L\u2019enqu\xEAte d\xE9mographique de la Colombie-Britannique fait\
         \ actuellement l\u2019objet d\u2019une forte demande, ce qui entra\xEEne des\
         \ retards."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "Notre \xE9quipe travaille \xE0 r\xE9tablir l'Enqu\xEAte le plus\
+        \ rapidement possible. Veuillez v\xE9rifier plus tard."
+      incidentTitle: "Nous \xE9prouvons un probl\xE8me technique avec l'Enqu\xEAte d\xE9\
+        mographique de la Colombie-Britannique."
       redirectText: "Vous \xEAtes pr\xEAt(e), vous \xEAtes en train d\u2019\xEAtre redirig\xE9\
         (e)\u2026"
       statusPositionText: "\xAB\_Votre position actuelle dans la file d\u2019attente\
@@ -142,8 +163,18 @@ ard:
         \ \u0915\u0930 \u0930\u0939\u093E \u0939\u0948 \u091C\u093F\u0938\u0915\u0947\
         \ \u0915\u093E\u0930\u0923 \u0935\u093F\u0932\u0902\u092C \u0939\u094B \u0930\
         \u0939\u093E \u0939\u0948\u0964"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u0939\u092E\u093E\u0930\u0940 \u091F\u0940\u092E \u0938\u0930\u094D\
+        \u0935\u0947 \u0915\u094B \u091C\u0932\u094D\u0926 \u0938\u0947 \u091C\u0932\
+        \u094D\u0926 \u092C\u0939\u093E\u0932 \u0915\u0930\u0928\u0947 \u0915\u0947\
+        \ \u0932\u093F\u090F \u0915\u093E\u092E \u0915\u0930 \u0930\u0939\u0940 \u0939\
+        \u0948\u0964 \u0915\u0943\u092A\u092F\u093E \u092C\u093E\u0926 \u092E\u0947\u0902\
+        \ \u092B\u093F\u0930 \u0938\u0947 \u091A\u0948\u0915 \u0915\u0930\u0947\u0902\
+        \u0964"
+      incidentTitle: "\u0939\u092E \u092C\u0940\u0938\u0940 \u091C\u0928\u0938\u093E\
+        \u0902\u0916\u094D\u092F\u093F\u0915\u0940\u092F \u0938\u0930\u094D\u0935\u0947\
+        \u0915\u094D\u0937\u0923 \u092E\u0947\u0902 \u0924\u0915\u0928\u0940\u0915\u0940\
+        \ \u0938\u092E\u0938\u094D\u092F\u093E \u0915\u093E \u0938\u093E\u092E\u0928\
+        \u093E \u0915\u0930 \u0930\u0939\u0947 \u0939\u0948\u0902\u0964"
       redirectText: "\u0906\u092A \u092A\u0942\u0930\u0940 \u0924\u0930\u0939 \u0924\
         \u0948\u092F\u093E\u0930 \u0939\u0948\u0902, \u0930\u0940\u0921\u093E\u092F\u0930\
         \u0947\u0915\u094D\u091F \u0915\u0930 \u0930\u0939\u0947 \u0939\u0948\u0902\
@@ -170,8 +201,12 @@ ard:
       errorTitle: "BC\u5DDE\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67FB\u306F\u73FE\u5728\u3001\
         \u30A2\u30AF\u30BB\u30B9\u91CF\u304C\u591A\u304F\u3001\u9045\u5EF6\u304C\u767A\
         \u751F\u3057\u3066\u3044\u307E\u3059\u3002"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u79C1\u305F\u3061\u306E\u30C1\u30FC\u30E0\u306F\u3067\u304D\u308B\
+        \u9650\u308A\u65E9\u304F\u8ABF\u67FB\u3092\u5FA9\u5143\u3067\u304D\u308B\u3088\
+        \u3046\u53D6\u308A\u7D44\u3093\u3067\u3044\u307E\u3059\u3002\u5F8C\u307B\u3069\
+        \u3082\u3046\u4E00\u5EA6\u3054\u78BA\u8A8D\u304F\u3060\u3055\u3044\u3002"
+      incidentTitle: "BC\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67FB\u3067\u6280\u8853\u7684\
+        \u306A\u554F\u984C\u304C\u767A\u751F\u3057\u3066\u3044\u307E\u3059\u3002"
       redirectText: "\u8A2D\u5B9A\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002\u30EA\
         \u30C0\u30A4\u30EC\u30AF\u30C8\u4E2D\u3002"
       statusPositionText: "\u73FE\u5728\u3042\u306A\u305F\u306E\u9806\u756A\u306F"
@@ -189,11 +224,16 @@ ard:
       errorTitle: "\uBE44\uC528\uC8FC \uC778\uAD6C\uD1B5\uACC4 \uC870\uC0AC\uC5D0 \uD604\
         \uC7AC \uC218\uC694\uAC00 \uB192\uC544\uC838, \uC9C0\uC5F0\uC774 \uB418\uACE0\
         \ \uC788\uC2B5\uB2C8\uB2E4."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\uC800\uD76C \uD300\uC740 \uC124\uBB38\uC9C0\uB97C \uCD5C\uB300\
+        \uD55C \uBE68\uB9AC \uBCF5\uAD6C\uD558\uAE30 \uC704\uD574 \uB178\uB825\uD558\
+        \uACE0 \uC788\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC \uD6C4\uC5D0 \uB2E4\uC2DC \uD655\
+        \uC778\uD574 \uC8FC\uC2ED\uC2DC\uC624."
+      incidentTitle: "\uBE44\uC528\uC8FC \uC778\uAD6C\uD1B5\uACC4\uD559 \uC124\uBB38\
+        \uC870\uC0AC\uC5D0 \uAE30\uC220\uC801 \uBB38\uC81C\uAC00 \uBC1C\uC0DD \uC911\
+        \uC785\uB2C8\uB2E4."
       redirectText: "\uBAA8\uB450 \uC900\uBE44\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC774\
         \uB3D9 \uC911..."
-      statusPositionText: "\uADC0\uD558\uC758 \uB300\uAE30\uC5F4 \uC21C\uBC88\uC740"
+      statusPositionText: "\"\uADC0\uD558\uC758 \uB300\uAE30\uC5F4 \uC21C\uBC88\uC740"
       statusTitle: "\uD604\uC7AC \uC124\uBB38 \uC870\uC0AC \uC2DC\uC2A4\uD15C\uC0C1\
         \ \uC218\uC694\uAC00 \uB192\uC544\uC838 \uADC0\uD558\uB97C \uB300\uAE30\uC5F4\
         \uB85C \uC9C0\uC815\uD588\uC2B5\uB2C8\uB2E4."
@@ -215,8 +255,18 @@ ard:
         \ \u0A05\u0A28\u0A41\u0A2D\u0A35 \u0A15\u0A30 \u0A30\u0A3F\u0A39\u0A3E \u0A39\
         \u0A48 \u0A1C\u0A3F\u0A38 \u0A15\u0A3E\u0A30\u0A28 \u0A26\u0A47\u0A30\u0A40\
         \ \u0A39\u0A4B \u0A30\u0A39\u0A40 \u0A39\u0A48\u0964"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u0A38\u0A3E\u0A21\u0A40 \u0A1F\u0A40\u0A2E \u0A1C\u0A3F\u0A70\u0A28\
+        \u0A40 \u0A1C\u0A32\u0A26\u0A40 \u0A39\u0A4B \u0A38\u0A15\u0A47 \u0A38\u0A30\
+        \u0A35\u0A47\u0A16\u0A23 \u0A28\u0A42\u0A70 \u0A2C\u0A39\u0A3E\u0A32 \u0A15\u0A30\
+        \u0A28 \u0A32\u0A08 \u0A15\u0A70\u0A2E \u0A15\u0A30 \u0A30\u0A39\u0A40 \u0A39\
+        \u0A48\u0964 \u0A15\u0A3F\u0A30\u0A2A\u0A3E \u0A15\u0A30\u0A15\u0A47 \u0A2C\u0A3E\
+        \u0A05\u0A26 \u0A35\u0A3F\u0A71\u0A1A \u0A26\u0A41\u0A2C\u0A3E\u0A30\u0A3E \u0A1C\
+        \u0A3E\u0A02\u0A1A \u0A15\u0A30\u0A4B\u0964"
+      incidentTitle: "\u0A05\u0A38\u0A40\u0A02 \u0A2C\u0A40\u0A38\u0A40 \u0A1C\u0A28\
+        \u0A38\u0A70\u0A16\u0A3F\u0A06 \u0A38\u0A30\u0A35\u0A47\u0A16\u0A23 \u0A35\u0A3F\
+        \u0A71\u0A1A \u0A24\u0A15\u0A28\u0A40\u0A15\u0A40 \u0A38\u0A2E\u0A71\u0A38\u0A3F\
+        \u0A06 \u0A26\u0A3E \u0A05\u0A28\u0A41\u0A2D\u0A35 \u0A15\u0A30 \u0A30\u0A39\
+        \u0A47 \u0A39\u0A3E\u0A02\u0964"
       redirectText: "\u0A24\u0A41\u0A38\u0A40\u0A02 \u0A2A\u0A42\u0A30\u0A40 \u0A24\u0A30\
         \u0A4D\u0A39\u0A3E\u0A02 \u0A24\u0A3F\u0A06\u0A30 \u0A39\u0A4B, \u0A30\u0A40\
         \u0A21\u0A3E\u0A07\u0A30\u0A48\u0A15\u0A1F \u0A15\u0A40\u0A24\u0A3E \u0A1C\u0A3E\
@@ -240,10 +290,12 @@ ard:
       errorText: Ocorreu um erro
       errorTitle: "O Inqu\xE9rito Demogr\xE1fico de BC est\xE1 a registar uma procura\
         \ elevada, o que est\xE1 a provocar atrasos."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "A nossa equipa est\xE1 a trabalhar para restaurar o inqu\xE9rito\
+        \ o mais rapidamente poss\xEDvel. Por favor, volte mais tarde."
+      incidentTitle: "Estamos com um problema t\xE9cnico no Inqu\xE9rito Demogr\xE1\
+        fico de BC."
       redirectText: "Tudo pronto. A redirecionar\u2026"
-      statusPositionText: "A sua posi\xE7\xE3o atual na fila de espera \xE9"
+      statusPositionText: "\"A sua posi\xE7\xE3o atual na fila de espera \xE9"
       statusTitle: "O sistema de inqu\xE9ritos est\xE1 a registar uma procura elevada\
         \ e colocou-o em fila de espera."
       title: "Inqu\xE9rito Demogr\xE1fico de BC"
@@ -255,10 +307,12 @@ ard:
       errorText: May nangyaring mali
       errorTitle: Ang Pagsisiyasat sa Demograpiko ng BC ay kasalukuyang nakakaranas
         ng mataas na pangangailangan na nagdudulot ng mga pagkaantala.
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: Nagsusumikap ang aming pangkat na ibalik ang pagsisiyasat sa lalong
+        madaling panahon. Mangyaring bumalik sa ibang pagkakataon.
+      incidentTitle: Nakakaranas kami ng teknikal na isyu sa Pagsisiyasat ng Demograpiko
+        ng BC.
       redirectText: Handa ka na, pagbabago ng direksyon...
-      statusPositionText: 'Ang iyong kasalukuyang posisyon sa pila ay'
+      statusPositionText: '"Ang iyong kasalukuyang posisyon sa pila ay'
       statusTitle: Ang Sistema ng Pagsisiyasat ay kasalukuyang nakakaranas ng mataas
         na pangangailangan at inilagay ka sa isang pila.
       title: "BC\_Demographic\_Survey"
@@ -279,14 +333,24 @@ ard:
         \ \u0631\u06C1\u0627 \u06C1\u06D2 \u062C\u0633 \u06A9\u06CC \u0648\u062C\u06C1\
         \ \u0633\u06D2 \u062A\u0627\u062E\u06CC\u0631 \u06C1\u0648 \u0631\u06C1\u06CC\
         \ \u06C1\u06D2\u06D4"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u06C1\u0645\u0627\u0631\u06CC \u0679\u06CC\u0645 \u0633\u0631\u0648\
+        \u06D2 \u06A9\u0648 \u062C\u0644\u062F \u0627\u0632 \u062C\u0644\u062F \u0628\
+        \u062D\u0627\u0644 \u06A9\u0631\u0646\u06D2 \u06A9\u06D2 \u0644\u06CC\u06D2\
+        \ \u06A9\u0627\u0645 \u06A9\u0631 \u0631\u06C1\u06CC \u06C1\u06D2\u06D4 \u0628\
+        \u0631\u0627\u06C1 \u06A9\u0631\u0645 \u0628\u0639\u062F \u0645\u06CC\u06BA\
+        \ \u062F\u0648\u0628\u0627\u0631\u06C1 \u0686\u06CC\u06A9 \u06A9\u0631\u06CC\
+        \u06BA\u06D4"
+      incidentTitle: "\u06C1\u0645 BC \u0688\u06CC\u0645\u0648\u06AF\u0631\u0627\u0641\
+        \u06A9 \u0633\u0631\u0648\u06D2 \u06A9\u06D2 \u0633\u0627\u062A\u06BE \u0627\
+        \u06CC\u06A9 \u062A\u06A9\u0646\u06CC\u06A9\u06CC \u0645\u0633\u0626\u0644\u06C1\
+        \ \u06A9\u0627 \u0633\u0627\u0645\u0646\u0627 \u06A9\u0631 \u0631\u06C1\u06D2\
+        \ \u06C1\u06CC\u06BA\u06D4"
       redirectText: "\u0622\u067E \u0628\u0627\u0644\u06A9\u0644 \u062A\u06CC\u0627\u0631\
         \ \u06C1\u06CC\u06BA\u060C \u06C1\u0645  \u0646\u0626\u06CC \u06C1\u062F\u0627\
         \u06CC\u0627\u062A \u06A9\u06CC \u0637\u0631\u0641 \u0644\u06D2 \u062C\u0627\
         \ \u0631\u06C1\u06D2 \u06C1\u06CC\u06BA (\u0631\u06CC \u0688\u0627\u0626\u0631\
         \u06CC\u06A9\u0679 \u06A9\u0631 \u0631\u06C1\u06D2 \u06C1\u06CC\u06BA)..."
-      statusPositionText: "\u0642\u0637\u0627\u0631 \u0645\u06CC\u06BA \u0622\u067E\
+      statusPositionText: "\"\u0642\u0637\u0627\u0631 \u0645\u06CC\u06BA \u0622\u067E\
         \ \u06A9\u06CC \u0645\u0648\u062C\u0648\u062F\u06C1 \u067E\u0648\u0632\u06CC\
         \u0634\u0646 \u06CC\u06C1 \u06C1\u06D2"
       statusTitle: "\u0633\u0631\u0648\u06D2 \u0633\u0633\u0679\u0645 \u0641\u06CC \u0627\
@@ -307,11 +371,14 @@ ard:
       errorTitle: "Kh\u1EA3o s\xE1t Nh\xE2n kh\u1EA9u h\u1ECDc BC hi\u1EC7n \u0111ang\
         \ c\xF3 nhi\u1EC1u ng\u01B0\u1EDDi truy c\u1EADp, g\xE2y ra s\u1EF1 ch\u1EAD\
         m tr\u1EC5."
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "Nh\xF3m c\u1EE7a ch\xFAng t\xF4i \u0111ang l\xE0m vi\u1EC7c \u0111\
+        \u1EC3 kh\xF4i ph\u1EE5c kh\u1EA3o s\xE1t nhanh nh\u1EA5t c\xF3 th\u1EC3. Vui\
+        \ l\xF2ng quay l\u1EA1i sau."
+      incidentTitle: "Ch\xFAng t\xF4i \u0111ang g\u1EB7p s\u1EF1 c\u1ED1 k\u1EF9 thu\u1EAD\
+        t v\u1EDBi Kh\u1EA3o s\xE1t nh\xE2n kh\u1EA9u h\u1ECDc BC."
       redirectText: "B\u1EA1n \u0111\xE3 s\u1EB5n s\xE0ng, \u0111ang chuy\u1EC3n h\u01B0\
         \u1EDBng..."
-      statusPositionText: "V\u1ECB tr\xED hi\u1EC7n t\u1EA1i c\u1EE7a b\u1EA1n trong\
+      statusPositionText: "\"V\u1ECB tr\xED hi\u1EC7n t\u1EA1i c\u1EE7a b\u1EA1n trong\
         \ h\xE0ng \u0111\u1EE3i l\xE0"
       statusTitle: "H\u1EC7 th\u1ED1ng Kh\u1EA3o s\xE1t hi\u1EC7n \u0111ang c\xF3 nhi\u1EC1\
         u ng\u01B0\u1EDDi truy c\u1EADp v\xE0 \u0111\xE3 x\u1EBFp b\u1EA1n v\xE0o h\xE0\
@@ -325,8 +392,10 @@ ard:
       errorText: "\u767C\u751F\u932F\u8AA4"
       errorTitle: "\u5351\u8A69\u7701\u4EBA\u53E3\u7D71\u8A08\u8ABF\u67E5\u7576\u524D\
         \u4F7F\u7528\u8005\u8F03\u591A\uFF0C\u4EE5\u81F4\u51FA\u73FE\u5EF6\u9072\u3002"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u6211\u5011\u7684\u5718\u968A\u6B63\u5728\u52AA\u529B\u76E1\u5FEB\
+        \u6062\u8986\u8A72\u8ABF\u67E5\u3002\u8ACB\u7A0D\u5F8C\u518D\u67E5\u770B\u3002"
+      incidentTitle: "\u6211\u5011\u5728\u5351\u8A69\u7701\u4EBA\u53E3\u7D71\u8A08\u8ABF\
+        \u67E5\u4E2D\u9047\u5230\u4E86\u4E00\u500B\u6280\u8853\u554F\u984C\u3002"
       redirectText: "\u5DF2\u5C31\u7DD2\uFF0C\u91CD\u65B0\u5B9A\u5411\u4E2D\u22EF\u22EF"
       statusPositionText: "\u300C\u60A8\u7684\u6392\u968A\u4F4D\u6B21\u662F\uFF1A\u300D"
       statusTitle: "\u8ABF\u67E5\u7CFB\u7D71\u7576\u524D\u4F7F\u7528\u8005\u8F03\u591A\
@@ -340,8 +409,10 @@ ard:
       errorText: "\u51FA\u9519\u4E86"
       errorTitle: "\u5351\u8BD7\u4EBA\u53E3\u8C03\u67E5\u76EE\u524D\u56E0\u6D41\u91CF\
         \u8F83\u5927\u51FA\u73B0\u5EF6\u8FDF\u3002"
-      incidentText: We are working to fix this as quickly as possible.
-      incidentTitle: The BC Demographic Survey is currently unavailable.
+      incidentText: "\u6211\u4EEC\u7684\u56E2\u961F\u6B63\u5728\u52AA\u529B\u5C3D\u5FEB\
+        \u6062\u8986\u8BE5\u8C03\u67E5\u3002\u8BF7\u7A0D\u540E\u518D\u67E5\u770B\u3002"
+      incidentTitle: "\u6211\u4EEC\u5728\u5351\u8BD7\u7701\u4EBA\u53E3\u7EDF\u8BA1\u8C03\
+        \u67E5\u4E2D\u9047\u5230\u4E86\u4E00\u4E2A\u6280\u672F\u95EE\u9898\u3002"
       redirectText: "\u60A8\u90FD\u51C6\u5907\u597D\u4E86\uFF0C\u91CD\u65B0\u5B9A\u5411\
         ..."
       statusPositionText: "\u201C\u60A8\u76EE\u524D\u5728\u961F\u5217\u4E2D\u7684\u4F4D\
@@ -349,7 +420,6 @@ ard:
       statusTitle: "\u8C03\u67E5\u7CFB\u7EDF\u76EE\u524D\u6D41\u91CF\u5F88\u9AD8\uFF0C\
         \u5DF2\u5C06\u60A8\u653E\u5165\u961F\u5217\u4E2D\u3002"
       title: "\u5351\u8BD7\u4EBA\u53E3\u8C03\u67E5"
-
 
 sample:
   environments:

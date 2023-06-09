@@ -26,11 +26,6 @@ title_nls = {
     "PT": "Inqu&#233;rito Demogr&#225;fico de BC"
 }
 
-defaults_nls = {
-    "incidentTitle": "The BC Demographic Survey is currently unavailable.",
-    "incidentText": "We are working to fix this as quickly as possible."
-}
-
 locales = {
     "AR": "Arabic",
     "EN": "English",
@@ -83,6 +78,17 @@ with open('messages 2023-05-29.csv', newline='') as csvfile:
             translations.append([row[5], parts[0], parts[1]])
             print("%5s : %20s : %s" % (row[5], parts[0], parts[1]) )
 
+with open('translations2.txt', newline='') as textfile:
+    lines = textfile.readlines()
+    for line in lines:
+        if line.startswith("# Recall "):
+            label = line.split(" ")[2]
+        elif line.startswith("    #>"):
+            lang = line[7:9]
+            translation = line[10:]
+            translations.append([lang, label, translation])
+            print("%5s : %20s : %s" % (lang, label, translation) )
+
 nls = {}
 
 for locale in locales:
@@ -96,8 +102,6 @@ for locale in locales:
         en = find_translation ('en', label)
         if label == 'title':
             en = title_nls[locale]
-        if label == 'incidentTitle' or label == 'incidentText':
-            en = defaults_nls[label]
         nls[out_locale][label] = HTMLEntitiesToUnicode(find_translation(locale, label) or en)
 
 out_doc = {}
