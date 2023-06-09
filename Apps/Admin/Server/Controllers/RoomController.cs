@@ -15,7 +15,10 @@
 //-------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Admin.Server.Controllers
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
@@ -115,15 +118,15 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         /// <summary>
         /// Get a room's statistics information.
         /// </summary>
-        /// <param name="room">The room name.</param>
-        /// <returns>The room's statistics information.</returns>
+        /// <returns>The room statistics information.</returns>
         [HttpGet]
-        [Route("{room}/stats")]
-        public async Task<ActionResult<RoomStatistics>> GetRoomStatistics(string room)
+        [Route("stats")]
+        public async Task<ActionResult<IEnumerable<Common.Models.RoomStatistics>>> GetRoomStatistics()
         {
-            RoomStatistics? roomStatistics = await this.ticketService.QueryRoomStatistics(room);
+            Dictionary<string, RoomConfiguration>? rooms = await this.roomService.GetRoomsAsync();
 
-            return roomStatistics;
+            RoomStatistics[] statistics = await Task.WhenAll(rooms.Select(r => this.ticketService.QueryRoomStatistics(r.Key)));
+            return this.Ok(statistics.Select(s => new Common.Models.RoomStatistics(s.Room, s.Counters.Select(c => new Common.Models.Counter(c.Name, c.Description, c.Value)))));
         }
     }
 }

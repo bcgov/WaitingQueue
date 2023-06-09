@@ -188,7 +188,13 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             RoomConfiguration? roomConfig = await this.GetRoomConfiguration(room);
             (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig);
-            return new RoomStatistics(new[] { new Counter("ParticipantCount", participantCount), new Counter("WaitingCount", waitingCount) });
+            return new RoomStatistics(
+                room,
+                new[]
+                {
+                    new Counter("ParticipantCount", "Participant Count", participantCount),
+                    new Counter("WaitingCount", "Waiting Count", waitingCount),
+                });
         }
 
         private static string GetRoomKey(RoomConfiguration config, string roomType)
@@ -271,7 +277,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, ParticipantsKey), roomIdleTtl);
             _ = transaction.KeyExpireAsync(GetRoomKey(roomConfig, WaitingKey), roomIdleTtl);
         }
-
 
         private async Task<RoomConfiguration?> GetRoomConfiguration(string room)
         {

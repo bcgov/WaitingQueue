@@ -14,7 +14,7 @@
 //  limitations under the License.
 // -------------------------------------------------------------------------
 
-namespace BCGov.WaitingQueue.TicketManagement.Models.Statistics
+namespace BCGov.WaitingQueue.Admin.Common.Models
 {
     using System.Collections.Generic;
 
@@ -29,7 +29,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models.Statistics
     /// Represents a single statistics counter.
     /// </summary>
     /// <param name="Name">The counter's name.</param>
-    /// <param name="Description">The counter's human friendly description.</param>
+    /// <param name="Description">The counter's description.</param>
     /// <param name="Value">The counter's value.</param>
     public record Counter(string Name, string Description, long Value);
 }

@@ -1,7 +1,31 @@
 @page "/stats"
-@attribute [Authorize(Roles=$"{Roles.Admin}, {Roles.Stats}")]
+@using BCGov.WaitingQueue.Admin.Common.Models
+@attribute [Authorize(Roles = $"{Roles.Admin}, {Roles.Stats}")]
 @layout MainLayout
 
-<WqaPageHeading>Statistics</WqaPageHeading>
 
-Nothing to see yet
+<WqaPageHeading>Room Statistics</WqaPageHeading>
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <MudAlert Severity="Severity.Error" ShowCloseIcon="true" CloseIconClicked="@HandleCloseError" Class="my-2">@ErrorMessage</MudAlert>
+}
+<MudList>
+    @foreach (RoomStatistics roomStatistics in Rooms)
+    {
+        <MudListItem>
+            <MudCard>
+                <MudCardHeader>@roomStatistics.Room</MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        @foreach (Counter counter in roomStatistics.Counters)
+                        {
+                            <MudItem sm="4" xs="12">
+                                <WqaField Label="@counter.Description" Value=@counter.Value.ToString() />
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudListItem>
+    }
+</MudList>
