@@ -50,7 +50,7 @@ namespace BCGov.WaitingQueue.Admin.Server
             IWebHostEnvironment environment = builder.Environment;
 
             AddModules(services, configuration, logger, environment);
-            AddServices(services, configuration);
+            AddServices(services);
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             WebApplication app = builder.Build();
@@ -91,11 +91,12 @@ namespace BCGov.WaitingQueue.Admin.Server
             RedisConfiguration.ConfigureRedis(services, configuration);
         }
 
-        private static void AddServices(IServiceCollection services, IConfiguration configuration)
+        private static void AddServices(IServiceCollection services)
         {
             services.AddTransient<IConfigurationService, ConfigurationService>();
             services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             services.AddTransient<IRoomService, RedisRoomService>();
+            services.AddTransient<ITicketService, RedisTicketService>();
         }
     }
 }

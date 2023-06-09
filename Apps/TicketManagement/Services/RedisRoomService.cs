@@ -20,6 +20,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using StackExchange.Redis;
@@ -32,7 +33,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         private const string IndexKey = "Configuration:Index";
 
         private readonly ILogger<RedisRoomService> logger;
-        private readonly IConfiguration configuration;
         private readonly IConnectionMultiplexer connectionMultiplexer;
         private readonly IDateTimeDelegate dateTimeDelegate;
 
@@ -50,7 +50,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             IDateTimeDelegate dateTimeDelegate)
         {
             this.logger = logger;
-            this.configuration = configuration;
             this.connectionMultiplexer = connectionMultiplexer;
             this.dateTimeDelegate = dateTimeDelegate;
         }

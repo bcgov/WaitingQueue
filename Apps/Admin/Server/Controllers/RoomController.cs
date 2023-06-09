@@ -18,6 +18,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -34,14 +35,17 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomService roomService;
+        private readonly ITicketService ticketService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoomController"/> class.
         /// </summary>
         /// <param name="roomService">The injected room service to use.</param>
-        public RoomController(IRoomService roomService)
+        /// <param name="ticketService">The injected ticket service to use.</param>
+        public RoomController(IRoomService roomService, ITicketService ticketService)
         {
             this.roomService = roomService;
+            this.ticketService = ticketService;
         }
 
         /// <summary>
@@ -106,6 +110,20 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
             }
 
             return new ConflictResult();
+        }
+
+        /// <summary>
+        /// Get a room's statistics information.
+        /// </summary>
+        /// <param name="room">The room name.</param>
+        /// <returns>The room's statistics information.</returns>
+        [HttpGet]
+        [Route("{room}/stats")]
+        public async Task<ActionResult<RoomStatistics>> GetRoomStatistics(string room)
+        {
+            RoomStatistics? roomStatistics = await this.ticketService.QueryRoomStatistics(room);
+
+            return roomStatistics;
         }
     }
 }
