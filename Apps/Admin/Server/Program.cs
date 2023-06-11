@@ -21,6 +21,7 @@ namespace BCGov.WaitingQueue.Admin.Server
     using BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules;
     using BCGov.WaitingQueue.Admin.Server.Services;
     using BCGov.WaitingQueue.Common.Delegates;
+    using BCGov.WaitingQueue.TicketManagement.Issuers;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -97,6 +98,7 @@ namespace BCGov.WaitingQueue.Admin.Server
             services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             services.AddTransient<IRoomService, RedisRoomService>();
             services.AddTransient<ITicketService, RedisTicketService>();
+            services.AddTransient<ITokenIssuer, InternalIssuer>();
         }
     }
 }

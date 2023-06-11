@@ -15,15 +15,14 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.TicketManagement.Services
 {
-    using System.Collections.Generic;
-    using System.Text.Json;
-    using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Models;
-    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using StackExchange.Redis;
+    using System.Collections.Generic;
+    using System.Text.Json;
+    using System.Threading.Tasks;
 
     /// <inheritdoc />
     public class RedisRoomService : IRoomService
@@ -60,6 +59,11 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             this.logger.LogDebug("Fetching room configuration for {Room}", room);
             IDatabase db = this.connectionMultiplexer.GetDatabase();
             RedisValue value = await db.HashGetAsync(GetRoomConfigKey(room), ConfigKey);
+            if (value.IsNullOrEmpty)
+            {
+                return null;
+            }
+
             return JsonSerializer.Deserialize<RoomConfiguration>(value);
         }
 
