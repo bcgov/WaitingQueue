@@ -15,9 +15,13 @@
 //-------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Admin.Server.Controllers
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -34,14 +38,17 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomService roomService;
+        private readonly ITicketService ticketService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoomController"/> class.
         /// </summary>
         /// <param name="roomService">The injected room service to use.</param>
-        public RoomController(IRoomService roomService)
+        /// <param name="ticketService">The injected ticket service to use.</param>
+        public RoomController(IRoomService roomService, ITicketService ticketService)
         {
             this.roomService = roomService;
+            this.ticketService = ticketService;
         }
 
         /// <summary>
@@ -106,6 +113,20 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
             }
 
             return new ConflictResult();
+        }
+
+        /// <summary>
+        /// Get a room's statistics information.
+        /// </summary>
+        /// <returns>The room statistics information.</returns>
+        [HttpGet]
+        [Route("stats")]
+        public async Task<ActionResult<IEnumerable<Common.Models.RoomStatistics>>> GetRoomStatistics()
+        {
+            Dictionary<string, RoomConfiguration>? rooms = await this.roomService.GetRoomsAsync();
+
+            RoomStatistics[] statistics = await Task.WhenAll(rooms.Select(r => this.ticketService.QueryRoomStatistics(r.Key)));
+            return this.Ok(statistics.Select(s => new Common.Models.RoomStatistics(s.Room, s.Counters.Select(c => new Common.Models.Counter(c.Name, c.Description, c.Value)))));
         }
     }
 }

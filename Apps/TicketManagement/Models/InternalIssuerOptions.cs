@@ -29,7 +29,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Models
         /// <summary>
         /// Gets the room based configuration of token requests for the issuer.
         /// </summary>
-        public required Dictionary<string, InternalIssuerRoomConfig> RoomConfiguration { get; init; }
+        public required Dictionary<string, InternalIssuerRoomConfig> RoomConfiguration { get; init; } = new();
     }
 
     /// <summary>

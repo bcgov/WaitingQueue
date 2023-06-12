@@ -15,33 +15,66 @@
 //-------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Admin.Client.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BCGov.WaitingQueue.Admin.Client.Api;
     using BCGov.WaitingQueue.Admin.Client.Authorization;
+    using BCGov.WaitingQueue.Admin.Common.Models;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Authorization;
+    using Refit;
 
     /// <summary>
-    /// Backing logic for the Asdmin page.
+    /// Backing logic for the Rooms Statistics page.
     /// </summary>
     public partial class StatisticsPage : ComponentBase
     {
+        /// <summary>
+        /// Gets the rooms' statistics.
+        /// </summary>
+        public IEnumerable<RoomStatistics> Rooms { get; private set; } = Array.Empty<RoomStatistics>();
+
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;
 
         [Inject]
         private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
+        [Inject]
+        private IRoomApi RoomApi { get; set; } = default!;
+
+        private string? ErrorMessage { get; set; }
+
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            AuthenticationState authState = await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
-            ClaimsPrincipal user = authState.User;
+            await this.LoadRoomStatistics();
+        }
 
-            // if (user.IsInRole(Roles.Admin))
-            // {
-            //     this.Navigation.NavigateTo("user-info", replace: true);
-            // }
+        private async Task HandleCloseError()
+        {
+            this.ErrorMessage = null;
+            await Task.CompletedTask;
+        }
+
+        private async Task HandleRefreshAsync()
+        {
+            await this.LoadRoomStatistics();
+        }
+
+        private async Task LoadRoomStatistics()
+        {
+            try
+            {
+                this.Rooms = await this.RoomApi.GetRoomStatistics();
+            }
+            catch (Exception e) when (e is ApiException or HttpRequestException)
+            {
+                this.ErrorMessage = "Unable to load rooms statistics, please try refreshing the page or contact support";
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
 {
     using System.Threading.Tasks;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
 
     /// <summary>
     /// Definition for the Token Service.
@@ -44,5 +45,12 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// <param name="ticketRequest">The ticket request.</param>
         /// <returns>The updated Ticket.</returns>
         Task<Ticket> CheckInAsync(TicketRequest ticketRequest);
+
+        /// <summary>
+        /// Queries the statistics for a room.
+        /// </summary>
+        /// <param name="room">The room to query statistics for.</param>
+        /// <returns>A statistics instance with counters.</returns>
+        Task<RoomStatistics> QueryRoomStatistics(string room);
     }
 }

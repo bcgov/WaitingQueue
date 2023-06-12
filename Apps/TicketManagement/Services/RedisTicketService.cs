@@ -24,6 +24,7 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
     using BCGov.WaitingQueue.TicketManagement.Constants;
     using BCGov.WaitingQueue.TicketManagement.Issuers;
     using BCGov.WaitingQueue.TicketManagement.Models;
+    using BCGov.WaitingQueue.TicketManagement.Models.Statistics;
     using BCGov.WaitingQueue.TicketManagement.Validation;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -40,7 +41,6 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         private const string CheckInKey = "CheckIn";
 
         private readonly ILogger<RedisTicketService> logger;
-        private readonly IConfiguration configuration;
         private readonly IConnectionMultiplexer connectionMultiplexer;
         private readonly IDateTimeDelegate dateTimeDelegate;
         private readonly ITokenIssuer tokenIssuer;
@@ -52,21 +52,18 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         /// Initializes a new instance of the <see cref="RedisTicketService"/> class.
         /// </summary>
         /// <param name="logger">The logging provider.</param>
-        /// <param name="configuration">The configuration provider.</param>
         /// <param name="connectionMultiplexer">The Redis connection multiplexer.</param>
         /// <param name="dateTimeDelegate">The datetime delegate.</param>
         /// <param name="tokenIssuer">The token issuer.</param>
         /// <param name="roomService">The room service for configuration lookup.</param>
         public RedisTicketService(
             ILogger<RedisTicketService> logger,
-            IConfiguration configuration,
             IConnectionMultiplexer connectionMultiplexer,
             IDateTimeDelegate dateTimeDelegate,
             ITokenIssuer tokenIssuer,
             IRoomService roomService)
         {
             this.logger = logger;
-            this.configuration = configuration;
             this.connectionMultiplexer = connectionMultiplexer;
             this.dateTimeDelegate = dateTimeDelegate;
             this.tokenIssuer = tokenIssuer;
@@ -131,8 +128,8 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
                 }
 
                 SortedSetEntry waitingScoreEntry = (await database.SortedSetRangeByRankWithScoresAsync(
-                        GetRoomKey(roomConfig, WaitingKey),
-                        -1)).FirstOrDefault();
+                    GetRoomKey(roomConfig, WaitingKey),
+                    -1)).FirstOrDefault();
                 trans = database.CreateTransaction();
                 _ = trans.SortedSetAddAsync(
                         GetRoomKey(roomConfig, WaitingKey),
@@ -184,6 +181,20 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
             stopwatch.Stop();
             this.logger.LogDebug("CheckInAsync Execution Time: {Duration} ms", stopwatch.ElapsedMilliseconds);
             return ticket;
+        }
+
+        /// <inheritdoc />
+        public async Task<RoomStatistics> QueryRoomStatistics(string room)
+        {
+            RoomConfiguration? roomConfig = await this.GetRoomConfiguration(room);
+            (long participantCount, long waitingCount, _) = await this.RoomCountsAsync(roomConfig);
+            return new RoomStatistics(
+                room,
+                new[]
+                {
+                    new Counter("ParticipantCount", "Participant Count", participantCount),
+                    new Counter("WaitingCount", "Waiting Count", waitingCount),
+                });
         }
 
         private static string GetRoomKey(RoomConfiguration config, string roomType)

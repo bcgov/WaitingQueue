@@ -39,5 +39,12 @@ namespace BCGov.WaitingQueue.Admin.Client.Api
         /// <returns>The newly created or updated room configuration.</returns>
         [Put("/")]
         Task<RoomConfiguration> UpsertConfiguration(RoomConfiguration roomConfig);
+
+        /// <summary>
+        /// Gets a room's statistics.
+        /// </summary>
+        /// <returns>The room statistics.</returns>
+        [Get("/stats")]
+        Task<IEnumerable<RoomStatistics>> GetRoomStatistics();
     }
 }

@@ -21,6 +21,7 @@ namespace BCGov.WaitingQueue.Admin.Server
     using BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules;
     using BCGov.WaitingQueue.Admin.Server.Services;
     using BCGov.WaitingQueue.Common.Delegates;
+    using BCGov.WaitingQueue.TicketManagement.Issuers;
     using BCGov.WaitingQueue.TicketManagement.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -50,7 +51,7 @@ namespace BCGov.WaitingQueue.Admin.Server
             IWebHostEnvironment environment = builder.Environment;
 
             AddModules(services, configuration, logger, environment);
-            AddServices(services, configuration);
+            AddServices(services);
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             WebApplication app = builder.Build();
@@ -91,11 +92,13 @@ namespace BCGov.WaitingQueue.Admin.Server
             RedisConfiguration.ConfigureRedis(services, configuration);
         }
 
-        private static void AddServices(IServiceCollection services, IConfiguration configuration)
+        private static void AddServices(IServiceCollection services)
         {
             services.AddTransient<IConfigurationService, ConfigurationService>();
             services.AddTransient<IDateTimeDelegate, DateTimeDelegate>();
             services.AddTransient<IRoomService, RedisRoomService>();
+            services.AddTransient<ITicketService, RedisTicketService>();
+            services.AddTransient<ITokenIssuer, InternalIssuer>();
         }
     }
 }
