@@ -9,6 +9,8 @@
 {
     <MudAlert Severity="Severity.Error" ShowCloseIcon="true" CloseIconClicked="@HandleCloseError" Class="my-2">@ErrorMessage</MudAlert>
 }
+<MudIconButton Icon="@Icons.Material.Filled.Refresh" OnClick="@HandleRefreshAsync"></MudIconButton>
+
 <MudList>
     @foreach (RoomStatistics roomStatistics in Rooms)
     {

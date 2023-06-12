@@ -28,7 +28,7 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
     using Refit;
 
     /// <summary>
-    /// Backing logic for the Asdmin page.
+    /// Backing logic for the Rooms Statistics page.
     /// </summary>
     public partial class StatisticsPage : ComponentBase
     {
@@ -48,14 +48,24 @@ namespace BCGov.WaitingQueue.Admin.Client.Pages
 
         private string? ErrorMessage { get; set; }
 
+        /// <inheritdoc/>
+        protected override async Task OnInitializedAsync()
+        {
+            await this.LoadRoomStatistics();
+        }
+
         private async Task HandleCloseError()
         {
             this.ErrorMessage = null;
             await Task.CompletedTask;
         }
 
-        /// <inheritdoc/>
-        protected override async Task OnInitializedAsync()
+        private async Task HandleRefreshAsync()
+        {
+            await this.LoadRoomStatistics();
+        }
+
+        private async Task LoadRoomStatistics()
         {
             try
             {
