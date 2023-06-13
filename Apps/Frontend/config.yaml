@@ -68,9 +68,9 @@ ard:
         is causing delays.
       incidentText: Our team is working to restore the survey as quickly as possible.
         Please check back later.
-      incidentTitle: We?re experiencing a technical issue with the BC Demographic Survey.
+      incidentTitle: We're experiencing a technical issue with the BC Demographic Survey.
       redirectText: You're all set, redirecting...
-      statusPositionText: '"Your current position in the queue is'
+      statusPositionText: 'Your current position in the queue is'
       statusTitle: The Survey System is currently experiencing high demand and has placed
         you in a queue.
       title: "BC\_Demographic\_Survey"
