@@ -5,6 +5,7 @@ import {
   STORAGE_KEY,
   wait,
 } from "./request.js";
+import utils from "./utils.js";
 
 /**
  * @typedef {import("./request.js").Ticket} Ticket
@@ -48,7 +49,6 @@ class QueuePoller extends HTMLElement {
 
   connectedCallback() {
     const cached = localStorage.getItem(STORAGE_KEY);
-    this.observer = new MutationObserver(this.onMutation);
 
     if (cached) {
       /** @type Ticket */
@@ -66,7 +66,6 @@ class QueuePoller extends HTMLElement {
       this.render();
       this.#ticket = ticket;
     });
-    this.observer.observe(this, { childList: true, subtree: true });
   }
 
   disconnectedCallback() {
@@ -80,14 +79,12 @@ class QueuePoller extends HTMLElement {
    */
   attributeChangedCallback(name, _, value) {
     if (name === "lang" && value) {
-      this.renderLocaleStrings(value);
+      this.renderLocaleStrings();
     }
   }
 
-  /**
-   * @param {string} lang
-   */
-  renderLocaleStrings = (lang) => {
+  renderLocaleStrings = () => {
+    const lang = this.getAttribute("lang");
     const localesJson = document.querySelector("#locales").textContent;
     const locales = JSON.parse(localesJson);
     const locale = locales[lang];
@@ -202,7 +199,7 @@ class QueuePoller extends HTMLElement {
     }
   };
 
-  #handleProcessed = async () => {
+  #handleProcessed = () => {
     const currentUrl = new URL(location.href);
     const redirectUrl = new URL(this.getAttribute("redirect-url"));
     redirectUrl.pathname = (
@@ -216,9 +213,9 @@ class QueuePoller extends HTMLElement {
     }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // await this.#deleteTicket();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
-    await wait(1);
+    this.renderLocaleStrings();
     this.cleanUp();
-    location.assign(redirectUrl);
+    utils.open(redirectUrl);
   };
 
   #setTimer = () => {
@@ -264,6 +261,7 @@ class QueuePoller extends HTMLElement {
    */
   renderError = () => {
     this.replaceChildren(errorTemplate.content.cloneNode(true));
+    this.renderLocaleStrings();
     this.querySelector("button").addEventListener(
       "click",
       () => {
@@ -284,6 +282,7 @@ class QueuePoller extends HTMLElement {
 
   renderIncident = () => {
     this.replaceChildren(noticeTemplate.content.cloneNode(true));
+    this.renderLocaleStrings();
   };
 
   /**
@@ -294,11 +293,7 @@ class QueuePoller extends HTMLElement {
     if (mark) {
       mark.innerText = this.#ticket.queuePosition?.toString();
     }
-  };
-
-  onMutation = () => {
-    const lang = this.getAttribute("lang");
-    this.renderLocaleStrings(lang);
+    this.renderLocaleStrings();
   };
 
   render() {
@@ -327,7 +322,6 @@ class QueuePoller extends HTMLElement {
   }
 
   cleanUp() {
-    this.observer.disconnect();
     clearInterval(this.#timer);
     this.#timer = null;
   }

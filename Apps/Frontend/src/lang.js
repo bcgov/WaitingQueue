@@ -36,7 +36,7 @@ export function checkLanguage() {
   const currentLanguage = document.querySelector("html")?.getAttribute("lang");
 
   if (language && currentLanguage !== language) {
-    document.querySelector("queue-poller")?.setAttribute("lang", language);
+    changeLanguage(language);
   }
   updateLanguageSelect();
 }
@@ -44,7 +44,7 @@ export function checkLanguage() {
 /**
  * @param {string} lang
  */
-function changeLanguage(lang) {
+export function changeLanguage(lang) {
   document.querySelector("html").setAttribute("lang", lang);
   document.querySelectorAll("queue-poller").forEach((el) => {
     el.setAttribute("lang", lang);
@@ -54,7 +54,7 @@ function changeLanguage(lang) {
 /**
  * @param {Event & { target: HTMLSelectElement}} event
  */
-function handleLangChange(event) {
+export function handleLangChange(event) {
   changeLanguage(event.target.value);
 }
 
