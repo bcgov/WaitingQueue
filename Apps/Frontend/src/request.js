@@ -66,6 +66,8 @@ async function fetchAndRetryIfNecessary(request, delay = 1) {
 
 export class IncidentError extends Error {}
 
+export class TerminalError extends Error {}
+
 /**
  * A simple promise-based timeout
  *
@@ -76,7 +78,7 @@ export async function wait(timeout = 0) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, timeout);
+    }, timeout < 0 ? 1000 : timeout);
   });
 }
 
@@ -108,7 +110,7 @@ export async function request(input) {
       if ([404, 412].includes(req.status)) {
         /** @type {ProblemDetails} */
         const json = await req.json();
-        error = json.detail;
+        throw new TerminalError(json.detail);
       }
 
       throw new Error(error);
@@ -169,15 +171,15 @@ export async function refreshToken(ticket, refreshUrl) {
 export async function handleTokenRefresh(refreshUrl) {
   try {
     const cached = localStorage.getItem(STORAGE_KEY);
-    /** @type Ticket */
-    const ticket = JSON.parse(cached);
-    await refreshToken(ticket, refreshUrl);
+    if (cached) {
+      /** @type Ticket */
+      const ticket = JSON.parse(cached);
+      await refreshToken(ticket, refreshUrl);
+    }
   } catch (err) {
-    // TODO: When there is a standard design for this page, handle error messaging in a more helpful way
-    console.error(err.message);
-    localStorage.removeItem(STORAGE_KEY);
-    const div = document.createElement("div");
-    div.innerText = "Unauthorized WR0001";
-    document.body.insertBefore(div, document.body.firstChild);
+    if (err instanceof TerminalError) {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+    console.error("WR001 %s", err.message);
   }
 }
