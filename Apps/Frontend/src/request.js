@@ -175,6 +175,8 @@ export async function handleTokenRefresh(refreshUrl) {
       /** @type Ticket */
       const ticket = JSON.parse(cached);
       await refreshToken(ticket, refreshUrl);
+    } else {
+      console.error("WR001 No valid ticket");
     }
   } catch (err) {
     if (err instanceof TerminalError) {
