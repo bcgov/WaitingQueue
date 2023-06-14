@@ -3,7 +3,7 @@ import {
   IncidentError,
   COOKIE_KEY,
   STORAGE_KEY,
-  wait,
+  TerminalError,
 } from "./request.js";
 import utils from "./utils.js";
 
@@ -184,7 +184,6 @@ class QueuePoller extends HTMLElement {
       this.#ticket = json;
     } catch (err) {
       this.handlerError(err);
-      this.#ticket = null;
       localStorage.removeItem(STORAGE_KEY);
     }
   };
@@ -195,7 +194,13 @@ class QueuePoller extends HTMLElement {
   handlerError = (err) => {
     if (err instanceof IncidentError) {
       this.#incident = true;
-    } else {
+    }
+
+    if (err instanceof TerminalError) {
+      this.#deleteTicket();
+    }
+
+    if (err.message) {
       this.#error = err.message;
     }
   };
@@ -212,7 +217,7 @@ class QueuePoller extends HTMLElement {
     document.cookie = `${COOKIE_KEY}=${
       this.#ticket.token
     }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
-    // await this.#deleteTicket();
+    this.#deleteTicket();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
     this.renderLocaleStrings();
     this.cleanUp();
@@ -231,31 +236,32 @@ class QueuePoller extends HTMLElement {
 
   /**
    * Handle clean up of the ticket on the API side
-   * @returns {Promise<void>} Successful deletion of ticket
+   * @returns {void}
    */
-  // #deleteTicket = async () => {
-  //   const pollUrl = this.getAttribute("poll-url");
-  //
-  //   try {
-  //     const { id, room, nonce } = this.#ticket;
-  //     const body = JSON.stringify({
-  //       id,
-  //       nonce,
-  //       room,
-  //     });
-  //
-  //     await request({
-  //       url: pollUrl,
-  //       fetchOptions: {
-  //         method: "DELETE",
-  //         body,
-  //       },
-  //     });
-  //     localStorage.removeItem(STORAGE_KEY);
-  //   } catch (err) {
-  //     this.renderError(err.message ?? "Unable to remove ticket from queue");
-  //   }
-  // };
+  #deleteTicket = () => {
+    //   const pollUrl = this.getAttribute("poll-url");
+    //
+    //   try {
+    //     const { id, room, nonce } = this.#ticket;
+    //     const body = JSON.stringify({
+    //       id,
+    //       nonce,
+    //       room,
+    //     });
+    //
+    //     await request({
+    //       url: pollUrl,
+    //       fetchOptions: {
+    //         method: "DELETE",
+    //         body,
+    //       },
+    //     });
+    this.#ticket = null;
+    localStorage.removeItem(STORAGE_KEY);
+    //   } catch (err) {
+    //     this.renderError(err.message ?? "Unable to remove ticket from queue");
+    //   }
+  };
 
   /**
    * Render and error message when an operation failed
@@ -267,10 +273,13 @@ class QueuePoller extends HTMLElement {
       "click",
       () => {
         this.#error = null;
-        this.#ticket = null;
-        this.#fetchTicket().then((ticket) => {
-          this.#ticket = ticket;
-        });
+        if (this.#ticket) {
+          this.#refreshTicket();
+        } else {
+          this.#fetchTicket().then((ticket) => {
+            this.#ticket = ticket;
+          });
+        }
       },
       {
         once: true,
