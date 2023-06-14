@@ -62,6 +62,7 @@ export function updateLanguageSelect() {
   const pageLanguage = document.querySelector("html").lang;
   /** @type HTMLSelectElement */
   const langDropdown = document.querySelector("select#lang-dropdown");
+  langDropdown.value = pageLanguage;
   langDropdown
     .querySelector(`option[lang="${pageLanguage}"]`)
     .setAttribute("selected", "selected");

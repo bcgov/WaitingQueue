@@ -184,6 +184,7 @@ class QueuePoller extends HTMLElement {
       this.#ticket = json;
     } catch (err) {
       this.handlerError(err);
+      this.#ticket = null;
       localStorage.removeItem(STORAGE_KEY);
     }
   };
@@ -266,13 +267,10 @@ class QueuePoller extends HTMLElement {
       "click",
       () => {
         this.#error = null;
-        if (this.#ticket) {
-          this.#refreshTicket();
-        } else {
-          this.#fetchTicket().then((ticket) => {
-            this.#ticket = ticket;
-          });
-        }
+        this.#ticket = null;
+        this.#fetchTicket().then((ticket) => {
+          this.#ticket = ticket;
+        });
       },
       {
         once: true,
