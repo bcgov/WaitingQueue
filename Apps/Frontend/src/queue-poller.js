@@ -217,7 +217,7 @@ class QueuePoller extends HTMLElement {
     document.cookie = `${COOKIE_KEY}=${
       this.#ticket.token
     }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
-    this.#deleteTicket();
+    // this.#deleteTicket();
     this.replaceChildren(redirectTemplate.content.cloneNode(true));
     this.renderLocaleStrings();
     this.cleanUp();
