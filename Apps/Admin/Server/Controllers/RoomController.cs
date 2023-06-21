@@ -57,7 +57,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<RoomConfiguration>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IDictionary<string, RoomConfiguration>> Index()
         {
             return await this.roomService.GetRoomsAsync(RoomAccessRequirement.GetUserRooms(this.HttpContext));
@@ -71,7 +71,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [HttpGet]
         [Route("stats")]
         [ProducesResponseType(typeof(IEnumerable<RoomConfiguration>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<IEnumerable<Common.Models.RoomStatistics>>> GetRoomStatistics()
         {
             Dictionary<string, RoomConfiguration> rooms = await this.roomService.GetRoomsAsync(RoomAccessRequirement.GetUserRooms(this.HttpContext));
@@ -88,7 +88,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [HttpGet]
         [Route("{room}")]
         [ProducesResponseType(typeof(RoomConfiguration), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetConfig(string room)
         {
@@ -110,7 +110,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [HttpGet]
         [Route("{room}/exists")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<bool> Exists(string room)
         {
             bool exists = await this.roomService.RoomExists(room);
@@ -127,7 +127,7 @@ namespace BCGov.WaitingQueue.Admin.Server.Controllers
         [HttpPut]
         [Route("{room}")]
         [ProducesResponseType(typeof(RoomConfiguration), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpsertRoom(string room, RoomConfiguration roomConfig)
         {
