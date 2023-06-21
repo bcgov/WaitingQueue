@@ -46,9 +46,10 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         Task<bool> RoomExists(string room);
 
         /// <summary>
-        /// Lists all the rooms in the datastore.
+        /// Lists all the configured rooms that match the supplied rooms.
         /// </summary>
+        /// <param name="rooms">The rooms to query.</param>
         /// <returns>A list of strings identifying each room.</returns>
-        Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync();
+        Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync(IEnumerable<string> rooms);
     }
 }

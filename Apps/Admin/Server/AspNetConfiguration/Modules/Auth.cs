@@ -15,15 +15,13 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Net;
     using System.Threading.Tasks;
+    using BCGov.WaitingQueue.Admin.Server.Authorization;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -53,7 +51,6 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
 
             // Displays sensitive data from the jwt if the environment is development only
             IdentityModelEventSource.ShowPII = debugEnabled;
-
             services.AddAuthentication(
                     options =>
                     {
@@ -79,6 +76,21 @@ namespace BCGov.WaitingQueue.Admin.Server.AspNetConfiguration.Modules
                             OnAuthenticationFailed = ctx => OnAuthenticationFailed(logger, ctx),
                         };
                     });
+
+            services.AddScoped<IAuthorizationHandler, RoomAccessHandler>();
+            services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy(
+                        RoomPolicy.RoomAccess,
+                        policy =>
+                        {
+                            policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                            policy.RequireAuthenticatedUser();
+                            policy.RequireRole(Roles.Admin);
+                            policy.Requirements.Add(new RoomAccessRequirement());
+                        });
+                });
         }
 
         /// <summary>

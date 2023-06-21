@@ -99,7 +99,7 @@ public partial class RoomConfigPage : ComponentBase
             this.ErrorMessage = null;
             try
             {
-                this.Rooms[item.Name] = await this.RoomApi.UpsertConfiguration(item);
+                this.Rooms[item.Name] = await this.RoomApi.UpsertConfiguration(item.Name, item);
             }
             catch (Exception e) when (e is ApiException or HttpRequestException)
             {

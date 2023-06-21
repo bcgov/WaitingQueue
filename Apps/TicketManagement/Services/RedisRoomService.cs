@@ -15,14 +15,16 @@
 // -------------------------------------------------------------------------
 namespace BCGov.WaitingQueue.TicketManagement.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.Json;
+    using System.Threading.Tasks;
     using BCGov.WaitingQueue.Common.Delegates;
     using BCGov.WaitingQueue.TicketManagement.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using StackExchange.Redis;
-    using System.Collections.Generic;
-    using System.Text.Json;
-    using System.Threading.Tasks;
 
     /// <inheritdoc />
     public class RedisRoomService : IRoomService
@@ -101,17 +103,18 @@ namespace BCGov.WaitingQueue.TicketManagement.Services
         {
             this.logger.LogDebug("Querying if room exists {Room}", room);
             IDatabase db = this.connectionMultiplexer.GetDatabase();
-            return await db.HashExistsAsync(IndexKey, room);
+            return await db.HashExistsAsync(IndexKey, room.ToUpperInvariant());
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync()
+        public async Task<Dictionary<string, RoomConfiguration>> GetRoomsAsync(IEnumerable<string> rooms)
         {
             this.logger.LogDebug("Fetching configured rooms");
             Dictionary<string, RoomConfiguration> roomsConfig = new();
             IDatabase db = this.connectionMultiplexer.GetDatabase();
             RedisValue[] keys = await db.HashKeysAsync(IndexKey);
-            foreach (RedisValue k in keys)
+            IEnumerable<RedisValue> queryKeys = keys.Where(key => rooms.Contains(key.ToString(), StringComparer.OrdinalIgnoreCase));
+            foreach (RedisValue k in queryKeys)
             {
                 RoomConfiguration? roomConfig = await this.ReadConfigurationAsync(k);
                 if (roomConfig != null)
