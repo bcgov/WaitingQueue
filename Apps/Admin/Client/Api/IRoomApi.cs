@@ -35,10 +35,11 @@ namespace BCGov.WaitingQueue.Admin.Client.Api
         /// <summary>
         /// Creates or updates the room configuration.
         /// </summary>
+        /// <param name="room">The room name to create or update.</param>
         /// <param name="roomConfig">The room to create or update.</param>
         /// <returns>The newly created or updated room configuration.</returns>
-        [Put("/")]
-        Task<RoomConfiguration> UpsertConfiguration(RoomConfiguration roomConfig);
+        [Put("/{room}")]
+        Task<RoomConfiguration> UpsertConfiguration(string room, RoomConfiguration roomConfig);
 
         /// <summary>
         /// Gets a room's statistics.
