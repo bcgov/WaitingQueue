@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="<%= data.locale %>">
+  <head>
+    <title>Tests</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="fixture"></div>
+
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "sinon": "https://cdn.skypack.dev/sinon"
+        }
+      }
+    </script>
+
+    <div id="mocha"></div>
+
+    <script type="module">
+      mocha.setup({ ui: "bdd", global: ["supportedLanguages"] });
+      mocha.checkLeaks();
+      Promise.all([
+        // import("./queue-poller.test.js"),
+        import("./lang.test.js"),
+      ]).then(() => mocha.run());
+    </script>
+    <template id="poller-template">
+      <div class="container" role="status">
+        <h3><%= _.statusTitle %></h3>
+        <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
+          <%= _.statusPositionText %>
+        </p>
+        <mark><loading-spinner></loading-spinner></mark>
+      </div>
+    </template>
+    <template id="redirect-template">
+      <div role="alert" class="container">
+        <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
+        <h4><%= _.redirectText %></h4>
+      </div>
+    </template>
+    <template id="error-template">
+      <div role="alert" class="container">
+        <h3><%= _.errorTitle %></h3>
+        <button data-retry class="btn-secondary">
+          <%= _.errorRetryText %>
+        </button>
+      </div>
+    </template>
+    <template id="notice-template">
+      <div role="alert" class="notice">
+        <p>
+          <strong><%= _.incidentTitle %></strong>
+          <%= _.incidentText %>
+        </p>
+      </div>
+    </template>
+  </body>
+</html>
+

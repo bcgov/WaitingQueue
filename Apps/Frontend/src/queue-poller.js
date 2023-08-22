@@ -48,6 +48,9 @@ class QueuePoller extends HTMLElement {
   }
 
   connectedCallback() {
+    if (document.querySelectorAll("queue-poller").length > 1) {
+      return;
+    }
     const cached = localStorage.getItem(STORAGE_KEY);
 
     if (cached) {
@@ -218,7 +221,8 @@ class QueuePoller extends HTMLElement {
       this.#ticket.token
     }; domain=apps.gov.bc.ca; path=/; Secure; SameSite=Strict`;
     // this.#deleteTicket();
-    this.replaceChildren(redirectTemplate.content.cloneNode(true));
+    this.innerHTML = "";
+    this.append(redirectTemplate.content.cloneNode(true));
     this.renderLocaleStrings();
     this.cleanUp();
     utils.open(redirectUrl);
@@ -267,7 +271,8 @@ class QueuePoller extends HTMLElement {
    * Render and error message when an operation failed
    */
   renderError = () => {
-    this.replaceChildren(errorTemplate.content.cloneNode(true));
+    this.innerHTML = "";
+    this.append(errorTemplate.content.cloneNode(true));
     this.renderLocaleStrings();
     this.querySelector("button").addEventListener(
       "click",
@@ -288,7 +293,8 @@ class QueuePoller extends HTMLElement {
   };
 
   renderIncident = () => {
-    this.replaceChildren(noticeTemplate.content.cloneNode(true));
+    this.innerHTML = "";
+    this.append(noticeTemplate.content.cloneNode(true));
     this.renderLocaleStrings();
   };
 
@@ -297,14 +303,15 @@ class QueuePoller extends HTMLElement {
    */
   #updatePosition = () => {
     const mark = this.querySelector("mark");
-    if (mark) {
-      mark.innerText = this.#ticket.queuePosition?.toString();
+    if (mark && this.#ticket.queuePosition) {
+      mark.innerText = this.#ticket.queuePosition.toString();
     }
     this.renderLocaleStrings();
   };
 
   render() {
-    this.replaceChildren(pollTemplate.content.cloneNode(true));
+    this.innerHTML = "";
+    this.append(pollTemplate.content.cloneNode(true));
 
     if (this.#error) {
       this.renderError();

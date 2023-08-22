@@ -1,7 +1,7 @@
 const { rest, setupWorker } = MockServiceWorker;
 const DB_STORAGE_KEY = "WaitingQueue.mockdb";
 // Normal interval should be around 120
-const TICKET_INTERVAL = 1000;
+const TICKET_INTERVAL = 10;
 
 let ticket = JSON.parse(localStorage.getItem(DB_STORAGE_KEY)) ?? null;
 
@@ -85,7 +85,10 @@ const handlers = [
     const unhappy = req.url.searchParams.get("unhappy");
 
     if (unhappy === "1") {
-      return res(ctx.status(500));
+      return res(
+        ctx.status(500),
+        ctx.json(makeErrorResponse(404, "No ticket"))
+      );
     }
 
     if (unhappy === "2") {

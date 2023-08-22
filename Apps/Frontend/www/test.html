@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tests</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <script src="https://unpkg.com/msw/lib/iife/index.js"></script>
+    <script id="locales" type="application/json">
+      {
+        "ja": {
+          "appName": "待合室",
+          "componentFallbackText": "このコンポーネントを実行するには、JavaScriptを有効にする必要があります",
+          "errorRetryText": "再試行",
+          "errorText": "エラーが発生しました",
+          "errorTitle": "BC州人口統計調査は現在、アクセス量が多く、遅延が発生しています。",
+          "incidentText": "(\\\\u5F85\\\\u5408\\\\u5BA4) JP We are working to fix this as quickly as possible.",
+          "incidentTitle": "JP The BC Demographic Survey is currently unavailable.",
+          "redirectText": "設定が完了しました。リダイレクト中。",
+          "statusPositionText": "現在あなたの順番は",
+          "statusTitle": "調査システムは現在、アクセス量が多く、あなたは、キューに並んでいます。",
+          "title": "JP BC州 人口統計 調査"
+        },
+        "en-CA": {
+          "appName": "Waiting Room",
+          "title": "BC General Survey",
+          "errorText": "Something went wrong",
+          "incidentTitle": "The BC General Survey is currently unavailable.",
+          "incidentText": "We are working to fix this as quickly as possible.",
+          "componentFallbackText": "You need JavaScript enabled to run this component",
+          "statusTitle": "The Survey System is currently experiencing high demand and have placed you in a queue.",
+          "statusPositionText": "Your current position in our queue is:",
+          "errorTitle": "BC General Survey is currently experiencing high demand which is causing delays.",
+          "errorRetryText": "Retry",
+          "redirectText": "You're all set, redirecting..."
+        },
+        "fr-CA": {
+          "appName": "Waiting Room",
+          "title": "Enquête générale de la Colombie-Britannique",
+          "errorText": "Quelque chose s'est mal passé",
+          "incidentTitle": "L'enquête démographique de la Colombie-Britannique n'est pas disponible actuellement.",
+          "incidentText": "Nous nous efforçons de résoudre ce problème le plus rapidement possible.",
+          "componentFallbackText": "Vous devez activer JavaScript pour exécuter ce composant",
+          "statusTitle": "Le système de sondage connaît actuellement une forte demande et vous a placé dans une file d'attente.",
+          "statusPositionText": "Votre position actuelle dans notre file d'attente est :",
+          "errorTitle": "BC General Survey connaît actuellement une forte demande, ce qui entraîne des retards.",
+          "errorRetryText": "Refaire",
+          "redirectText": "Vous êtes prêt, redirection..."
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="fixture"></div>
+    <!-- These libraries rely on globals, keep out of importmap -->
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "sinon": "https://cdn.skypack.dev/sinon",
+          "testing-library": "https://cdn.skypack.dev/@testing-library/dom",
+          "chai-as-promised": "https://cdn.skypack.dev/chai-as-promised"
+        }
+      }
+    </script>
+
+    <div id="mocha"></div>
+
+    <script type="module">
+      import chaiAsPromised from "chai-as-promised";
+
+      mocha.setup({ ui: "bdd", global: ["supportedLanguages"], timeout: 4000 });
+      mocha.checkLeaks();
+      chai.use(chaiAsPromised);
+      window.server = MockServiceWorker.setupWorker();
+      Promise.all([
+        import("./lang.test.js"),
+        import("./request.test.js"),
+        import("./queue-poller.test.js"),
+      ])
+        .then(() => mocha.run())
+        .catch((err) => console.log("boo", err));
+    </script>
+    <template id="poller-template">
+      <div class="container" role="status">
+        <h3>
+          <bdi data-lang="statusTitle">Example Title</bdi>
+        </h3>
+        <p aria-atomic="true" aria-live="assertive" aria-relevant="text">
+          <bdi data-lang="statusPositionText">
+            Your position is currently:
+          </bdi>
+        </p>
+        <mark><loading-spinner></loading-spinner></mark>
+      </div>
+    </template>
+    <template id="redirect-template">
+      <div role="alert" class="container">
+        <loading-spinner color="var(--bc-colors-blue)"></loading-spinner>
+        <h4>
+          <bdi data-lang="redirectText">You're all set, redirecting...</bdi>
+        </h4>
+      </div>
+    </template>
+    <template id="error-template">
+      <div role="alert" class="container">
+        <h3>
+          <bdi data-lang="errorTitle">An error has occurred</bdi>
+        </h3>
+        <button data-retry class="btn-secondary">
+          <bdi data-lang="errorRetryText">Retry</bdi>
+        </button>
+      </div>
+    </template>
+    <template id="notice-template">
+      <div role="alert" class="notice">
+        <p>
+          <strong>
+            <bdi data-lang="incidentTitle">There was an incident</bdi>
+          </strong>
+          <bdi data-lang="incidentText">Please try again soon</bdi>
+        </p>
+      </div>
+    </template>
+  </body>
+</html>

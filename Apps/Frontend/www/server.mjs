@@ -41,6 +41,7 @@ let ctx = await esbuild.context({
   format: "esm",
   external: ["mocha", "sinon"],
   outdir: "www",
+  target: ["safari14"],
 });
 
 let { host, port } = await ctx.serve({ servedir: "./www" });

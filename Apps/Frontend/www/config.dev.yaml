@@ -1,7 +1,7 @@
 settings:
   room: HealthGatewayDev
   legacyBrowser: true
-  redirectUrl: http://localhost:8000/i
+  redirectUrl: http://localhost:8001/i
   pollUrl: /Ticket
   refreshUrl: /Ticket/check-in
 
